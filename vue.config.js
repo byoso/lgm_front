@@ -1,4 +1,10 @@
+
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  transpileDependencies: true
+  transpileDependencies: true,
+  publicPath: '',
+  // Uncomment the following code to enable proxying to API server
+  // devServer: {
+  //   proxy: 'https://api.nordvpn.com/' // placeholder
+  // }
 })
