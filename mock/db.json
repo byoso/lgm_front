@@ -1,0 +1,21 @@
+{
+    "users": [
+        {"name": "Vince", "id": 1, "table_ids": [1]},
+        {"name": "Joss", "id": 2, "table_ids": [1, 2]},
+        {"name": "Matt", "id": 3, "table_ids": [3]},
+        {"name": "Mika", "id": 4, "table_ids": [1, 2, 3]},
+        {"name": "Cedric","id":5, "table_ids": [1, 3] }
+
+    ],
+    "tables":[
+        {"name": "Voironnais", "description": "Mes potes", "id": 1},
+        {"name": "Lyon 1", "description": "Mes potes", "id": 2},
+        {"name": "Grenoble", "description": "Mes potes", "id": 3}
+    ],
+	"campains": [
+		{"title": "[INS] Dieu à la Bourboule", "id": 1, "details": "Lorem ipsum dolor s", "game_id": 1, "MJ_id": 5},
+		{"title": "[LGM] Patrouilleur perdu", "id": 2, "details": "Lorem ipsum dolor s", "game_id": 2, "MJ_id": 1},
+        {"title": "[DH] Astral Bane", "id": 3, "details": "Lorem ipsum dolor s", "game_id": 3, "MJ_id": 4},
+		{"title": "[RDD] Le cidre de Narvik", "id": 3, "details": "Lorem ipsum dolor s", "game_id": 3, "MJ_id": 3}
+	]
+}

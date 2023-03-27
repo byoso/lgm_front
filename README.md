@@ -24,6 +24,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - router (classic, not history)
 - vuex
 - sass
+- json-server (for dev) `json-server --watch mock/db.json`
 
 \+
 

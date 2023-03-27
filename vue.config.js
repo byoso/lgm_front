@@ -5,6 +5,6 @@ module.exports = defineConfig({
   publicPath: '',
   // Uncomment the following code to enable proxying to API server
   // devServer: {
-  //   proxy: 'https://api.nordvpn.com/' // placeholder
+  //   proxy: 'http://localhost:3000/notebooks' // placeholder
   // }
 })
