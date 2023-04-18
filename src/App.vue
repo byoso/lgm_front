@@ -1,6 +1,6 @@
 <template>
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <!-- <div class="navbar-brand">
+<nav class="navbar is-fixed-top pl-2 pr-2" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
     <router-link to="/" class="navbar-item" style="font-weight: bold;">Le Grand Monde</router-link>
 
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -8,30 +8,27 @@
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
     </a>
-  </div> -->
+  </div>
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <!-- <router-link to="/about" class="navbar-item">
-        Lore
-      </router-link>
 
-      <router-link to="/about" class="navbar-item">
+      <!-- <router-link to="/about" class="navbar-item">
         Creation de personnage
       </router-link> -->
 
       <router-link to="/notebooks" class="navbar-item">
-        Carnets de campagne
+        Campain books
       </router-link>
 
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
-          Plus
+          More
         </a>
 
         <div class="navbar-dropdown">
           <router-link to="/about" class="navbar-item">
-            à propos
+            About
           </router-link>
 
           <a class="navbar-item">
@@ -39,7 +36,7 @@
           </a>
           <hr class="navbar-divider">
           <a class="navbar-item">
-            Signaler un problème
+            Report an issue
           </a>
         </div>
       </div>
@@ -48,18 +45,27 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary">
+
+          <router-link class="button is-primary" to="/signup">
             <strong>Sign up</strong>
-          </a>
-          <a class="button is-light">
+          </router-link>
+
+          <router-link class="button is-light" to="/login">
             Log in
-          </a>
+          </router-link>
+
+          <router-link class="button is-warning" to="">
+            Log out
+          </router-link>
         </div>
       </div>
     </div>
   </div>
 </nav>
+<div class="container">
   <router-view/>
+</div>
+
 </template>
 
 <script>
@@ -71,16 +77,39 @@ export default {
 
 // Add and adapt this in the lifecycle
   beforeCreate() {
+
+    // Vuex store init
     this.$store.commit("initializeStore");
     if (this.$store.state.token) {
       axios.defaults.header.common['Authorization'] = 'Token' + this.$store.state.token;
     } else {
       axios.defaults.headers.common['Authorization'] = '';
     }
+
+
+    // Bulma - navbar burger
+    document.addEventListener('DOMContentLoaded', () => {
+      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+      $navbarBurgers.forEach( el => {
+        el.addEventListener('click', () => {
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+          el.classList.toggle('is-active');
+          $target.classList.toggle('is-active');
+        });
+      });
+    });
+
   }
 }
 </script>
 <style lang="scss">
 @import '~bulma/css/bulma.css';
+
+html {
+  background-color: #f5f5f5;
+  padding: 5px;
+}
+
 
 </style>

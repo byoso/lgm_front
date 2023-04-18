@@ -5,7 +5,6 @@
         {"name": "Matt", "id": 3, "table_ids": [3]},
         {"name": "Mika", "id": 4, "table_ids": [1, 2, 3]},
         {"name": "Cedric","id":5, "table_ids": [1, 3] }
-
     ],
     "tables":[
         {"name": "Voironnais", "description": "Mes potes", "id": 1},
