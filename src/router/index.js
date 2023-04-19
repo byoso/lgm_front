@@ -33,12 +33,25 @@ const routes = [
     path: '/notebooks',
     name: 'notebooks',
     component: NotebooksView,
+    meta: { requireLogin: true }
+
+
   },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+
+// if a record requires login and user is not logged in:
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated) {
+    next({ name: 'login' })
+  } else {
+    next()
+  }
 })
 
 export default router

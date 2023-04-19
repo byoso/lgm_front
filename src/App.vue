@@ -13,10 +13,6 @@
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
 
-      <!-- <router-link to="/about" class="navbar-item">
-        Creation de personnage
-      </router-link> -->
-
       <router-link to="/notebooks" class="navbar-item">
         Campain books
       </router-link>
@@ -45,18 +41,21 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
+          <div v-if="!$store.state.isAuthenticated">
+            <router-link class="button is-primary" to="/signup">
+              <strong>Sign up</strong>
+            </router-link>
 
-          <router-link class="button is-primary" to="/signup">
-            <strong>Sign up</strong>
-          </router-link>
+            <router-link class="button is-light" to="/login">
+              Log in
+            </router-link>
+          </div>
+          <div v-else>
+            <router-link class="button is-warning" @click="logout" to="/">
+              Log out
+            </router-link>
+          </div>
 
-          <router-link class="button is-light" to="/login">
-            Log in
-          </router-link>
-
-          <router-link class="button is-warning" to="">
-            Log out
-          </router-link>
         </div>
       </div>
     </div>
@@ -71,9 +70,15 @@
 <script>
 
 import axios from 'axios';
+// import store from './store';
 
 export default {
   name: 'App',
+  methods: {
+    logout() {
+      this.$store.commit('removeToken');
+    }
+  },
 
 // Add and adapt this in the lifecycle
   beforeCreate() {
@@ -81,7 +86,7 @@ export default {
     // Vuex store init
     this.$store.commit("initializeStore");
     if (this.$store.state.token) {
-      axios.defaults.header.common['Authorization'] = 'Token' + this.$store.state.token;
+      axios.defaults.headers.common['Authorization'] = 'Token ' + this.$store.state.token;
     } else {
       axios.defaults.headers.common['Authorization'] = '';
     }
