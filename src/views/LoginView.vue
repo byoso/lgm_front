@@ -60,8 +60,8 @@ export default {
       })
       .then(response => {
         this.servers = response.data;
-        console.log("token :",response.data.token);
-        this.$store.commit('setToken', response.data.token);
+        console.log("token :",response.data.auth_token);
+        this.$store.commit('setToken', response.data.auth_token);
 
         toast({
           message: `Logged in`,
