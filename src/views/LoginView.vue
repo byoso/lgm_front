@@ -14,7 +14,7 @@
 <div v-if="errors">
   <ul>
     <li v-for="error in errors" :key="error" style="color: red;">
-      {{ error }}
+      {{ error[0] }}
     </li>
   </ul>
 </div>
@@ -73,7 +73,7 @@ export default {
         });
       })
       .catch(error => {
-      this.errors = ['Invalid credentials'];
+      this.errors = error.response.data;
       });
     },
   },
