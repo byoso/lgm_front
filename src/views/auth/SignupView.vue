@@ -24,11 +24,12 @@
     </div>
 
 
-    <div v-if="errors">
+
+    <div v-if="errors.length">
       <ul>
-        <div v-for="error in errors[0]" :key="error" style="color: red;">
-          <li v-for="msg in Object.values(error)" :key="msg"> {{ msg[0] }}</li>
-        </div>
+        <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
+          {{ error[0] }}
+        </li>
       </ul>
     </div>
 
@@ -69,11 +70,11 @@ export default {
     },
     checkEntries() {
       if (this.username === '' || this.email === '' || this.password === '' || this.password2 === '') {
-        this.errors.push([{"credentials": ["All fields must be filled"],}]);
+        this.errors.push({"credentials": ["All fields must be filled"],});
         return false;
       }
       if (this.password !== this.password2) {
-        this.errors.push([{"password": ["Passwords don't match"],}]);
+        this.errors.push({"password": ["Passwords don't match"],});
         return false;
       }
       return true;

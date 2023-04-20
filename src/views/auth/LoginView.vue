@@ -12,11 +12,11 @@
 <br>
 
 
-<div v-if="errors">
+<div v-if="errors.length">
   <ul>
-    <div v-for="error in errors[0]" :key="error" style="color: red;">
-      <li v-for="msg in Object.values(error)" :key="msg"> {{ msg[0] }}</li>
-    </div>
+    <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
+      {{ error[0] }}
+    </li>
   </ul>
 </div>
 
@@ -75,7 +75,7 @@ export default {
         });
       })
       .catch(error => {
-      this.errors = error.response.data;
+      this.errors.push(error.response.data);
       });
     },
   },
