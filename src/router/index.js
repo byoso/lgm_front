@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import NotebooksView from '../views/NotebooksView.vue'
-import SignupView from '../views/SignupView.vue'
-import LoginView from '../views/LoginView.vue'
+import SignupView from '../views/auth/SignupView.vue'
+import LoginView from '../views/auth/LoginView.vue'
 import store from '../store'
 
 const routes = [

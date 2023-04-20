@@ -1,23 +1,25 @@
 <template>
 
+<form class="form">
 <h1 class="title">Login</h1>
 
-<form>
 
-<p>Enter a credential</p>
-<input type="text" placeholder="Email or username" v-model="credential" required>
+<p class="label">Enter a credential</p>
+<input type="text" placeholder="Email or username" v-model="credential" required class="input">
 
-<p>Enter your password</p>
-<input type="password" placeholder="Password" v-model="password" required>
+<p class="label">Enter your password</p>
+<input type="password" placeholder="Password" v-model="password" required class="input">
 <br>
+
 
 <div v-if="errors">
   <ul>
-    <li v-for="error in errors" :key="error" style="color: red;">
-      {{ error[0] }}
-    </li>
+    <div v-for="error in errors[0]" :key="error" style="color: red;">
+      <li v-for="msg in Object.values(error)" :key="msg"> {{ msg[0] }}</li>
+    </div>
   </ul>
 </div>
+
 <button class="button is-success mt-2" @click="onSubmit">Login</button>
 <p class="m-2"><a href="" >I forgot my password</a></p>
 <p class="m-2"><a href="">I already have an account, but please send me the confirmation email again</a></p>
@@ -31,7 +33,7 @@
 
 import axios from 'axios';
 import { toast } from 'bulma-toast';
-import store from '../store';
+import store from '../../store';
 
 
 export default {
@@ -81,5 +83,9 @@ export default {
 </script>
 
 <style>
+.form {
+  width: 50%;
+  margin: auto;
+}
 
 </style>
