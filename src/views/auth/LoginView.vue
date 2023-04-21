@@ -21,8 +21,8 @@
 </div>
 
 <button class="button is-success mt-2" @click="onSubmit">Login</button>
-<p class="m-2"><a href="" >I forgot my password</a></p>
-<p class="m-2"><a href="">I already have an account, but please send me the confirmation email again</a></p>
+<p class="m-2"><router-link to="/forgotten_password" >I forgot my password</router-link></p>
+<p class="m-2"><router-link to="/send_confirmation_email_again">I already have an account, but please send me the confirmation email again</router-link></p>
 
 </form>
 
@@ -47,9 +47,6 @@ export default {
       errors: [],
     }
   },
-  beforeMount() {
-    console.log("is authenticated: ", this.$store.state.isAuthenticated)
-  },
   methods: {
     onSubmit() {
       if (this.credential === '' || this.password === '') {
@@ -61,8 +58,6 @@ export default {
         password: this.password,
       })
       .then(response => {
-        this.servers = response.data;
-        console.log("token :",response.data.auth_token);
         this.$store.commit('setToken', response.data.auth_token);
 
         toast({
@@ -73,6 +68,7 @@ export default {
           pauseOnHover: true,
           duration: 3000,
         });
+        this.$router.push({ name: 'home' })
       })
       .catch(error => {
       this.errors.push(error.response.data);

@@ -1,8 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import NotebooksView from '../views/NotebooksView.vue'
+import NotebooksView from '../views/campains/NotebooksView.vue'
 import SignupView from '../views/auth/SignupView.vue'
 import LoginView from '../views/auth/LoginView.vue'
+import SendConfirmationEmailAgainView from '../views/auth/SendConfirmationEmailAgainView.vue'
+import ForgottenPasswordView from '../views/auth/ForgottenPasswordView.vue'
+import LoginFromEmailView from '../views/auth/LoginFromEmailView.vue'
+import AccountView from '../views/auth/AccountView.vue'
 import store from '../store'
 
 const routes = [
@@ -28,6 +32,27 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView,
+  },
+  {
+    path: '/send_confirmation_email_again',
+    name: 'send_confirmation_email_again',
+    component: SendConfirmationEmailAgainView,
+  },
+  {
+    path: '/forgotten_password',
+    name: 'forgotten_password',
+    component: ForgottenPasswordView,
+  },
+  {
+    path: '/login_from_email/:token',
+    name: 'login_from_email',
+    component: LoginFromEmailView,
+  },
+  {
+    path: '/account',
+    name: 'account',
+    component: AccountView,
+    meta: { requireLogin: true }
   },
   {
     path: '/notebooks',

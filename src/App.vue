@@ -13,33 +13,41 @@
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
 
-      <router-link to="/notebooks" class="navbar-item">
+
+      <router-link v-if="$store.state.isAuthenticated" to="/notebooks" class="navbar-item">
         Campain books
       </router-link>
 
-      <div class="navbar-item has-dropdown is-hoverable">
+
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+
+      <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
         <a class="navbar-link">
-          More
+          Account
         </a>
 
         <div class="navbar-dropdown">
+          <router-link to="/account" class="navbar-item">
+            account informations
+          </router-link>
+
           <router-link to="/about" class="navbar-item">
             About
           </router-link>
 
-          <a class="navbar-item">
-            Contact
-          </a>
           <hr class="navbar-divider">
           <a class="navbar-item">
             Report an issue
           </a>
         </div>
       </div>
-    </div>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
+
+
+
         <div class="buttons">
           <div v-if="!$store.state.isAuthenticated">
             <router-link class="button is-primary" to="/signup">
