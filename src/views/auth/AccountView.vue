@@ -17,9 +17,9 @@
       </p>
 
       <p class="is-flex is-justify-content-space-around">
-        <a>change my username</a>
-        <a>change my email</a>
-        <a>change my password</a>
+        <router-link to="/change_username">change my username</router-link>
+        <router-link to="/change_email">change my email</router-link>
+        <router-link to="/change_password">change my password</router-link>
       </p>
 
 

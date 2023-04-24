@@ -7,6 +7,9 @@ import SendConfirmationEmailAgainView from '../views/auth/SendConfirmationEmailA
 import ForgottenPasswordView from '../views/auth/ForgottenPasswordView.vue'
 import LoginFromEmailView from '../views/auth/LoginFromEmailView.vue'
 import AccountView from '../views/auth/AccountView.vue'
+import ChangeUsernameView from '../views/auth/ChangeUsernameView.vue'
+import ChangePasswordView from '../views/auth/ChangePasswordView.vue'
+import ChangeEmailView from '../views/auth/ChangeEmailView.vue'
 import store from '../store'
 
 const routes = [
@@ -59,8 +62,24 @@ const routes = [
     name: 'notebooks',
     component: NotebooksView,
     meta: { requireLogin: true }
-
-
+  },
+  {
+    path: '/change_username',
+    name: 'change_username',
+    component: ChangeUsernameView,
+    meta: { requireLogin: true }
+  },
+  {
+    path: '/change_password',
+    name: 'change_password',
+    component: ChangePasswordView,
+    meta: { requireLogin: true }
+  },
+  {
+    path: '/change_email',
+    name: 'change_email',
+    component: ChangeEmailView,
+    meta: { requireLogin: true }
   },
 ]
 
