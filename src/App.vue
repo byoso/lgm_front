@@ -1,7 +1,7 @@
 <template>
 <nav class="navbar is-fixed-top pl-2 pr-2" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <router-link to="/" class="navbar-item" style="font-weight: bold;">Le Grand Monde</router-link>
+    <router-link to="/" class="navbar-item" style="font-weight: bold;">RPGAdventure.eu</router-link>
 
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
       <span aria-hidden="true"></span>
@@ -19,6 +19,10 @@
       </router-link>
 
 
+      <a v-else class="navbar-item">
+        Come as guest
+      </a>
+
     </div>
 
     <div class="navbar-end">
@@ -26,7 +30,7 @@
 
       <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
         <a class="navbar-link">
-          Account
+          <fa icon="user"/>
         </a>
 
         <div class="navbar-dropdown">
@@ -34,12 +38,12 @@
             account informations
           </router-link>
 
+          <hr class="navbar-divider">
           <router-link to="/about" class="navbar-item">
             About
           </router-link>
 
-          <hr class="navbar-divider">
-          <a class="navbar-item">
+          <a class="navbar-item" href="https://github.com/byoso/lgm_front/issues" target="_blank">
             Report an issue
           </a>
         </div>

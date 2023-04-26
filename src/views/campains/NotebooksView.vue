@@ -3,6 +3,8 @@
 
 <h2>User: {{ user.name }}</h2>
 <br>
+  <router-link to="/create_table" class="button is-success m-2">+ new table</router-link>
+  <br>
   My tables:
   <ul>
     <li v-for="table in tables" :key="table.id">

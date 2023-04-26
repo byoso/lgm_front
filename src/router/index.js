@@ -1,6 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+// main app
 import HomeView from '../views/HomeView.vue'
 import NotebooksView from '../views/campains/NotebooksView.vue'
+import CreateTableView from '../views/campains/new_object/CreateTableView.vue'
+// auth
 import SignupView from '../views/auth/SignupView.vue'
 import LoginView from '../views/auth/LoginView.vue'
 import SendConfirmationEmailAgainView from '../views/auth/SendConfirmationEmailAgainView.vue'
@@ -10,6 +13,7 @@ import AccountView from '../views/auth/AccountView.vue'
 import ChangeUsernameView from '../views/auth/ChangeUsernameView.vue'
 import ChangePasswordView from '../views/auth/ChangePasswordView.vue'
 import ChangeEmailView from '../views/auth/ChangeEmailView.vue'
+// store
 import store from '../store'
 
 const routes = [
@@ -79,6 +83,12 @@ const routes = [
     path: '/change_email',
     name: 'change_email',
     component: ChangeEmailView,
+    meta: { requireLogin: true }
+  },
+  {
+    path: '/create_table',
+    name: 'create_table',
+    component: CreateTableView,
     meta: { requireLogin: true }
   },
 ]
