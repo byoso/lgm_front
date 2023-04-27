@@ -1,4 +1,5 @@
 <template>
+<div>
   <h1 class="title">Campain books</h1>
 
 <h2>User: {{ user.name }}</h2>
@@ -21,6 +22,8 @@
 
 
 
+</div>
+
 </template>
 
 <script>
@@ -38,7 +41,8 @@ export default {
 
     };
   },
-
+  beforeMount() {
+  },
 }
 </script>
 

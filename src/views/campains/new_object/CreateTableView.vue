@@ -33,6 +33,14 @@
 
   </div>
 
+  <div v-if="errors.length">
+    <ul>
+      <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
+        {{ error[0] }}
+      </li>
+    </ul>
+  </div>
+
   <br>
   <button class="button is-success mt-2" @click="onSubmit">Confirm</button>
 
@@ -41,6 +49,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 
 export default {
   name: "CreateTableView",
@@ -52,6 +62,7 @@ export default {
       description: "",
       guests: [],
       base_key: 0,
+      errors: [],
 
     }
   },
@@ -71,7 +82,31 @@ export default {
       return this.base_key;
     },
     onSubmit() {
-      console.log(this.guests);
+      if (this.name != "") {
+      this.errors = [];
+      axios({
+        method: "POST",
+        url: "campains/tables/create/",
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`
+        },
+        data: {
+          name: this.name,
+          description: this.description,
+          guests: this.guests,
+        }
+      })
+      .then(response => {
+        console.log(response.data);
+        this.$router.push({ name: "notebooks" });
+      })
+      .catch(error => {
+        if (error.response) {
+          this.errors.push(error.response.data);
+        }
+      })
+
+      }
     },
   }
 
