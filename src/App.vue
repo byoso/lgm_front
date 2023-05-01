@@ -14,8 +14,8 @@
     <div class="navbar-start">
 
 
-      <router-link v-if="$store.state.isAuthenticated" to="/notebooks" class="navbar-item">
-        Campain books
+      <router-link v-if="$store.state.isAuthenticated" to="/dashboard" class="navbar-item">
+        Dashboard
       </router-link>
 
 
@@ -29,6 +29,9 @@
       <div class="navbar-item">
 
       <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
+
+        <span>{{ $store.username }} </span>
+
         <a class="navbar-link">
           <fa icon="user"/>
         </a>
@@ -103,7 +106,6 @@ export default {
       axios.defaults.headers.common['Authorization'] = '';
     }
 
-
     // Bulma - navbar burger
     document.addEventListener('DOMContentLoaded', () => {
       const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
@@ -117,7 +119,7 @@ export default {
       });
     });
 
-  }
+  },
 }
 </script>
 <style lang="scss">

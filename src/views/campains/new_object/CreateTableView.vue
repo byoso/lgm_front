@@ -13,6 +13,10 @@
   </textarea>
 
 <hr>
+
+  <label>Password for the guests</label>
+  <input type="text" class="input" placeholder="Password for the guests" v-model="table_password">
+
   <h2 class="subtitle">The Guests</h2>
   <p class="mb-2">You can add guests later if you prefer.</p>
 
@@ -22,12 +26,11 @@
   <span v-if="guests.length" class="button is-danger is-small m-2" @click="removeOneGuest">Remove one guest</span>
 
 
-
   <div v-for="(guest, index) in guests" :key="index" class="field">
     <label class="label">Guest {{ index+1 }}</label>
       <div class="control">
 
-          <input type="email" class="input" v-model="guests[index].email" placeholder="Enter the guest's email">
+          <input type="email" class="input guest_email" v-model="guests[index].email" placeholder="Enter the guest's email">
 
       </div>
 
@@ -63,6 +66,7 @@ export default {
       guests: [],
       base_key: 0,
       errors: [],
+      table_password: "",
 
     }
   },
@@ -81,30 +85,41 @@ export default {
       this.base_key += 1;
       return this.base_key;
     },
+    getGuestsList() {
+      let guestsInList = [];
+      for (var i=0; i<this.guests.length; i++) {
+        guestsInList.push(this.guests[i].email);
+      }
+      return guestsInList;
+    },
     onSubmit() {
       if (this.name != "") {
-      this.errors = [];
-      axios({
-        method: "POST",
-        url: "campains/tables/create/",
-        headers: {
-          Authorization: `Token ${this.$store.state.token}`
-        },
-        data: {
-          name: this.name,
-          description: this.description,
-          guests: this.guests,
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        this.$router.push({ name: "notebooks" });
-      })
-      .catch(error => {
-        if (error.response) {
-          this.errors.push(error.response.data);
-        }
-      })
+        let guestsList = this.getGuestsList();
+        console.log("guests in list: ", guestsList)
+        console.log("guests :", this.guests[0])
+        this.errors = [];
+        axios({
+          method: "POST",
+          url: "campains/tables/create/",
+          headers: {
+            Authorization: `Token ${this.$store.state.token}`
+          },
+          data: {
+            name: this.name,
+            description: this.description,
+            guests: guestsList,
+            table_password: this.table_password,
+          }
+        })
+        .then(response => {
+          console.log(response.data);
+          this.$router.push({ name: "dashboard" });
+        })
+        .catch(error => {
+          if (error.response) {
+            this.errors.push(error.response.data);
+          }
+        })
 
       }
     },

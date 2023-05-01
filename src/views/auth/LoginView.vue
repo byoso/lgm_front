@@ -59,6 +59,7 @@ export default {
       })
       .then(response => {
         this.$store.commit('setToken', response.data.auth_token);
+        this.$store.username = response.data.username;
 
         toast({
           message: `Logged in`,
@@ -68,7 +69,7 @@ export default {
           pauseOnHover: true,
           duration: 3000,
         });
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'dashboard' })
       })
       .catch(error => {
       this.errors.push(error.response.data);

@@ -5,6 +5,7 @@ export default createStore({
     isloading: false,
     isAuthenticated: false,
     token: null,
+    username: null,
   },
   getters: {
   },

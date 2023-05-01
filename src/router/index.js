@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 // main app
 import HomeView from '../views/HomeView.vue'
-import NotebooksView from '../views/campains/NotebooksView.vue'
+import DashBoardView from '../views/campains/DashBoardView.vue'
 import CreateTableView from '../views/campains/new_object/CreateTableView.vue'
 // auth
 import SignupView from '../views/auth/SignupView.vue'
@@ -62,9 +62,9 @@ const routes = [
     meta: { requireLogin: true }
   },
   {
-    path: '/notebooks',
-    name: 'notebooks',
-    component: NotebooksView,
+    path: '/dashboard',
+    name: 'dashboard',
+    component: DashBoardView,
     meta: { requireLogin: true }
   },
   {
