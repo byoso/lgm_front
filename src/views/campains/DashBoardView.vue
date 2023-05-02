@@ -22,7 +22,7 @@
         <td>
           <ul>
             <li v-for="guest in table.guests" :key="guest.id">
-              - {{ guest.email }}
+              - {{ guest.email }} - {{ guest.username }}
             </li>
           </ul>
         </td>

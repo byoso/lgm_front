@@ -93,13 +93,14 @@ export default {
       })
       .then(response => {
         toast({
-          message: `Account created`,
+          message: `Account created, please check your email to confirm your account`,
           type: 'is-success',
           position: 'bottom-right',
           dismissible: true,
           pauseOnHover: true,
-          duration: 3000,
+          duration: 10000,
         })
+        this.$router.push({ name: 'home' })
       })
       .catch(error => {
         console.log(error.response.data)
