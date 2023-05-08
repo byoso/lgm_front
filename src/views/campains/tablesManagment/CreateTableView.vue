@@ -23,17 +23,17 @@
 
   <span class="button is-success is-small m-2" @click="addOneGuest">Add more guests</span>
 
-  <span v-if="guests.length" class="button is-danger is-small m-2" @click="removeOneGuest">Remove one guest</span>
+  <span v-if="guests.length" class="button is-danger is-small m-2" @click="removeOneGuest">Remove the last guest</span>
 
 
-  <div v-for="(guest, index) in guests" :key="index" class="field">
-    <label class="label">Guest {{ index+1 }}</label>
-      <div class="control">
+  <div v-for="(guest, index) in guests" :key="index" :id="index" class="field">
+      <label class="label">Guest {{ index+1 }}</label>
+      <div class="control field is-grouped">
 
           <input type="email" class="input guest_email" v-model="guests[index].email" placeholder="Enter the guest's email">
+          <span class="button is-danger is-right ml-2" @click="removeGuest(index)">X</span>
 
-      </div>
-
+    </div>
   </div>
 
   <div v-if="errors.length">
@@ -81,6 +81,9 @@ export default {
       this.guests.pop();
       this.base_key -= 1;
     },
+    removeGuest(id) {
+      this.guests.splice(id, 1);
+    },
     getKey() {
       this.base_key += 1;
       return this.base_key;
@@ -88,7 +91,9 @@ export default {
     getGuestsList() {
       let guestsInList = [];
       for (var i=0; i<this.guests.length; i++) {
-        guestsInList.push(this.guests[i].email);
+        if (this.guests[i].email != "") {
+          guestsInList.push(this.guests[i].email);
+        }
       }
       return guestsInList;
     },
@@ -100,7 +105,7 @@ export default {
         this.errors = [];
         axios({
           method: "POST",
-          url: "campains/tables/create/",
+          url: "campains/tables/",
           headers: {
             Authorization: `Token ${this.$store.state.token}`
           },

@@ -2,7 +2,8 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 // main app
 import HomeView from '../views/HomeView.vue'
 import DashBoardView from '../views/campains/DashBoardView.vue'
-import CreateTableView from '../views/campains/new_object/CreateTableView.vue'
+import CreateTableView from '../views/campains/tablesManagment/CreateTableView.vue'
+import EditTableView from '../views/campains/tablesManagment/EditTableView.vue'
 // auth
 import SignupView from '../views/auth/SignupView.vue'
 import LoginView from '../views/auth/LoginView.vue'
@@ -89,6 +90,12 @@ const routes = [
     path: '/create_table',
     name: 'create_table',
     component: CreateTableView,
+    meta: { requireLogin: true }
+  },
+  {
+    path: '/edit_table/:id',
+    name: 'edit_table',
+    component: EditTableView,
     meta: { requireLogin: true }
   },
 ]

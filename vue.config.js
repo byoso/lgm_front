@@ -5,6 +5,6 @@ module.exports = defineConfig({
   publicPath: '',
   // Uncomment the following code to enable proxying to API server
   // devServer: {
-  //   proxy: 'http://localhost:3000/notebooks' // placeholder
+  //   proxy: 'http://localhost:8080/' // placeholder
   // }
 })
