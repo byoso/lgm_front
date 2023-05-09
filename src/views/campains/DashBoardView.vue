@@ -6,39 +6,65 @@
 <br>
   <router-link to="/create_table" class="button is-success m-2">+ new table</router-link>
   <br>
-  My tables as owner:
-  <table class="table is-bordered is-fullwidth">
-    <thead>
-      <tr>
-        <th>name</th>
-        <th>guests</th>
-        <th>Guests's password</th>
-        <th>Edit</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="table in tables_as_owner" :key="table.id">
-        <td class="clickable" @click="selectTable(table.id)"><a>{{ table.name }}</a></td>
-        <td>
-          <ul>
-            <li v-for="guest in table.guests" :key="guest.id">
-              - {{ guest.email }} - {{ guest.username }}
-            </li>
-          </ul>
-        </td>
-        <td>{{ table.table_password }}</td>
-        <td><span class="button is-warning is-small" @click="editTable(table.id)">Edit</span></td>
-      </tr>
-    </tbody>
-  </table>
-<br>
+  <div v-if="tables_as_owner.length">
+    <h2 class="subtitle">My tables as owner:</h2>
+    <table class="table is-bordered is-fullwidth">
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>guests</th>
+          <th>Guests's password</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="table in tables_as_owner" :key="table.id">
+          <td><router-link @click="storeTable(table)" :to="{name: 'table', params: {id: table.id} }">{{ table.name }}</router-link></td>
+          <td>
+            <ul>
+              <li v-for="guest in table.guests" :key="guest.id">
+                {{ guest.email }} - {{ guest.username }}
+              </li>
+            </ul>
+          </td>
+          <td>{{ table.table_password }}</td>
+          <td><span class="button is-warning is-small" @click="editTable(table.id)">Edit</span></td>
+        </tr>
+      </tbody>
+    </table>
 
-  My tables as guest:
-  <ul>
-    <li v-for="table in tables_as_guest" :key="table.id">
-      - {{ table.name }}
-    </li>
-  </ul>
+  </div>
+<br>
+  <div v-if="tables_as_guest.length">
+    <h2 class="subtitle">My tables as guest:</h2>
+    <table class="table is-bordered is-fullwidth">
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>guests</th>
+          <th>owners</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="table in tables_as_guest" :key="table.id">
+          <td><router-link :to="{name: 'table', params: {id: table.id} }" @click="storeTable(table)">{{ table.name }}</router-link></td>
+          <td>
+            <ul>
+              <li v-for="guest in table.guests" :key="guest.id">
+                {{ guest.email }} - {{ guest.username }}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <li v-for="owner in table.owners" :key="owner.id">{{ owner.username }}</li>
+            </ul>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 
 
@@ -73,13 +99,15 @@ export default {
       }
     ).then(response => {
       this.tables_as_owner = response.data['tables_as_owner'];
+      this.tables_as_guest = response.data['tables_as_guest'];
     }).catch(error => {
       console.log(error);
     });
+
   },
   methods: {
-    selectTable(id) {
-      console.log('selectTable', id);
+    storeTable(table) {
+      this.$store.state.current_table = table;
     },
     editTable(id) {
       console.log("ediTable", id)

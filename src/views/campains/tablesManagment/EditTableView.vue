@@ -1,7 +1,7 @@
 <template>
 
 <form class="form">
-  <h1 class="title">Edit table</h1>
+  <h1 class="title">Edit table '{{ name }}'</h1>
 
   <h2 class="subtitle">The table</h2>
 

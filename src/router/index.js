@@ -4,6 +4,8 @@ import HomeView from '../views/HomeView.vue'
 import DashBoardView from '../views/campains/DashBoardView.vue'
 import CreateTableView from '../views/campains/tablesManagment/CreateTableView.vue'
 import EditTableView from '../views/campains/tablesManagment/EditTableView.vue'
+import TableView from '../views/campains/tablesManagment/TableView.vue'
+
 // auth
 import SignupView from '../views/auth/SignupView.vue'
 import LoginView from '../views/auth/LoginView.vue'
@@ -96,6 +98,12 @@ const routes = [
     path: '/edit_table/:id',
     name: 'edit_table',
     component: EditTableView,
+    meta: { requireLogin: true }
+  },
+  {
+    path: '/table/:id',
+    name: 'table',
+    component: TableView,
     meta: { requireLogin: true }
   },
 ]

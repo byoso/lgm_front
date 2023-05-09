@@ -6,6 +6,7 @@ export default createStore({
     isAuthenticated: false,
     token: null,
     username: null,
+    current_table: {name: "current_table", id: "no_id"}
   },
   getters: {
   },
