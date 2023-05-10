@@ -30,7 +30,7 @@
 
       <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
 
-        <span>{{ $store.username }} </span>
+        <span>{{ $store.user.username }} </span>
 
         <a class="navbar-link">
           <fa icon="user"/>

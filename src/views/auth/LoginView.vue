@@ -59,7 +59,7 @@ export default {
       })
       .then(response => {
         this.$store.commit('setToken', response.data.auth_token);
-        this.$store.username = response.data.username;
+        this.$store.user = response.data.user;
 
         toast({
           message: `Logged in`,

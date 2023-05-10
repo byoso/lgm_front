@@ -5,7 +5,8 @@ export default createStore({
     isloading: false,
     isAuthenticated: false,
     token: null,
-    username: null,
+    user: null,
+    // placeholder, the real current_table is set in TableView.vue
     current_table: {name: "current_table", id: "no_id"}
   },
   getters: {
