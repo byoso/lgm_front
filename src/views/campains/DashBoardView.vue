@@ -1,6 +1,6 @@
 <template>
 <div>
-  <h1 class="title">Dashboard - {{ user }}</h1>
+  <h1 class="title">Dashboard - {{ user.username }}</h1>
 
 
 <br>
@@ -88,7 +88,7 @@ export default {
     };
   },
   beforeMount() {
-    this.user =  this.$store.username;
+    this.user =  this.$store.user;
     axios(
       {
         method: 'get',
