@@ -54,7 +54,6 @@ export default {
   },
   beforeMount() {
     this.table = this.$store.state.current_table;
-    console.log(this.table)
     if (this.table.owners.some(e => e.id === this.$store.user.id) & this.$store.user.is_subscriber) {
       this.is_owner = true;
     }
@@ -64,7 +63,6 @@ export default {
       this.$router.push({name: 'NewCampainView'});
     },
     switchGuestOwner(id) {
-      console.log(id)
       axios(
         {
           method: 'POST',
@@ -78,7 +76,6 @@ export default {
           }
         }
       ).then(response => {
-        console.log(response.data)
         this.table = response.data.table;
         this.$store.current_table = response.data.table;
         if (this.table.owners.some(e => e.id === this.$store.user.id) & this.$store.user.is_subscriber) {

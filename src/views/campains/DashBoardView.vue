@@ -110,7 +110,6 @@ export default {
       this.$store.state.current_table = table;
     },
     editTable(id) {
-      console.log("ediTable", id)
       this.$router.push({ name: 'edit_table', params: { id: id } });
     }
   }

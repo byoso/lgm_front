@@ -7,7 +7,7 @@
     <label class="label">Game</label>
     <div class="select">
       <select v-model="selectedGame">
-        <option v-for="game in games" :key="game" :value="game">{{ game }}</option>
+        <option v-for="game in games" :key="game.id" :value="game.id">{{ game.name }}</option>
       </select>
     </div>
     <div class="mt-2">
@@ -33,7 +33,7 @@
             <input type="text" placeholder="Character name" class="input">
           </td>
           <td>
-            <input type="radio" name="master" :value="player.username" v-model="master" class="radio">
+            <input type="radio" name="master" :value="player.id" v-model="master" class="radio">
           </td>
         </tr>
       </tbody>
@@ -62,7 +62,7 @@ export default {
     return {
       table: {},
       players: [],
-      games: ["Misc", "SW", "DnD"],
+      games: [],
       selectedGame: null,
       master: null,
       campainTitle: "New Campain",
@@ -80,6 +80,7 @@ export default {
     })
     .then(response => {
       this.games = response.data
+      console.log("games: ", this.games)
     })
     .catch(error => {
       console.log(error)
