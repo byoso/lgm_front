@@ -4,7 +4,7 @@
 
     <a class="button is-success" v-if="is_owner" @click="newCampain">+ new campain</a>
 
-    <table class="table is-fullwidth m-2 is-bordered">
+    <table class="table is-striped is-fullwidth m-2 is-bordered is-narrow">
       <caption class="subtitle">Members</caption>
       <thead>
         <tr>
@@ -16,7 +16,7 @@
         <tr>
           <td>
             <ul>
-              <li v-for="owner in table.owners" :key="owner.id">
+              <li v-for="owner in table.owners" :key="owner.id"  class="mt-2">
                 {{ owner.username }}
                 <fa v-if="is_owner & table.owners.length > 1" icon="arrow-right" class="arrow is-pulled-right ml-2"
                 @click="switchGuestOwner(owner.id)"/>
@@ -25,7 +25,7 @@
           </td>
           <td>
             <ul>
-              <li v-for="guest in table.guests" :key="guest.id">
+              <li v-for="guest in table.guests" :key="guest.id"  class="mt-2">
                 <fa v-if="is_owner" icon="arrow-left" class="arrow is-pulled-left mr-2"
                 @click="switchGuestOwner(guest.id)"/>
                 {{ guest.email }} - {{ guest.username }}
@@ -92,7 +92,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .arrow {
   color: darkseagreen;
@@ -102,4 +102,16 @@ export default {
   color: lightseagreen;
   cursor: pointer;
 }
+
+table, td, th {
+  border: 1px solid #DDD;
+  text-align:center;
+  width:50%;
+  padding:5px;
+}
+th
+{
+  width:50%;
+}
+
 </style>

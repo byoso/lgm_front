@@ -30,7 +30,7 @@
             {{ player.username }}
           </td>
           <td>
-            <input type="text" placeholder="Character name" class="input">
+            <input type="text" placeholder="Character name" class="input" v-model="pcs[player.id].name">
           </td>
           <td>
             <input type="radio" name="master" :value="player.id" v-model="master" class="radio">
@@ -55,13 +55,13 @@
 <script>
 import axios from "axios"
 
-
 export default {
   name: "NewCampainView",
   data() {
     return {
       table: {},
       players: [],
+      pcs: {},
       games: [],
       selectedGame: null,
       master: null,
@@ -71,6 +71,9 @@ export default {
   beforeMount() {
     this.table = this.$store.state.current_table
     this.players = this.table.owners.concat(this.table.guests)
+    for (var i=0; this.players.length > i; i++) {
+      this.pcs[this.players[i].id] = {id: this.players[i].id, name: ""}
+    }
     axios({
       method: "get",
       url: "/campains/get_games_list/",
@@ -91,6 +94,22 @@ export default {
   methods: {
     onSubmit() {
       console.log("submit")
+
+      axios({
+        method: 'post',
+        url: '/campains/campains/',
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+        data: {
+          table_id: this.table.id,
+          game_id: this.selectedGame,
+          master: this.master,
+          title: this.campainTitle,
+          pcs: this.pcs,
+        }
+      })
+
     }
   }
 
