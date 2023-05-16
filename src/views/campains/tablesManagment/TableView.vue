@@ -1,11 +1,14 @@
 <template>
   <div>
     <h1 class="title">Table '{{ table.name }}'</h1>
+    <div v-if="is_owner">
+      <a class="button is-small is-warning m-2" @click="editTable(table.id)">Edit {{ table.name }}</a>
+      <a class="button is-small is-success m-2" @click="newCampain">+ new campain</a>
+    </div>
+    <hr>
 
-    <a class="button is-success" v-if="is_owner" @click="newCampain">+ new campain</a>
-
+    <h2 class="subtitle">Members</h2>
     <table class="table is-striped is-fullwidth m-2 is-bordered is-narrow">
-      <caption class="subtitle">Members</caption>
       <thead>
         <tr>
           <th>owners</th>
@@ -36,19 +39,39 @@
       </tbody>
     </table>
 
+    <div v-if="campains.length">
+      <h2 class="subtitle">Campains</h2>
+      <div class="container-campain">
+        <div v-for="campain in campains" class="box m-2 is-half campain" :key="campain.id">
+          <h2 class="subtitle">{{ campain.title }}</h2>
+          <figure class="image is-128x128 is-pulled-right">
+            <img src="https://bulma.io/images/placeholders/128x128.png">
+          </figure>
+          <ul>
+            <li>game: {{ campain.game.name }}</li>
+            <li>game master: {{ campain.game_master.character_name }}</li>
+            <li>description: {{ campain.description }}</li>
+            <li>is ended ? : {{ campain.is_ended }}</li>
+            <li>{{ campain.pcs }}</li>
+          </ul>
+
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 
-
-
 export default {
   name: "TableView",
   data() {
     return {
       table: {name: "no name"},
+      campains: [],
       is_owner: false,
     }
   },
@@ -57,8 +80,28 @@ export default {
     if (this.table.owners.some(e => e.id === this.$store.user.id) & this.$store.user.is_subscriber) {
       this.is_owner = true;
     }
+    axios({
+      method: 'get',
+      url: 'campains/get_campains_for_table/',
+      params: {
+        table_id: this.table.id,
+      },
+      headers: {
+        'Authorization': `Token ${this.$store.state.token}`
+      }
+    })
+    .then(response => {
+      this.campains = response.data;
+      console.log(response.data)
+    })
+    .catch(error => {
+      console.log(error)
+    })
   },
   methods: {
+    editTable(id) {
+      this.$router.push({ name: 'edit_table', params: { id: id } });
+    },
     newCampain() {
       this.$router.push({name: 'NewCampainView'});
     },
@@ -112,6 +155,28 @@ table, td, th {
 th
 {
   width:50%;
+}
+
+.container-campain {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.campain {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border: 1px solid #DDD;
+  border-radius: 10px;
+  text-align:left;
+  width:40%;
+}
+.campain:hover {
+  border: 1px solid lightseagreen;
+  cursor: pointer;
+  transform: scale(1.05);
+  transition: all 0.1s ease-in-out;
 }
 
 </style>
