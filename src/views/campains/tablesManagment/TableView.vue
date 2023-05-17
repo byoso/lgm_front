@@ -52,7 +52,10 @@
             <li>game master: {{ campain.game_master.character_name }}</li>
             <li>description: {{ campain.description }}</li>
             <li>is ended ? : {{ campain.is_ended }}</li>
-            <li>{{ campain.pcs }}</li>
+            <ul>
+              <li v-for="pc in campain.campain_pcs">- {{pc.user.username}} as {{ pc.character_name }}</li>
+            </ul>
+
           </ul>
 
         </div>
@@ -92,7 +95,7 @@ export default {
     })
     .then(response => {
       this.campains = response.data;
-      console.log(response.data)
+      console.log(this.campains)
     })
     .catch(error => {
       console.log(error)

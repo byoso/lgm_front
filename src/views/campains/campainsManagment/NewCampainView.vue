@@ -18,7 +18,7 @@
       </select>
     </div>
     <div class="mt-2">
-      <label class="label">Campain Name</label>
+      <label class="label">Campain title</label>
       <input type="text" placeholder="Campain name" class="input" v-model="campainTitle">
       <label class="label">Description</label>
       <textarea class="textarea" placeholder="Campain description" v-model="camapainDescription"></textarea>
@@ -132,6 +132,10 @@ export default {
       .then(response => {
         console.log(response.data)
         this.$router.push({name: "table", params: {id: this.$store.state.current_table.id}})
+      })
+      .catch(error => {
+        console.log(error)
+        this.errors = error.response.data
       })
 
     }
