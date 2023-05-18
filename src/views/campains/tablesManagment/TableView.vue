@@ -42,7 +42,8 @@
     <div v-if="campains.length">
       <h2 class="subtitle">Campains</h2>
       <div class="container-campain">
-        <div v-for="campain in campains" class="box m-2 is-half campain" :key="campain.id">
+        <div v-for="campain in campains" class="box m-2 is-half campain"
+         :key="campain.id" @click="gotoCampain(campain.id)">
           <h2 class="subtitle">{{ campain.title }}</h2>
           <figure class="image is-128x128 is-pulled-right">
             <img src="https://bulma.io/images/placeholders/128x128.png">
@@ -102,6 +103,10 @@ export default {
     })
   },
   methods: {
+    gotoCampain(id) {
+      this.$store.current_campain = this.campains.find(campain => campain.id === id);
+      this.$router.push({ name: 'CampainView', params: { id: id } });
+    },
     editTable(id) {
       this.$router.push({ name: 'edit_table', params: { id: id } });
     },

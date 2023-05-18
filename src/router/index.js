@@ -6,6 +6,7 @@ import CreateTableView from '../views/campains/tablesManagment/CreateTableView.v
 import EditTableView from '../views/campains/tablesManagment/EditTableView.vue'
 import TableView from '../views/campains/tablesManagment/TableView.vue'
 import NewCampainView from '../views/campains/campainsManagment/NewCampainView.vue'
+import CampainView from '../views/campains/campainsManagment/CampainView.vue'
 
 // auth
 import SignupView from '../views/auth/SignupView.vue'
@@ -111,6 +112,12 @@ const routes = [
     path: '/campain/',
     name: 'NewCampainView',
     component: NewCampainView,
+    meta: { requireLogin: true }
+  },
+  {
+    path: '/campain/:id',
+    name: 'CampainView',
+    component: CampainView,
     meta: { requireLogin: true }
   },
 ]

@@ -101,6 +101,7 @@ export default {
   methods: {
     onSubmit() {
       this.errors = []
+
       if (this.master === null) {
         this.errors.push("You must select a master")
       }
@@ -134,8 +135,14 @@ export default {
         this.$router.push({name: "table", params: {id: this.$store.state.current_table.id}})
       })
       .catch(error => {
-        console.log(error)
-        this.errors = error.response.data
+        console.log(error.response.data.errors)
+        if (typeof(error) == Array) {
+          this.errors = error.response.data.errors
+        } else {
+          // the expected way
+          this.errors.push(
+            error.response.data.errors[0])
+        }
       })
 
     }
