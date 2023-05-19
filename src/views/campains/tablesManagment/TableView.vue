@@ -45,8 +45,11 @@
         <div v-for="campain in campains" class="box m-2 is-half campain"
          :key="campain.id" @click="gotoCampain(campain.id)">
           <h2 class="subtitle">{{ campain.title }}</h2>
+
+
           <figure class="image is-128x128 is-pulled-right">
-            <img src="https://bulma.io/images/placeholders/128x128.png">
+            <img v-if="campain.game.image_url" :src="campain.game.image_url">
+            <img v-else src="https://bulma.io/images/placeholders/128x128.png">
           </figure>
           <ul>
             <li>game: {{ campain.game.name }}</li>
@@ -170,6 +173,7 @@ th
   flex-direction: row;
   justify-content: space-around;
   flex-wrap: wrap;
+  min-height: 600px;
 }
 
 .campain {
@@ -187,4 +191,8 @@ th
   transition: all 0.1s ease-in-out;
 }
 
+.image {
+  height: 128px;
+  width: 96px;
+}
 </style>
