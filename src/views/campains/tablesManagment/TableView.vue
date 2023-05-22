@@ -39,32 +39,8 @@
       </tbody>
     </table>
 
-    <div v-if="campains.length">
-      <h2 class="subtitle">Campains</h2>
-      <div class="container-campain">
-        <div v-for="campain in campains" class="box m-2 is-half campain"
-         :key="campain.id" @click="gotoCampain(campain.id)">
-          <h2 class="subtitle">{{ campain.title }}</h2>
-
-
-          <figure class="image is-128x128 is-pulled-right">
-            <img v-if="campain.game.image_url" :src="campain.game.image_url">
-            <img v-else src="https://bulma.io/images/placeholders/128x128.png">
-          </figure>
-          <ul>
-            <li>game: {{ campain.game.name }}</li>
-            <li>game master: {{ campain.game_master.character_name }}</li>
-            <li>description: {{ campain.description }}</li>
-            <li>is ended ? : {{ campain.is_ended }}</li>
-            <ul>
-              <li v-for="pc in campain.campain_pcs">- {{pc.user.username}} as {{ pc.character_name }}</li>
-            </ul>
-
-          </ul>
-
-        </div>
-
-      </div>
+    <div v-if="campains.length" class="container-campain">
+        <CampainBox v-for="campain in campains" :key="campain.id" :campain="campain"/>
     </div>
 
   </div>
@@ -72,9 +48,13 @@
 
 <script>
 import axios from 'axios';
+import CampainBox from '../components/CampainBox.vue';
 
 export default {
   name: "TableView",
+  components: {
+    CampainBox,
+  },
   data() {
     return {
       table: {name: "no name"},
@@ -106,10 +86,6 @@ export default {
     })
   },
   methods: {
-    gotoCampain(id) {
-      this.$store.current_campain = this.campains.find(campain => campain.id === id);
-      this.$router.push({ name: 'CampainView', params: { id: id } });
-    },
     editTable(id) {
       this.$router.push({ name: 'edit_table', params: { id: id } });
     },
@@ -176,23 +152,4 @@ th
   min-height: 600px;
 }
 
-.campain {
-  background-color: #f5f5f5;
-  padding: 10px;
-  border: 1px solid #DDD;
-  border-radius: 10px;
-  text-align:left;
-  width:40%;
-}
-.campain:hover {
-  border: 1px solid lightseagreen;
-  cursor: pointer;
-  transform: scale(1.05);
-  transition: all 0.1s ease-in-out;
-}
-
-.image {
-  height: 128px;
-  width: 96px;
-}
 </style>
