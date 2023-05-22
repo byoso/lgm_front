@@ -1,6 +1,7 @@
 <template>
 <div>
-  <h1>CampainView {{ campain.title }}</h1>
+  <h1 class="title">{{ campain.title }}</h1>
+  <h2 class="subtitle"><router-link :to="{name: 'table', params: {id: table.id} }" @click="gotoTable(table)">{{ table.name }}</router-link></h2>
 
   <figure class="image is-128x128 is-pulled-right">
     <img v-if="campain.game.image_url" :src="campain.game.image_url">
@@ -15,6 +16,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+
+
 export default {
   name: 'CampainView',
   data() {
@@ -28,11 +32,24 @@ export default {
     this.table = this.$store.state.current_table;
   },
   methods: {
+    gotoTable(){
+      this.$router.push({name: 'table', params: {id: this.table.id}});
+    },
     deleteCampain(id) {
-      // this.$router.push({name: 'TableView', params: {id: this.table.id}});
-      console.log(this.$store.state.current_table)
-      console.log(this.$store.state.current_campain)
-      console.log("TODO delete: ", this.campain.id)
+      axios({
+        method: 'delete',
+        url: `/campains/campains/${this.campain.id}/`,
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        }
+      })
+      .then(response => {
+        console.log(response)
+        this.$router.push({name: 'table', params: {id: this.table.id}});
+      })
+      .catch(error => {
+        console.log(error)
+      })
     }
   }
 
