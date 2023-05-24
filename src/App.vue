@@ -1,5 +1,5 @@
 <template>
-<nav class="navbar is-fixed-top pl-2 pr-2" role="navigation" aria-label="main navigation">
+<nav class="navbar is-fixed-top pl-2 pr-2 is-dark" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <router-link to="/" class="navbar-item" style="font-weight: bold;">RPGAdventure.eu</router-link>
 
@@ -12,17 +12,9 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-
-
       <router-link v-if="$store.state.isAuthenticated" to="/dashboard" class="navbar-item">
         Dashboard
       </router-link>
-
-
-      <a v-else class="navbar-item">
-        Come as guest
-      </a>
-
     </div>
 
     <div class="navbar-end">
@@ -30,7 +22,7 @@
 
       <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
 
-        <span>{{ $store.user.username }} </span>
+        <span style="color: white;">{{ $store.user.username }} </span>
 
         <a class="navbar-link">
           <fa icon="user"/>
@@ -57,16 +49,16 @@
 
         <div class="buttons">
           <div v-if="!$store.state.isAuthenticated">
-            <router-link class="button is-primary" to="/signup">
+            <router-link class="button is-primary is-small" to="/signup">
               <strong>Sign up</strong>
             </router-link>
 
-            <router-link class="button is-light" to="/login">
+            <router-link class="button is-light is-small" to="/login">
               Log in
             </router-link>
           </div>
           <div v-else>
-            <router-link class="button is-warning" @click="logout" to="/">
+            <router-link class="button is-warning is-small" @click="logout" to="/">
               Log out
             </router-link>
           </div>
@@ -76,7 +68,7 @@
     </div>
   </div>
 </nav>
-<div class="container">
+<div>
   <router-view/>
 </div>
 

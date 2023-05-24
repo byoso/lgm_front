@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1 class="title">Table '{{ table.name }}'</h1>
     <div v-if="is_owner">
       <a class="button is-small is-warning m-2" @click="editTable(table.id)">Edit {{ table.name }}</a>
