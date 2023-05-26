@@ -10,10 +10,10 @@
         <form>
           <div class="control">
             <label class="label">Title</label>
-            <input class="input" type="text" placeholder="Text input">
+            <input class="input" type="text" placeholder="Text input" v-model="itemTitle">
             <label class="label">Type</label>
             <div class="select">
-              <select>
+              <select v-model="itemType">
                 <option v-for="type in itemTypes" :key="type">{{ type }}</option>
               </select>
             </div>
@@ -22,7 +22,7 @@
               <button class="is-small" @click="MDPreview('pcsInfos')">preview</button>
             </div>
             <div :hidden="showpcsPreview">
-              <textarea class="textarea" placeholder="Textarea" id="pcsInfos"></textarea>
+              <textarea class="textarea" placeholder="Textarea" id="pcsInfos" v-model="itemPCsInfos"></textarea>
             </div>
             <div id="pcsInfosPreview" @click="MDPreview('pcsInfos')"
             :hidden="!showpcsPreview" class="content border p-1">
@@ -34,20 +34,22 @@
               <button class="is-small" @click="MDPreview('gmInfos')">preview</button>
             </div>
             <div :hidden="showgmPreview">
-              <textarea class="textarea" placeholder="Textarea" id="gmInfos"></textarea>
+              <textarea class="textarea" placeholder="Textarea" id="gmInfos" v-model="itemGmInfos"></textarea>
             </div>
             <div id="gmInfosPreview" @click="MDPreview('gmInfos')"
             :hidden="!showgmPreview" class="content border p-1">
             </div>
-
 
             </div>
           </div>
         </form>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success">Save</button>
+        <button class="button is-success" @click.prevent="onSubmit()">Save</button>
         <button class="button" @click="$emit('closeCreateItemModal')">Cancel</button>
+        <div>
+          <p v-for="error in errors" :key="error" style="color: red;">{{ error }}</p>
+        </div>
       </footer>
     </div>
 
@@ -79,9 +81,26 @@ export default {
       ],
       showpcsPreview: false,
       showgmPreview: false,
+      errors: [],
+      itemTitle: '',
+      itemType: null,
+      itemPCsInfos: '',
+      itemGmInfos: '',
     }
   },
   methods: {
+    onSubmit() {
+      this.errors = []
+      if (this.itemTitle === '') {
+        this.errors.push('Title required.')
+        return
+      }
+      if (this.itemType === null) {
+        this.errors.push('Type required.')
+        return
+      }
+      console.log("submit...")
+    },
     MDPreview(textId) {
       if (textId === 'pcsInfos') {
         this.showpcsPreview = !this.showpcsPreview
@@ -93,7 +112,7 @@ export default {
       this.MDPreviewContent = marked.parse(text)
       let previewElem = document.getElementById(textId + 'Preview')
       previewElem.innerHTML = this.MDPreviewContent
-      console.log('preview...', this.MDPreviewContent)
+      console.log('preview...')
 
     },
 
