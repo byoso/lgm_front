@@ -1,10 +1,10 @@
 <template>
-  <div class="modal" :class="{'is-active': showCreateEventModal}">
-    <div class="modal-background" @click="$emit('closeCreateEventModal')"></div>
+  <div class="modal" :class="{'is-active': showCreateItemModal}">
+    <div class="modal-background" @click="$emit('closeCreateItemModal')"></div>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Create a new event</p>
-        <button class="delete" aria-label="close" @click="$emit('closeCreateEventModal')"></button>
+        <button class="delete" aria-label="close" @click="$emit('closeCreateItemModal')"></button>
       </header>
       <section class="modal-card-body">
         <form>
@@ -14,9 +14,7 @@
             <label class="label">Type</label>
             <div class="select">
               <select>
-                <option>NPC</option>
-                <option>Place</option>
-                <option>Event</option>
+                <option v-for="type in itemTypes" :key="type">{{ type }}</option>
               </select>
             </div>
             <label class="label">PC's infos</label>
@@ -30,7 +28,7 @@
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success">Save</button>
-        <button class="button" @click="$emit('closeCreateEventModal')">Cancel</button>
+        <button class="button" @click="$emit('closeCreateItemModal')">Cancel</button>
       </footer>
     </div>
   </div>
@@ -43,12 +41,24 @@ import axios from 'axios'
 
 
 export default {
-  name: 'CreateEventModal',
+  name: 'CreateItemModal',
   props: [
-    'showCreateEventModal',
+    'showCreateItemModal',
     'campain',
     'user',
   ],
+  data() {
+    return {
+      itemTypes: [
+        'NPC',
+        'PLACE',
+        'ORGANIZATION',
+        'EVENT',
+        'NOTE',
+        'RECAP',
+      ],
+    }
+  },
   methods: {
   }
 

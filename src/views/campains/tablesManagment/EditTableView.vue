@@ -178,8 +178,8 @@ export default {
           }
         })
         .then(response => {
-          console.log(response.data);
-          this.$router.push({ name: "dashboard" });
+          this.$store.current_table = response.data
+          this.$router.push({ name: 'table', params: { id: this.table_id } });
         })
         .catch(error => {
           if (error.response) {

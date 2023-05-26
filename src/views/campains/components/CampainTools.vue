@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="top-line">
+      <span class="campain-title">{{ campain.title }} </span>
+      <button class="button is-success is-small mb-2" :disabled="refreshSpin" @click="refreshCampain">
+        <fa icon="arrows-rotate" class="mr-2" :class="{'spinner': refreshSpin}"/>
+      refresh
+      </button>
+    </div>
+
     <div @click="showInfo = !showInfo" class="topic">Campain infos
       <div class="is-pulled-right mr-2">
         <fa v-if="showInfo" icon="angle-down"/>
@@ -18,14 +26,43 @@
 
         </p>
 
-        <h2 class="subtitle">{{ campain.title }} <br>
-          <router-link :to="{name: 'table', params: {id: table.id} }"
-          @click="gotoTable(table)">{{ table.name }}</router-link>
-        </h2>
+        <router-link :to="{name: 'table', params: {id: table.id} }">
+        {{ table.name }}
+        </router-link>
         <h3 class="subtitle">by {{ campain.game_master.character_name }}</h3>
       </p>
-      <br>
-      <div v-if="user.id === campain.game_master.user.id">
+    </div>
+
+    <div @click="showSettings = !showSettings" class="topic">Settings
+      <div class="is-pulled-right mr-2">
+        <fa v-if="showSettings" icon="angle-down"/>
+        <fa v-if="!showSettings" icon="angle-right"/>
+      </div>
+    </div>
+    <div v-if="showSettings" >
+      <label class="label">Items display</label>
+      <div class="field">
+        <div class="control">
+          <label class="radio">
+            <input type="radio" name="Settings" value="cards" v-model="itemsDisplay">
+            Cards
+          </label>
+          <label class="radio">
+            <input type="radio" name="Settings" value="rows" v-model="itemsDisplay">
+            Rows
+          </label>
+        </div>
+      </div>
+      <label class="label">Max items</label>
+      <div class="select">
+        <select class="is-small">
+          <option>All</option>
+          <option>10</option>
+          <option>30</option>
+        </select>
+      </div>
+      <div v-if="user.id === campain.game_master.user.id" class="m-2">
+        <label class="label">Danger zone</label>
         <button class="button is-warning is-small"
         @click="allowDeleteCampain = !allowDeleteCampain">
         delete campain
@@ -35,7 +72,6 @@
         class="button is-danger is-small">Confirm deletion
         </button>
       </div>
-      <hr>
     </div>
 
     <div @click="showPlayers = !showPlayers" class="topic">Players
@@ -55,29 +91,42 @@
       </div>
     </div>
 
-    <div @click="showEventTools = !showEventTools" class="topic">
+    <div @click="showItemTools = !showItemTools" class="topic">
       <div class="is-pulled-right mr-2">
-        <fa v-if="showEventTools" icon="angle-down"/>
-        <fa v-if="!showEventTools" icon="angle-right"/>
+        <fa v-if="showItemTools" icon="angle-down"/>
+        <fa v-if="!showItemTools" icon="angle-right"/>
       </div>
-      Event tools
+      Item tools
     </div>
-    <div v-if="showEventTools">
-      <button class="button is-small is-success m-2" @click="toggleCreateEventModal">+ New Event</button>
-      <p>Search</p>
+    <div v-if="showItemTools">
+      <button class="button is-small is-success m-2" @click="toggleCreateItemModal">+ New Item</button>
+      <label class="label">Search</label>
       <div class="field">
         <div class="control">
           <input class="input is-small" type="text" placeholder="Search by name">
         </div>
       </div>
-      Filter...(TODO)
+      <label class="label">Filters</label>
+      <div class="select">
+        <select class="is-small">
+          <option>--All--</option>
+          <option v-for="type in itemTypes" :key="type">{{ type }}</option>
+        </select>
+      </div>
+      <div class="select">
+        <select class="is-small">
+          <option>date +</option>
+          <option>date -</option>
+          <option>type</option>
+        </select>
+      </div>
 
     </div>
 
-    <CreateEventModal v-if="showCreateEventModal"
-    :campain="campain" :showCreateEventModal="showCreateEventModal"
+    <CreateItemModal v-if="showCreateItemModal"
+    :campain="campain" :showCreateItemModal="showCreateItemModal"
     :user="user"
-    @closeCreateEventModal="toggleCreateEventModal"
+    @closeCreateItemModal="toggleCreateItemModal"
     />
 
   </div>
@@ -85,24 +134,37 @@
 
 <script>
 import axios from 'axios';
-import CreateEventModal from './CreateEventModal.vue';
+import CreateItemModal from './CreateItemModal.vue';
 
 export default {
   name: "CampainTools",
   components: {
-    CreateEventModal,
+    CreateItemModal,
   },
   props: [
     'campain',
+    'refreshSpin',
   ],
   data() {
     return {
       table: {},
       user: {},
+      itemTypes: [
+        'NPC',
+        'PLACE',
+        'ORGANIZATION',
+        'EVENT',
+        'NOTE',
+        'RECAP',
+      ],
+      typeSelected: '--All--',
+      sortBySelected: 'date',
+      itemsDisplay: 'cards',
       showInfo: true,
-      showEventTools: false,
+      showItemTools: false,
       showPlayers: false,
-      showCreateEventModal: false,
+      showCreateItemModal: false,
+      showSettings: false,
       allowDeleteCampain: false,
     }
   },
@@ -112,11 +174,11 @@ export default {
     console.log("user is ", this.user)
   },
   methods: {
-    toggleCreateEventModal(){
-      this.showCreateEventModal = !this.showCreateEventModal;
+    refreshCampain() {
+      this.$emit('refreshCampain');
     },
-    gotoTable(){
-      this.$router.push({name: 'table', params: {id: this.table.id}});
+    toggleCreateItemModal(){
+      this.showCreateItemModal = !this.showCreateItemModal;
     },
     deleteCampain(id) {
       axios({
@@ -172,6 +234,23 @@ img {
 .line-hoverable:hover {
   background-color: rgb(130, 234, 229);
   color: rgb(92, 92, 92);
+}
+
+.top-line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.refresh {
+  background-color: blue;
+}
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 </style>

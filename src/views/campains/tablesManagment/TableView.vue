@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <h1 class="title">Table '{{ table.name }}'</h1>
+    <h1 class="title">Table {{ table.name }}
+    </h1>
     <div v-if="is_owner">
       <a class="button is-small is-warning m-2" @click="editTable(table.id)">Edit {{ table.name }}</a>
       <a class="button is-small is-success m-2" @click="newCampain">+ new campain</a>
@@ -67,6 +68,7 @@ export default {
     if (this.table.owners.some(e => e.id === this.$store.user.id) & this.$store.user.is_subscriber) {
       this.is_owner = true;
     }
+    // campains datas
     axios({
       method: 'get',
       url: 'campains/get_campains_for_table/',
@@ -84,6 +86,31 @@ export default {
     .catch(error => {
       console.log(error)
     })
+
+    // table datas update
+    console.log("get table datas...")
+    axios({
+      method: "get",
+      url: 'campains/tables/',
+      params: {
+        table_id: this.table.id,
+      },
+      headers: {
+        'Authorization': `Token ${this.$store.state.token}`
+      }
+    })
+    .then(response => {
+      console.log("table: ", response.data)
+        this.table = response.data.table;
+        this.$store.state.current_table = response.data.table;
+        if (this.table.owners.some(e => e.id === this.$store.user.id) & this.$store.user.is_subscriber) {
+          this.is_owner = true;
+        } else {
+          this.is_owner = false;
+        }
+      }
+    )
+    .catch(error => {console.log(error)})
   },
   methods: {
     editTable(id) {
