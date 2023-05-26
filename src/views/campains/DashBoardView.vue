@@ -12,14 +12,22 @@
       <thead>
         <tr>
           <th>name</th>
+          <th>owners</th>
           <th>guests</th>
-          <th>Guests's password</th>
           <th>Edit</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="table in tables_as_owner" :key="table.id">
           <td><router-link @click="storeTable(table)" :to="{name: 'table', params: {id: table.id} }">{{ table.name }}</router-link></td>
+
+          <td>
+            <ul>
+              <li v-for="owner in table.owners" :key="owner.id">
+                {{ owner.email }} - {{ owner.username }}
+              </li>
+            </ul>
+          </td>
           <td>
             <ul>
               <li v-for="guest in table.guests" :key="guest.id">
@@ -27,7 +35,6 @@
               </li>
             </ul>
           </td>
-          <td>{{ table.table_password }}</td>
           <td><span class="button is-warning is-small" @click="editTable(table.id)">Edit</span></td>
         </tr>
       </tbody>
@@ -41,8 +48,8 @@
       <thead>
         <tr>
           <th>name</th>
-          <th>guests</th>
           <th>owners</th>
+          <th>guests</th>
         </tr>
       </thead>
       <tbody>
@@ -50,16 +57,15 @@
           <td><router-link :to="{name: 'table', params: {id: table.id} }" @click="storeTable(table)">{{ table.name }}</router-link></td>
           <td>
             <ul>
-              <li v-for="guest in table.guests" :key="guest.id">
-                {{ guest.email }} - {{ guest.username }}
-              </li>
+              <li v-for="owner in table.owners" :key="owner.id">{{ owner.username }}</li>
             </ul>
           </td>
           <td>
             <ul>
-              <li v-for="owner in table.owners" :key="owner.id">{{ owner.username }}</li>
+              <li v-for="guest in table.guests" :key="guest.id">
+                {{ guest.email }} - {{ guest.username }}
+              </li>
             </ul>
-
           </td>
         </tr>
       </tbody>

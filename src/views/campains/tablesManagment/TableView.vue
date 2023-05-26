@@ -58,7 +58,7 @@ export default {
   },
   data() {
     return {
-      table: {name: "no name"},
+      table: {name: "no name",},
       campains: [],
       is_owner: false,
     }
@@ -81,36 +81,11 @@ export default {
     })
     .then(response => {
       this.campains = response.data;
-      console.log(this.campains)
     })
     .catch(error => {
-      console.log(error)
+      console.log("campains error: ", error)
     })
 
-    // table datas update
-    console.log("get table datas...")
-    axios({
-      method: "get",
-      url: 'campains/tables/',
-      params: {
-        table_id: this.table.id,
-      },
-      headers: {
-        'Authorization': `Token ${this.$store.state.token}`
-      }
-    })
-    .then(response => {
-      console.log("table: ", response.data)
-        this.table = response.data.table;
-        this.$store.state.current_table = response.data.table;
-        if (this.table.owners.some(e => e.id === this.$store.user.id) & this.$store.user.is_subscriber) {
-          this.is_owner = true;
-        } else {
-          this.is_owner = false;
-        }
-      }
-    )
-    .catch(error => {console.log(error)})
   },
   methods: {
     editTable(id) {

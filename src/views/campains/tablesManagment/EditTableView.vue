@@ -14,10 +14,6 @@
 
 <hr>
 
-  <label>Password for the guests</label>
-  <input type="text" class="input" placeholder="Password for the guests" v-model="table_password">
-
-<hr>
   <h2 class="subtitle">The Guests</h2>
 
 
@@ -72,7 +68,7 @@ export default {
       guests: [],
       base_key: 0,
       errors: [],
-      table_password: "",
+      // table_password: "",
       allowDelete: true,
     }
   },
@@ -93,7 +89,7 @@ export default {
       console.log(response)
       this.name = response.data['name'];
       this.description = response.data['description'];
-      this.table_password = response.data['table_password'];
+      // this.table_password = response.data['table_password'];
       for (var i=0; i<response.data['guests'].length; i++) {
         this.guests.push({
           email: response.data['guests'][i].email,
@@ -178,7 +174,7 @@ export default {
           }
         })
         .then(response => {
-          this.$store.current_table = response.data
+          this.$store.state.current_table = response.data
           this.$router.push({ name: 'table', params: { id: this.table_id } });
         })
         .catch(error => {
