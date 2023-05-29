@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sidebar">
     <div class="top-line">
       <span class="campain-title">{{ campain.title }} </span>
       <button class="button is-success is-small mb-2" :disabled="refreshSpin" @click="refreshCampain">
@@ -55,10 +55,11 @@
       </div>
       <label class="label">Max items</label>
       <div class="select">
-        <select class="is-small">
-          <option>All</option>
-          <option>10</option>
-          <option>30</option>
+        <select class="is-small" v-model="maxItems" @change="changeMaxItemsDisplay">
+          <option value=10>10</option>
+          <option value=30>30</option>
+          <option value=50>50</option>
+          <option value=100>100</option>
         </select>
       </div>
       <div v-if="user.id === campain.game_master.user.id" class="m-2">
@@ -115,18 +116,19 @@
       </div>
       <div class="select">
         <select class="is-small">
-          <option>date +</option>
-          <option>date -</option>
-          <option>type</option>
+          <option value="name">name</option>
+          <option value="date+">date +</option>
+          <option value="date-">date -</option>
+          <option value="type">type</option>
         </select>
       </div>
-
     </div>
 
     <CreateItemModal v-if="showCreateItemModal"
     :campain="campain" :showCreateItemModal="showCreateItemModal"
     :user="user"
     @closeCreateItemModal="toggleCreateItemModal"
+    @addItem="addItem"
     />
 
   </div>
@@ -144,6 +146,7 @@ export default {
   props: [
     'campain',
     'refreshSpin',
+    'maxItemsDisplay',
   ],
   data() {
     return {
@@ -160,6 +163,7 @@ export default {
       typeSelected: '--All--',
       sortBySelected: 'date',
       itemsDisplay: 'cards',
+      maxItems: null,
       showInfo: true,
       showItemTools: false,
       showPlayers: false,
@@ -170,10 +174,18 @@ export default {
   },
   beforeMount() {
     this.table = this.$store.state.current_table;
+    this.maxItems = this.maxItemsDisplay;
     this.user = this.$store.user;
     console.log("user is ", this.user)
   },
   methods: {
+    changeMaxItemsDisplay() {
+      console.log("Max items: ", this.maxItems)
+      this.$emit('changeMaxItemsDisplay', this.maxItems);
+    },
+    addItem() {
+      this.refreshCampain();
+    },
     refreshCampain() {
       this.$emit('refreshCampain');
     },
@@ -203,6 +215,10 @@ export default {
 </script>
 
 <style scoped>
+.sidebar {
+  position: sticky;
+  top: 60px;
+}
 img {
   height: 256px;
   width: auto;

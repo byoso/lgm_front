@@ -1,4 +1,4 @@
-# LGM front (WIP 1%)
+# LGM front (WIP 50%)
 
 ## Project setup
 ```
@@ -34,5 +34,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - fontawsome
 
 ## Change log
-
+- Creation of campains
+- Creation of tables
 - Initial settings done

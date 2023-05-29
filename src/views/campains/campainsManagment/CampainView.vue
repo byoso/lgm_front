@@ -2,14 +2,26 @@
 <div>
   <div class="columns">
     <div class="column is-9">
-      {{ campain }}
+      <!-- {{ campain }} -->
       <br>
+      <div class="columns is-multiline m-2">
+        <ItemBox v-for="item in shownItems" :key="item.id"
+        :item="item" :user="user" :campain="campain"
+        />
+
+      </div>
+
+
 
     </div>
+
     <div class="column is-3">
       <CampainTools class="campain-tools"
       :campain="campain" :refreshSpin="refreshSpin"
-      @refreshCampain="refresh_campain"/>
+      :maxItemsDisplay="maxItemsDisplay"
+      @refreshCampain="refresh_campain()"
+      @changeMaxItemsDisplay="changeMaxItemsDisplay($event)"
+      />
 
     </div>
   </div>
@@ -19,26 +31,41 @@
 <script>
 import axios from 'axios';
 import CampainTools from '../components/CampainTools.vue';
+import ItemBox from '../components/ItemBox.vue';
 
 
 export default {
   name: 'CampainView',
   components: {
     CampainTools,
+    ItemBox,
   },
   data() {
     return {
+      user: {},
       campain: {title: "no title"},
       table: {},
       refreshSpin: false,
+      itemsDisplay: 'cards',
+      shownItems: [],
+      maxItemsDisplay: 50,
       }
   },
   beforeMount() {
-    this.campain = this.$store.current_campain;
-    this.table = this.$store.state.current_table;
+    this.refresh_campain();
   },
   methods: {
+    changeMaxItemsDisplay(value){
+      console.log("changeMaxItemsDisplay in vue: ", value)
+      this.maxItemsDisplay = value;
+      this.shownItems = this.campain.items.slice(0, this.maxItemsDisplay);
+      // this.shownItems = this.campain.items.slice(0, 5);
+    },
     refresh_campain() {
+      this.user = this.$store.user;
+      this.campain = this.$store.current_campain;
+      console.log("shownItems: ", this.shownItems)
+      this.table = this.$store.state.current_table;
       this.refreshSpin = true;
       axios({
         method: 'get',
@@ -49,6 +76,7 @@ export default {
       })
       .then(response => {
         this.campain = response.data;
+        this.shownItems = this.campain.items;
         this.table = response.data.table;
         this.$store.state.current_campain = response.data;
         this.$store.state.current_table = response.data.table;

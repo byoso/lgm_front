@@ -112,6 +112,9 @@ export default {
     });
 
   },
+  mounted() {
+    document.title = 'RPGAdventure.eu'
+  },
 }
 </script>
 <style lang="scss">

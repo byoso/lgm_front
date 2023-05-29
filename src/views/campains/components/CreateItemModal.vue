@@ -10,7 +10,9 @@
         <form>
           <div class="control">
             <label class="label">Title</label>
-            <input class="input" type="text" placeholder="Text input" v-model="itemTitle">
+            <input class="input" type="text" placeholder="Title" v-model="itemTitle">
+            <label class="label">Image url (optionnal)</label>
+            <input class="input" type="text" placeholder="image url" v-model="itemImageUrl">
             <label class="label">Type</label>
             <div class="select">
               <select v-model="itemType">
@@ -22,7 +24,7 @@
               <button class="is-small" @click="MDPreview('pcsInfos')">preview</button>
             </div>
             <div :hidden="showpcsPreview">
-              <textarea class="textarea" placeholder="Textarea" id="pcsInfos" v-model="itemPCsInfos"></textarea>
+              <textarea class="textarea" placeholder="Informations for the players" id="pcsInfos" v-model="itemPCsInfos"></textarea>
             </div>
             <div id="pcsInfosPreview" @click="MDPreview('pcsInfos')"
             :hidden="!showpcsPreview" class="content border p-1">
@@ -34,7 +36,7 @@
               <button class="is-small" @click="MDPreview('gmInfos')">preview</button>
             </div>
             <div :hidden="showgmPreview">
-              <textarea class="textarea" placeholder="Textarea" id="gmInfos" v-model="itemGmInfos"></textarea>
+              <textarea class="textarea" placeholder="Informations for the GM only" id="gmInfos" v-model="itemGmInfos"></textarea>
             </div>
             <div id="gmInfosPreview" @click="MDPreview('gmInfos')"
             :hidden="!showgmPreview" class="content border p-1">
@@ -84,8 +86,10 @@ export default {
       errors: [],
       itemTitle: '',
       itemType: null,
+      itemImageUrl: '',
       itemPCsInfos: '',
       itemGmInfos: '',
+      item: {},
     }
   },
   methods: {
@@ -100,6 +104,28 @@ export default {
         return
       }
       console.log("submit...")
+      axios({
+        method: 'post',
+        url: '/campains/items/create/',
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`
+        },
+        data: {
+          campainId: this.campain.id,
+          title: this.itemTitle,
+          type: this.itemType,
+          image_url: this.itemImageUrl,
+          pcsInfos: this.itemPCsInfos,
+          gmInfos: this.itemGmInfos,
+        }
+      })
+      .then(response => {
+        this.$emit('addItem')
+        this.$emit('closeCreateItemModal')
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
     MDPreview(textId) {
       if (textId === 'pcsInfos') {
@@ -128,7 +154,7 @@ export default {
 }
 
 textarea {
-  height: 210px;
+  height: 160px;
 }
 
 </style>
