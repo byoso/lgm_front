@@ -2,16 +2,17 @@
 <div>
   <div class="columns">
     <div class="column is-9">
-      <!-- {{ campain }} -->
       <br>
       <div class="columns is-multiline m-2">
+
         <ItemBox v-for="item in shownItems" :key="item.id"
-        :item="item" :user="user" :campain="campain"
+        :item="item" :user="user" :campain="campain" :showIt="showItemModalDisplaySwitch"
+        :displayMode="itemsDisplayMode"
+        @itemUpdated="getUpdatedItem($event)"
+        @showModalDisplay="showItemModalDisplay($event)"
         />
 
       </div>
-
-
 
     </div>
 
@@ -19,8 +20,10 @@
       <CampainTools class="campain-tools"
       :campain="campain" :refreshSpin="refreshSpin"
       :maxItemsDisplay="maxItemsDisplay"
+      :itemsDisplayMode="itemsDisplayMode"
       @refreshCampain="refresh_campain()"
       @changeMaxItemsDisplay="changeMaxItemsDisplay($event)"
+      @changeDisplayMode="changeDisplayMode($event)"
       />
 
     </div>
@@ -32,13 +35,15 @@
 import axios from 'axios';
 import CampainTools from '../components/CampainTools.vue';
 import ItemBox from '../components/ItemBox.vue';
-
+import ItemModalDisplay from '../components/ItemModalDisplay.vue';
 
 export default {
   name: 'CampainView',
   components: {
     CampainTools,
     ItemBox,
+    ItemModalDisplay,
+
   },
   data() {
     return {
@@ -46,20 +51,36 @@ export default {
       campain: {title: "no title"},
       table: {},
       refreshSpin: false,
-      itemsDisplay: 'cards',
+      itemsDisplayMode: 'mini',
       shownItems: [],
       maxItemsDisplay: 50,
+      showItemModalDisplaySwitch: false,
       }
   },
   beforeMount() {
     this.refresh_campain();
   },
   methods: {
+    showItemModalDisplay(item) {
+      console.log("show: ", item.name)
+      this.showItemModalDisplaySwitch = !this.showItemModalDisplaySwitch;
+    },
+    getUpdatedItem(res_item){
+      this.$store.state.current_campain.items.find(item => item.id == res_item.id)[0] = res_item;
+      this.campain = this.$store.state.current_campain;
+      let item = this.shownItems.find(item => item.id == res_item.id)[0];
+      item = res_item;
+
+      console.log(res_item)
+    },
+    changeDisplayMode(value){
+      console.log("changeDisplayMode in vue: ", value)
+      this.itemsDisplayMode = value;
+    },
     changeMaxItemsDisplay(value){
       console.log("changeMaxItemsDisplay in vue: ", value)
       this.maxItemsDisplay = value;
       this.shownItems = this.campain.items.slice(0, this.maxItemsDisplay);
-      // this.shownItems = this.campain.items.slice(0, 5);
     },
     refresh_campain() {
       this.user = this.$store.user;

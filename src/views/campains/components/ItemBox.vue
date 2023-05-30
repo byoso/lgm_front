@@ -1,16 +1,20 @@
 <template>
 
-<div class="card is-3 item-box m-2" :class="item.type">
+<div class="card is-3 item-box m-2" :class="item.type" @click="this.$emit('showModalDisplay', item)">
   <div class="card-content">
     <div class="item-title">
       {{ item.name }}
-      <div class="is-pulled-right is-pulled-top button is-small is-rounded" v-if="user.id === campain.game_master.user.id">
-        <fa v-if="item.locked" icon="eye-slash" style="color: red;" />
-        <fa v-else icon="eye" style="color: green;" />
-      </div>
+        <div class="is-pulled-right is-pulled-top button is-small is-rounded tooltip"
+        v-if="isGameMaster"
+        @click="toggleItemLock">
+          <span class="tooltiptext">Visibility for the players</span>
+          <fa v-if="locked" icon="eye-slash" style="color: red;" />
+          <fa v-else icon="eye" style="color: green;" />
+        </div>
+
     </div>
-    <div class="is-centered">
-      <img v-if="item.image_url" :src="item.image_url" alt="item.title" class="item-image">
+    <div v-if="displayMode === 'image'" class="is-centered">
+      <img v-if="item.image_url" :src="item.image_url" alt="[image]" class="item-image">
 
     </div>
 
@@ -25,18 +29,51 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'ItemBox',
   props: [
     'item',
     'user',
     'campain',
+    'displayMode',
 
   ],
   data() {
     return {
+      locked: false,
       }
   },
+  beforeMount() {
+    this.locked = this.item.locked
+  },
+  computed: {
+    isGameMaster() {
+      return this.user.id === this.campain.game_master.user.id
+    },
+  },
+  methods: {
+    toggleItemLock() {
+      axios({
+        method: 'put',
+        url: '/campains/items/update/',
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`
+        },
+        data: {
+          id: this.item.id,
+          locked: !this.locked,
+        }
+    }).then(response => {
+      this.$emit('itemUpdated', response.data)
+      this.locked = !this.locked
+    }).catch(error => {
+      console.log(error)
+    })
+
+    }
+  }
 
 }
 </script>
@@ -66,7 +103,7 @@ export default {
 .EVENT {
   background-color: #ff7f62;
 }
-.PLACE {
+.LOCATION {
   background-color: #70ff7c;
 }
 .NOTE {
@@ -93,6 +130,33 @@ export default {
   color: rgb(65, 65, 65);
   font-weight: bold;
   text-align: center;
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: rgb(65, 65, 65);
+  color: #e1e1e1;
+  text-align: center;
+  padding: 2px;
+  margin-top: -30px;
+  margin-left: -100px;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 
 </style>

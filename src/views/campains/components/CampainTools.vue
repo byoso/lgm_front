@@ -40,28 +40,6 @@
       </div>
     </div>
     <div v-if="showSettings" >
-      <label class="label">Items display</label>
-      <div class="field">
-        <div class="control">
-          <label class="radio">
-            <input type="radio" name="Settings" value="cards" v-model="itemsDisplay">
-            Cards
-          </label>
-          <label class="radio">
-            <input type="radio" name="Settings" value="rows" v-model="itemsDisplay">
-            Rows
-          </label>
-        </div>
-      </div>
-      <label class="label">Max items</label>
-      <div class="select">
-        <select class="is-small" v-model="maxItems" @change="changeMaxItemsDisplay">
-          <option value=10>10</option>
-          <option value=30>30</option>
-          <option value=50>50</option>
-          <option value=100>100</option>
-        </select>
-      </div>
       <div v-if="user.id === campain.game_master.user.id" class="m-2">
         <label class="label">Danger zone</label>
         <button class="button is-warning is-small"
@@ -122,6 +100,28 @@
           <option value="type">type</option>
         </select>
       </div>
+      <label class="label">Items display</label>
+      <div class="field">
+        <div class="control">
+          <label class="radio">
+            <input type="radio" name="Settings" value="mini" v-model="displayMode" @change="changeDisplayMode">
+            Minimal
+          </label>
+          <label class="radio">
+            <input type="radio" name="Settings" value="image" v-model="displayMode" @change="changeDisplayMode">
+            With Images
+          </label>
+        </div>
+      </div>
+      <label class="label">Max items</label>
+      <div class="select">
+        <select class="is-small" v-model="maxItems" @change="changeMaxItemsDisplay">
+          <option value=10>10</option>
+          <option value=30>30</option>
+          <option value=50>50</option>
+          <option value=100>100</option>
+        </select>
+      </div>
     </div>
 
     <CreateItemModal v-if="showCreateItemModal"
@@ -147,6 +147,7 @@ export default {
     'campain',
     'refreshSpin',
     'maxItemsDisplay',
+    'itemsDisplayMode',
   ],
   data() {
     return {
@@ -154,7 +155,7 @@ export default {
       user: {},
       itemTypes: [
         'NPC',
-        'PLACE',
+        'LOCATION',
         'ORGANIZATION',
         'EVENT',
         'NOTE',
@@ -162,12 +163,13 @@ export default {
       ],
       typeSelected: '--All--',
       sortBySelected: 'date',
-      itemsDisplay: 'cards',
       maxItems: null,
+      displayMode: 'mini',
       showInfo: true,
       showItemTools: false,
       showPlayers: false,
       showCreateItemModal: false,
+      showDisplayItemModal: false,
       showSettings: false,
       allowDeleteCampain: false,
     }
@@ -179,6 +181,9 @@ export default {
     console.log("user is ", this.user)
   },
   methods: {
+    changeDisplayMode() {
+      this.$emit('changeDisplayMode', this.displayMode);
+    },
     changeMaxItemsDisplay() {
       console.log("Max items: ", this.maxItems)
       this.$emit('changeMaxItemsDisplay', this.maxItems);

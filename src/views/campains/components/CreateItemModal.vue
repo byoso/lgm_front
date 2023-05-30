@@ -75,7 +75,7 @@ export default {
     return {
       itemTypes: [
         'NPC',
-        'PLACE',
+        'LOCATION',
         'ORGANIZATION',
         'EVENT',
         'NOTE',

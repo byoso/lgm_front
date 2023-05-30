@@ -6,7 +6,7 @@ export default createStore({
     isAuthenticated: false,
     token: null,
     user: null,
-    // placeholder, the real current_table is set in TableView.vue
+    // The real values are set in TableView.vue
     current_table: {name: "current_table", id: "no_id"},
     current_campain: {name: "current_campain", id: "no_id"},
   },
