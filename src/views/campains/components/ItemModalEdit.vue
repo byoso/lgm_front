@@ -1,16 +1,19 @@
 <template>
-  <div class="modal" :class="{'is-active': showCreateItemModal}">
-    <div class="modal-background" @click="$emit('closeCreateItemModal')"></div>
+
+
+  <div class="modal" :class="{'is-active': showIt}">
+    <div class="modal-background" @click="$emit('showModalEdit', item)"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">Create a new item</p>
-        <button class="delete" aria-label="close" @click="$emit('closeCreateItemModal')"></button>
+        <span class="modal-card-title">{{ itemName }}</span>
+
+        <button class="delete" aria-label="close" @click="$emit('showModalEdit', item)"></button>
       </header>
       <section class="modal-card-body">
         <form>
           <div class="control">
             <label class="label">Title</label>
-            <input class="input" type="text" placeholder="Title" v-model="itemTitle">
+            <input class="input" type="text" placeholder="Title" v-model="itemName">
             <label class="label">Image url (optionnal)</label>
             <input class="input" type="text" placeholder="image url" v-model="itemImageUrl">
             <label class="label">Type</label>
@@ -47,8 +50,11 @@
         </form>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success is-small" @click.prevent="onSubmit()">Save</button>
-        <button class="button is-small" @click="$emit('closeCreateItemModal')">Cancel</button>
+        <span class="button is-small is-success m-2"
+        @click="confirmUpdate(updated_item)">
+          Confirm
+        </span>
+        <button class="button is-small" @click="$emit('showModalEdit', item)">Cancel</button>
         <a class="info-icon tooltip" href="https://www.markdownguide.org/cheat-sheet/" target="_blank">
           <fa icon="circle-info" />
           <span class="tooltiptext">Edition tips</span>
@@ -58,23 +64,24 @@
         </div>
       </footer>
     </div>
-
   </div>
+
+
 
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+
 
 export default {
-  name: 'CreateItemModal',
+  name: 'ItemModalEdit',
   props: [
-    'showCreateItemModal',
-    'campain',
+    'item',
     'user',
+    'campain',
+    'showIt',
   ],
-  components: {
-  },
   data() {
     return {
       itemTypes: [
@@ -88,46 +95,56 @@ export default {
       showpcsPreview: false,
       showgmPreview: false,
       errors: [],
-      itemTitle: '',
-      itemType: null,
-      itemImageUrl: '',
-      itemPCsInfos: '',
-      itemGmInfos: '',
-      item: {},
+      itemName: this.item.name,
+      itemType: this.item.type,
+      itemImageUrl: this.item.image_url,
+      itemPCsInfos: this.item.data_pc,
+      itemGmInfos: this.item.data_gm,
     }
   },
+  computed: {
+    isGameMaster() {
+      return this.user.id === this.campain.game_master.user.id
+    },
+  },
   methods: {
-    onSubmit() {
-      this.errors = []
-      if (this.itemTitle === '') {
-        this.errors.push('Title required.')
+    confirmUpdate() {
+      if (this.itemName === '') {
+        this.errors.push('Name required.');
         return
       }
-      if (this.itemType === null) {
-        this.errors.push('Type required.')
+      if (this.itemType === '') {
+        this.errors.push('Type required.');
         return
       }
-      console.log("submit...")
+      let new_item = {
+        id: this.item.id,
+        name: this.itemName,
+        type: this.itemType,
+        image_url: this.itemImageUrl,
+        data_pc: this.itemPCsInfos,
+        data_gm: this.itemGmInfos,
+      }
       axios({
-        method: 'post',
-        url: '/campains/items/create/',
+        method: 'put',
+        url: '/campains/items/update/',
         headers: {
           Authorization: `Token ${this.$store.state.token}`
         },
         data: {
-          campainId: this.campain.id,
-          title: this.itemTitle,
+          id: this.item.id,
+          name: this.itemName,
           type: this.itemType,
           image_url: this.itemImageUrl,
-          pcsInfos: this.itemPCsInfos,
-          gmInfos: this.itemGmInfos,
+          data_pc: this.itemPCsInfos,
+          data_gm: this.itemGmInfos,
         }
-      })
-      .then(response => {
-        this.$emit('addItem')
-        this.$emit('closeCreateItemModal')
-      })
-      .catch(error => {
+      }).then(response => {
+        console.log(response)
+        this.$emit('itemUpdated', response.data)
+        this.$emit('showModalEdit', new_item)
+
+      }).catch(error => {
         console.log(error)
       })
     },
@@ -145,21 +162,19 @@ export default {
       console.log('preview...')
 
     },
-
   }
+
 
 }
 </script>
 
 <style scoped>
-.border {
-  border: 1px solid black;
-  cursor: pointer;
+.info-icon {
+  color: #3273dc;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
-textarea {
-  height: 160px;
-}
 
 /* Tooltip container */
 .tooltip {
@@ -191,4 +206,14 @@ textarea {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+.border {
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+textarea {
+  height: 160px;
+}
+
 </style>

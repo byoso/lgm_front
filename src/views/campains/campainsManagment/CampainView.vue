@@ -1,33 +1,52 @@
 <template>
 <div>
   <div class="columns">
-    <div class="column is-9">
-      <br>
-      <div class="columns is-multiline m-2">
+    <div class="main-window">
+    </div>
+      <div class="column is-9">
+        <br>
+        <div class="columns is-multiline m-2">
+          <ItemBox v-for="item in shownItems" :key="item.id"
+          :item="item" :user="user" :campain="campain"
+          :displayMode="itemsDisplayMode"
+          @itemUpdated="getUpdatedItem($event)"
+          @showModalDisplay="showItemModalDisplay($event)"
+          />
+        </div>
 
-        <ItemBox v-for="item in shownItems" :key="item.id"
-        :item="item" :user="user" :campain="campain" :showIt="showItemModalDisplaySwitch"
-        :displayMode="itemsDisplayMode"
-        @itemUpdated="getUpdatedItem($event)"
-        @showModalDisplay="showItemModalDisplay($event)"
+      </div>
+      <div class="column is-3 ">
+        <CampainTools class="campain-tools"
+        :campain="campain" :refreshSpin="refreshSpin"
+        :maxItemsDisplay="maxItemsDisplay"
+        :itemsDisplayMode="itemsDisplayMode"
+        @refreshCampain="refresh_campain()"
+        @changeMaxItemsDisplay="changeMaxItemsDisplay($event)"
+        @changeDisplayMode="changeDisplayMode($event)"
         />
 
       </div>
 
-    </div>
-
-    <div class="column is-3">
-      <CampainTools class="campain-tools"
-      :campain="campain" :refreshSpin="refreshSpin"
-      :maxItemsDisplay="maxItemsDisplay"
-      :itemsDisplayMode="itemsDisplayMode"
-      @refreshCampain="refresh_campain()"
-      @changeMaxItemsDisplay="changeMaxItemsDisplay($event)"
-      @changeDisplayMode="changeDisplayMode($event)"
-      />
-
-    </div>
   </div>
+
+  <ItemModalDisplay
+   v-if="showItemModalDisplaySwitch"
+   :item="itemToDisplay" :user="user"
+   :campain="campain"
+   :showIt="showItemModalDisplaySwitch"
+   @showModalDisplay="showItemModalDisplay($event)"
+   @editionMode="showItemModalEditOn($event)"
+  />
+
+  <ItemModalEdit
+  v-if="showItemModalEditSwitch"
+  :item="itemToDisplay" :user="user"
+  :campain="campain"
+  :showIt="showItemModalEditSwitch"
+  @showModalEdit="showItemModalEditOff($event)"
+  @itemUpdated="getUpdatedItem($event)"
+  />
+
 </div>
 </template>
 
@@ -36,6 +55,7 @@ import axios from 'axios';
 import CampainTools from '../components/CampainTools.vue';
 import ItemBox from '../components/ItemBox.vue';
 import ItemModalDisplay from '../components/ItemModalDisplay.vue';
+import ItemModalEdit from '../components/ItemModalEdit.vue';
 
 export default {
   name: 'CampainView',
@@ -43,6 +63,7 @@ export default {
     CampainTools,
     ItemBox,
     ItemModalDisplay,
+    ItemModalEdit,
 
   },
   data() {
@@ -55,23 +76,48 @@ export default {
       shownItems: [],
       maxItemsDisplay: 50,
       showItemModalDisplaySwitch: false,
+      showItemModalEditSwitch: false,
+      itemToDisplay: {},
       }
   },
   beforeMount() {
     this.refresh_campain();
   },
   methods: {
-    showItemModalDisplay(item) {
-      console.log("show: ", item.name)
-      this.showItemModalDisplaySwitch = !this.showItemModalDisplaySwitch;
+    showItemModalEditOn(item) {
+      console.log("show item edit: \n", item)
+      this.showItemModalDisplaySwitch = false;
+      this.showItemModalEditSwitch = true;
+      this.itemToDisplay = item;
     },
-    getUpdatedItem(res_item){
-      this.$store.state.current_campain.items.find(item => item.id == res_item.id)[0] = res_item;
-      this.campain = this.$store.state.current_campain;
-      let item = this.shownItems.find(item => item.id == res_item.id)[0];
-      item = res_item;
+    showItemModalEditOff(item) {
+      console.log("hide item edit: \n", item)
+      this.showItemModalDisplaySwitch = true;
+      this.showItemModalEditSwitch = false;
+      this.itemToDisplay = item;
+    },
+    showItemModalDisplay(item) {
+      console.log("show item details: \n", item)
+      this.showItemModalDisplaySwitch = !this.showItemModalDisplaySwitch;
+      this.itemToDisplay = item;
+    },
+    getUpdatedItem(response_item){
+      let item = this.campain.items.find(item => item.id == response_item.id);
+      let index = this.campain.items.indexOf(item)
+      if (index !== -1) {
+        this.campain.items.splice(index, 1, response_item);
+      }
 
-      console.log(res_item)
+      let storedItem = this.$store.state.current_campain.items.find(item => item.id == response_item.id);
+      let storedIndex = this.$store.state.current_campain.items.indexOf(item)
+      if (index !== -1) {
+        this.$store.state.current_campain.items.splice(index, 1, response_item);
+      }
+      // this.campain = this.$store.state.current_campain;
+
+      // let shownItem = this.shownItems.find(item => item.id === response_item.id)[0];
+
+
     },
     changeDisplayMode(value){
       console.log("changeDisplayMode in vue: ", value)
@@ -80,7 +126,12 @@ export default {
     changeMaxItemsDisplay(value){
       console.log("changeMaxItemsDisplay in vue: ", value)
       this.maxItemsDisplay = value;
-      this.shownItems = this.campain.items.slice(0, this.maxItemsDisplay);
+      if (this.maxItemsDisplay === "all") {
+        this.shownItems = this.campain.items;
+
+      }else{
+        this.shownItems = this.campain.items.slice(0, this.maxItemsDisplay);
+      }
     },
     refresh_campain() {
       this.user = this.$store.user;
@@ -116,10 +167,15 @@ export default {
 
 <style>
 .campain-tools {
+  margin-top: 20px;
   padding: 10px;
   height: 90vh;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+body {
+  margin-top: -30px;
 }
 
 </style>

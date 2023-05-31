@@ -1,16 +1,18 @@
 <template>
 
-<div class="card is-3 item-box m-2" :class="item.type" @click="this.$emit('showModalDisplay', item)">
-  <div class="card-content">
-    <div class="item-title">
-      {{ item.name }}
-        <div class="is-pulled-right is-pulled-top button is-small is-rounded tooltip"
+<div class="card is-3 item-box m-2" :class="item.type" @click="openDetailsModal(item)">
+  <div class="card-content p-1">
+    <div class="item-title is-size-6">
+        <div class="is-pulled-right button is-small is-rounded tooltip"
         v-if="isGameMaster"
-        @click="toggleItemLock">
+        @click="toggleItemLock"
+        @mouseover="openDetailsModalSwitch = false"
+        @mouseleave="openDetailsModalSwitch = true">
           <span class="tooltiptext">Visibility for the players</span>
           <fa v-if="locked" icon="eye-slash" style="color: red;" />
           <fa v-else icon="eye" style="color: green;" />
         </div>
+      {{ item.name }}
 
     </div>
     <div v-if="displayMode === 'image'" class="is-centered">
@@ -43,6 +45,7 @@ export default {
   data() {
     return {
       locked: false,
+      openDetailsModalSwitch: true,
       }
   },
   beforeMount() {
@@ -54,6 +57,11 @@ export default {
     },
   },
   methods: {
+    openDetailsModal(item) {
+      if (this.openDetailsModalSwitch) {
+        this.$emit('showModalDisplay', item)
+      }
+    },
     toggleItemLock() {
       axios({
         method: 'put',
@@ -85,7 +93,6 @@ export default {
   width: 256px;
   min-height: 96px;
 }
-
 
 .item-box:hover {
   border: 1px solid lightseagreen;

@@ -116,6 +116,7 @@
       <label class="label">Max items</label>
       <div class="select">
         <select class="is-small" v-model="maxItems" @change="changeMaxItemsDisplay">
+          <option value="all">--All--</option>
           <option value=10>10</option>
           <option value=30>30</option>
           <option value=50>50</option>

@@ -1,16 +1,33 @@
 <template>
 
   <div class="modal" :class="{'is-active': showIt}">
-    <div class="modal-background" @click="$emit('showModalDisplay')"></div>
+    <div class="modal-background" @click="$emit('showModalDisplay', item)"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">{{ item.name }}</p>
-        <button class="delete" aria-label="close" @click="this.$emit('showModalDisplay')"></button>
+        <span class="modal-card-title">{{ item.name }}</span>
+        <span class="item-type">{{ item.type }}</span>
+        <span v-if="isGameMaster | item.type === 'NOTE'" class="button is-small is-primary mr-2"
+        @click="editionMode(item)">
+          Edit
+        </span>
+        <button class="delete" aria-label="close" @click="$emit('showModalDisplay', item)"></button>
       </header>
       <section class="modal-card-body">
-        <p>My Item</p>
+        <div class="content" id="data_pc">
+          {{ dataPC }}
+        </div>
+        <hr v-if="isGameMaster">
+        <div v-if="isGameMaster" class="content" id="data_gm">
+          {{ dataGM }}
+        </div>
+        <div v-if="item.image_url" >
+          <hr>
+          <img :src="item.image_url" alt="[image]" class="item-image">
+        </div>
 
       </section>
+      <footer class="modal-card-foot">
+      </footer>
     </div>
   </div>
 
@@ -21,19 +38,68 @@
 export default {
   name: 'ItemModalDisplay',
   props: [
-    'showIt',
     'item',
     'user',
+    'campain',
+    'showIt',
   ],
   data() {
     return {
-      show: false,
+      dataPC: '',
+      dataGM: '',
     }
+  },
+  mounted() {
+    let elem_pc = document.getElementById('data_pc')
+    elem_pc.innerHTML = this.dataPC
+    let elem_gm = document.getElementById('data_gm')
+    elem_gm.innerHTML = this.dataGM
+  },
+  computed:{
+    isGameMaster() {
+      return this.user.id === this.campain.game_master.user.id
+    },
+    dataPC() {
+      return marked.parse(this.item.data_pc)
+    },
+    dataGM() {
+      if (this.isGameMaster) {
+        return marked.parse(this.item.data_gm)
+      }else {
+        return ''
+      }
+    },
+  },
+  data() {
+    return {
+    }
+  },
+  methods: {
+    editionMode(item) {
+      this.$emit('showModalDisplay', item)
+      this.$emit('editionMode', item)
+    },
   },
 
 }
 </script>
 
-<style>
+<style scoped>
+
+.item-image {
+  width: 512px;
+  height: 512px;
+  object-fit: contain;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.item-type {
+  margin-right: 15px;
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #999;
+}
+
 
 </style>
