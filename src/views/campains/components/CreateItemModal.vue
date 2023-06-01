@@ -9,8 +9,8 @@
       <section class="modal-card-body">
         <form>
           <div class="control">
-            <label class="label">Title</label>
-            <input class="input" type="text" placeholder="Title" v-model="itemTitle">
+            <label class="label">Name</label>
+            <input class="input" type="text" placeholder="Name" v-model="itemName">
             <label class="label">Image url (optionnal)</label>
             <input class="input" type="text" placeholder="image url" v-model="itemImageUrl">
             <label class="label">Type</label>
@@ -84,11 +84,13 @@ export default {
         'EVENT',
         'NOTE',
         'RECAP',
+        'MISC',
+        'MEMO',
       ],
       showpcsPreview: false,
       showgmPreview: false,
       errors: [],
-      itemTitle: '',
+      itemName: '',
       itemType: null,
       itemImageUrl: '',
       itemPCsInfos: '',
@@ -99,8 +101,8 @@ export default {
   methods: {
     onSubmit() {
       this.errors = []
-      if (this.itemTitle === '') {
-        this.errors.push('Title required.')
+      if (this.itemName === '') {
+        this.errors.push('Name required.')
         return
       }
       if (this.itemType === null) {
@@ -116,7 +118,7 @@ export default {
         },
         data: {
           campainId: this.campain.id,
-          title: this.itemTitle,
+          title: this.itemName,
           type: this.itemType,
           image_url: this.itemImageUrl,
           pcsInfos: this.itemPCsInfos,

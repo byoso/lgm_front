@@ -102,22 +102,28 @@ export default {
 }
 
 .NPC {
-  background-color: #f9b88a;
+  background-color: #ffa76d;
 }
 .ORGANIZATION {
-  background-color: #688eee;
+  background-color: #8a9df3;
 }
 .EVENT {
-  background-color: #ff7f62;
+  background-color: #ec746c;
 }
 .LOCATION {
-  background-color: #70ff7c;
+  background-color: #7bc881;
 }
 .NOTE {
-  background-color: #9cf0ff;
+  background-color: #a8dae3;
 }
 .RECAP {
-  background-color: #e9a6ff;
+  background-color: #d096e4;
+}
+.MISC {
+  background-color: #bbbbbb;
+}
+.MEMO {
+  background-color: #f5e570;
 }
 
 .item-image {

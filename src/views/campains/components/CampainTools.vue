@@ -81,19 +81,24 @@
       <button class="button is-small is-success m-2" @click="toggleCreateItemModal">+ New Item</button>
       <label class="label">Search</label>
       <div class="field">
-        <div class="control">
-          <input class="input is-small" type="text" placeholder="Search by name">
+        <div class="control button-in-input">
+          <input class="input is-small" type="text" placeholder="Search by name" v-model="searchBy"
+          @keyup.enter="searchBy='';$emit('searchItems', searchBy)"
+          @keyup="$emit('searchItems', searchBy)"
+          />
+          <button @click="searchBy='';$emit('searchItems', searchBy)">reset</button>
         </div>
+
       </div>
       <label class="label">Filters</label>
       <div class="select">
-        <select class="is-small">
+        <select class="is-small" v-model="filterBy" @change="$emit('filterItems', filterBy)">
           <option>--All--</option>
           <option v-for="type in itemTypes" :key="type">{{ type }}</option>
         </select>
       </div>
       <div class="select">
-        <select class="is-small">
+        <select class="is-small" v-model="sortBy" @click="$emit('sortItems', sortBy)">
           <option value="name">name</option>
           <option value="date+">date +</option>
           <option value="date-">date -</option>
@@ -161,6 +166,8 @@ export default {
         'EVENT',
         'NOTE',
         'RECAP',
+        'MISC',
+        'MEMO',
       ],
       typeSelected: '--All--',
       sortBySelected: 'date',
@@ -173,6 +180,9 @@ export default {
       showDisplayItemModal: false,
       showSettings: false,
       allowDeleteCampain: false,
+      filterBy: '--All--',
+      sortBy: 'date+',
+      searchBy: '',
     }
   },
   beforeMount() {
@@ -273,6 +283,10 @@ img {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.button-in-input {
+  display: flex;
 }
 
 </style>

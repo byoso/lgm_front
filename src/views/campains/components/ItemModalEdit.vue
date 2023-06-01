@@ -12,16 +12,19 @@
       <section class="modal-card-body">
         <form>
           <div class="control">
-            <label class="label">Title</label>
-            <input class="input" type="text" placeholder="Title" v-model="itemName">
+            <label class="label">Name</label>
+            <input class="input" type="text" placeholder="Name" v-model="itemName">
             <label class="label">Image url (optionnal)</label>
             <input class="input" type="text" placeholder="image url" v-model="itemImageUrl">
-            <label class="label">Type</label>
-            <div class="select">
-              <select v-model="itemType">
-                <option v-for="type in itemTypes" :key="type">{{ type }}</option>
-              </select>
+            <div v-if="isGameMaster">
+              <label class="label">Type</label>
+              <div class="select">
+                <select v-model="itemType">
+                  <option v-for="type in itemTypes" :key="type">{{ type }}</option>
+                </select>
+              </div>
             </div>
+
             <div class="is-flex is-justify-content-space-between m-2">
               <label class="label">PC's infos</label>
               <button class="is-small" @click="MDPreview('pcsInfos')">preview</button>
@@ -50,17 +53,27 @@
         </form>
       </section>
       <footer class="modal-card-foot">
-        <span class="button is-small is-success m-2"
-        @click="confirmUpdate(updated_item)">
-          Confirm
-        </span>
-        <button class="button is-small" @click="$emit('showModalEdit', item)">Cancel</button>
-        <a class="info-icon tooltip" href="https://www.markdownguide.org/cheat-sheet/" target="_blank">
-          <fa icon="circle-info" />
-          <span class="tooltiptext">Edition tips</span>
-        </a>
-        <div>
-          <p v-for="error in errors" :key="error" style="color: red;">{{ error }}</p>
+        <div class="footer-buttons">
+          <div class="buttons">
+            <button class="button is-small is-success mr-2"
+            @click="confirmUpdate(updated_item)">
+              Confirm
+            </button>
+            <button class="button is-small" @click="$emit('showModalEdit', item)">Cancel</button>
+            <a class="info-icon tooltip" href="https://www.markdownguide.org/cheat-sheet/" target="_blank">
+              <fa icon="circle-info" />
+              <span class="tooltiptext">Edition tips</span>
+            </a>
+          </div>
+          <div>
+            <button class="button is-warning is-small ml-2" @click="deleteActive=!deleteActive">delete</button>
+            <button class="button is-danger is-small" :disabled="deleteActive" @click="deleteItem">
+              confirm delete
+            </button>
+          </div>
+          <div class="m-2">
+            <p v-for="error in errors" :key="error" style="color: red;">{{ error }}</p>
+          </div>
         </div>
       </footer>
     </div>
@@ -91,6 +104,8 @@ export default {
         'EVENT',
         'NOTE',
         'RECAP',
+        'MISC',
+        'MEMO',
       ],
       showpcsPreview: false,
       showgmPreview: false,
@@ -100,6 +115,7 @@ export default {
       itemImageUrl: this.item.image_url,
       itemPCsInfos: this.item.data_pc,
       itemGmInfos: this.item.data_gm,
+      deleteActive: true,
     }
   },
   computed: {
@@ -108,10 +124,32 @@ export default {
     },
   },
   methods: {
+    deleteItem() {
+      let id = this.item.id;
+      axios({
+        method: 'delete',
+        url: '/campains/items/delete/',
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`
+        },
+        data: {
+          id: id,
+        }
+      }).then(response => {
+        this.$emit('itemDeleted', id);
+      }).catch(error => {
+        console.log(error);
+      })
+
+    },
     confirmUpdate() {
+      this.errors = [];
       if (this.itemName === '') {
         this.errors.push('Name required.');
         return
+      }
+      if (!this.isGameMaster) {
+        this.itemType = 'MEMO'
       }
       if (this.itemType === '') {
         this.errors.push('Type required.');
@@ -175,6 +213,10 @@ export default {
   margin-left: 5px;
 }
 
+.footer-buttons {
+  display: flex;
+  justify-content: space-between;
+}
 
 /* Tooltip container */
 .tooltip {

@@ -3,7 +3,7 @@
   <div class="columns">
     <div class="main-window">
     </div>
-      <div class="column is-9">
+      <div class="column is-9 items-window">
         <br>
         <div class="columns is-multiline m-2">
           <ItemBox v-for="item in shownItems" :key="item.id"
@@ -23,6 +23,10 @@
         @refreshCampain="refresh_campain()"
         @changeMaxItemsDisplay="changeMaxItemsDisplay($event)"
         @changeDisplayMode="changeDisplayMode($event)"
+        @filterItems="filterItems($event)"
+        @sortItems="sortItems($event)"
+        @searchItems="searchItems($event)"
+        @resetSearch="resetSearch()"
         />
 
       </div>
@@ -45,6 +49,7 @@
   :showIt="showItemModalEditSwitch"
   @showModalEdit="showItemModalEditOff($event)"
   @itemUpdated="getUpdatedItem($event)"
+  @itemDeleted="itemDeleted($event)"
   />
 
 </div>
@@ -78,12 +83,60 @@ export default {
       showItemModalDisplaySwitch: false,
       showItemModalEditSwitch: false,
       itemToDisplay: {},
+      filterBy: '--All--',
+      sortBy: 'date+', // date- date+ name type
+      searchBy: '',
       }
   },
   beforeMount() {
     this.refresh_campain();
   },
   methods: {
+    itemDeleted(id) {
+      console.log("item deleted: ", id)
+      this.showItemModalDisplaySwitch = false;
+      this.showItemModalEditSwitch = false;
+      let item = this.campain.items.find(item => item.id == id);
+      console.log("item to delete: ", item)
+      console.log('index in campain: ', this.campain.items.indexOf(item))
+      let index = this.campain.items.indexOf(item)
+      if (index !== -1) {
+        this.campain.items.splice(index, 1);
+      }
+    },
+    searchItems(value){
+      this.searchBy = value;
+      if (value == '') {
+        this.shownItems = this.campain.items;
+        this.filterItems(this.filterBy);
+      } else {
+        this.shownItems = this.campain.items.filter(item => item.name.toLowerCase().includes(value.toLowerCase()));
+      }
+    },
+    filterItems(value){
+      this.filterBy = value;
+      if (value == '--All--') {
+        this.shownItems = this.campain.items;
+      } else {
+        this.shownItems = this.campain.items.filter(item => item.type == value);
+      }
+
+      this.sortItems(this.sortBy);
+    },
+    sortItems(value){
+      console.log("sort by: ", value)
+      this.shownItems = this.shownItems.sort((a, b) => {
+        if (value == 'date-') {
+          return new Date(a.date_unlocked) - new Date(b.date_unlocked);
+        } else if (value == 'date+') {
+          return new Date(b.date_unlocked) - new Date(a.date_unlocked);
+        } else if (value == 'name') {
+          return a.name.localeCompare(b.name);
+        } else if (value == 'type') {
+          return a.type.localeCompare(b.type);
+        }
+      });
+    },
     showItemModalEditOn(item) {
       console.log("show item edit: \n", item)
       this.showItemModalDisplaySwitch = false;
@@ -154,6 +207,7 @@ export default {
         this.$store.state.current_table = response.data.table;
         console.log(this.campain.title)
         this.refreshSpin = false;
+        this.filterItems(this.filterBy);
       })
       .catch(error => {
         console.log(error)
@@ -165,17 +219,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .campain-tools {
-  margin-top: 20px;
+  margin-top: -50px;
   padding: 10px;
   height: 90vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-body {
-  margin-top: -30px;
+.items-window {
+  margin-top: -70px;
 }
 
 </style>
