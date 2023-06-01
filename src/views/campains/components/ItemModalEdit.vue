@@ -36,17 +36,17 @@
             :hidden="!showpcsPreview" class="content border p-1">
             </div>
 
-            <div v-if="user.id === campain.game_master.user.id">
-            <div class="is-flex is-justify-content-space-between m-2">
-              <label class="label">GM's infos</label>
-              <button class="is-small" @click="MDPreview('gmInfos')">preview</button>
-            </div>
-            <div :hidden="showgmPreview">
-              <textarea class="textarea" placeholder="Informations for the GM only" id="gmInfos" v-model="itemGmInfos"></textarea>
-            </div>
-            <div id="gmInfosPreview" @click="MDPreview('gmInfos')"
-            :hidden="!showgmPreview" class="content border p-1">
-            </div>
+            <div v-if="isGameMaster">
+              <div class="is-flex is-justify-content-space-between m-2">
+                <label class="label">GM's infos</label>
+                <button class="is-small" @click="MDPreview('gmInfos')">preview</button>
+              </div>
+              <div :hidden="showgmPreview">
+                <textarea class="textarea" placeholder="Informations for the GM only" id="gmInfos" v-model="itemGmInfos"></textarea>
+              </div>
+              <div id="gmInfosPreview" @click="MDPreview('gmInfos')"
+              :hidden="!showgmPreview" class="content border p-1">
+              </div>
 
             </div>
           </div>
@@ -125,6 +125,7 @@ export default {
   },
   methods: {
     deleteItem() {
+      this.errors = []
       let id = this.item.id;
       axios({
         method: 'delete',
@@ -138,7 +139,7 @@ export default {
       }).then(response => {
         this.$emit('itemDeleted', id);
       }).catch(error => {
-        console.log(error);
+        this.errors.push(error.response.data.message);
       })
 
     },
@@ -163,27 +164,21 @@ export default {
         data_pc: this.itemPCsInfos,
         data_gm: this.itemGmInfos,
       }
+      console.log('new_item: ', new_item)
       axios({
         method: 'put',
         url: '/campains/items/update/',
         headers: {
           Authorization: `Token ${this.$store.state.token}`
         },
-        data: {
-          id: this.item.id,
-          name: this.itemName,
-          type: this.itemType,
-          image_url: this.itemImageUrl,
-          data_pc: this.itemPCsInfos,
-          data_gm: this.itemGmInfos,
-        }
+        data: new_item
       }).then(response => {
         console.log(response)
         this.$emit('itemUpdated', response.data)
         this.$emit('showModalEdit', new_item)
 
       }).catch(error => {
-        console.log(error)
+        this.errors.push(error.response.data.message);
       })
     },
     MDPreview(textId) {

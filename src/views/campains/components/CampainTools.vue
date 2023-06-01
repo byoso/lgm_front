@@ -33,24 +33,27 @@
       </p>
     </div>
 
-    <div @click="showSettings = !showSettings" class="topic">Settings
-      <div class="is-pulled-right mr-2">
-        <fa v-if="showSettings" icon="angle-down"/>
-        <fa v-if="!showSettings" icon="angle-right"/>
+    <div v-if="isGameMaster">
+      <div @click="showSettings = !showSettings" class="topic">Settings
+        <div class="is-pulled-right mr-2">
+          <fa v-if="showSettings" icon="angle-down"/>
+          <fa v-if="!showSettings" icon="angle-right"/>
+        </div>
       </div>
-    </div>
-    <div v-if="showSettings" >
-      <div v-if="user.id === campain.game_master.user.id" class="m-2">
-        <label class="label">Danger zone</label>
-        <button class="button is-warning is-small"
-        @click="allowDeleteCampain = !allowDeleteCampain">
-        delete campain
-        </button>
-        <button  :disabled="!allowDeleteCampain"
-        @click.prevent="deleteCampain(campain.id)"
-        class="button is-danger is-small">Confirm deletion
-        </button>
+      <div v-if="showSettings" >
+        <div class="m-2">
+          <label class="label">Danger zone</label>
+          <button class="button is-warning is-small"
+          @click="allowDeleteCampain = !allowDeleteCampain">
+          delete campain
+          </button>
+          <button  :disabled="!allowDeleteCampain"
+          @click.prevent="deleteCampain(campain.id)"
+          class="button is-danger is-small">Confirm deletion
+          </button>
+        </div>
       </div>
+
     </div>
 
     <div @click="showPlayers = !showPlayers" class="topic">Players
@@ -150,15 +153,20 @@ export default {
     CreateItemModal,
   },
   props: [
+    'user',
     'campain',
     'refreshSpin',
     'maxItemsDisplay',
     'itemsDisplayMode',
   ],
+  computed: {
+    isGameMaster() {
+      return this.user.id === this.campain.game_master.user.id;
+    },
+  },
   data() {
     return {
       table: {},
-      user: {},
       itemTypes: [
         'NPC',
         'LOCATION',
@@ -188,7 +196,6 @@ export default {
   beforeMount() {
     this.table = this.$store.state.current_table;
     this.maxItems = this.maxItemsDisplay;
-    this.user = this.$store.user;
     console.log("user is ", this.user)
   },
   methods: {

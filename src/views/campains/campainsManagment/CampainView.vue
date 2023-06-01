@@ -17,7 +17,7 @@
       </div>
       <div class="column is-3 ">
         <CampainTools class="campain-tools"
-        :campain="campain" :refreshSpin="refreshSpin"
+        :campain="campain" :user="user" :refreshSpin="refreshSpin"
         :maxItemsDisplay="maxItemsDisplay"
         :itemsDisplayMode="itemsDisplayMode"
         @refreshCampain="refresh_campain()"
@@ -87,6 +87,11 @@ export default {
       sortBy: 'date+', // date- date+ name type
       searchBy: '',
       }
+  },
+  computed: {
+    isGameMaster() {
+      return this.user.id === this.campain.game_master.user.id;
+    },
   },
   beforeMount() {
     this.refresh_campain();
@@ -201,6 +206,9 @@ export default {
       })
       .then(response => {
         this.campain = response.data;
+        if (!this.isGameMaster) {
+          this.campain.items = this.campain.items.filter(item => !item.locked);
+        }
         this.shownItems = this.campain.items;
         this.table = response.data.table;
         this.$store.state.current_campain = response.data;

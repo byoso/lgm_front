@@ -13,11 +13,14 @@
             <input class="input" type="text" placeholder="Name" v-model="itemName">
             <label class="label">Image url (optionnal)</label>
             <input class="input" type="text" placeholder="image url" v-model="itemImageUrl">
-            <label class="label">Type</label>
-            <div class="select">
-              <select v-model="itemType">
-                <option v-for="type in itemTypes" :key="type">{{ type }}</option>
-              </select>
+            <div v-if="isGameMaster">
+              <label class="label">Type</label>
+              <div class="select">
+                <select v-model="itemType">
+                  <option v-for="type in itemTypes" :key="type">{{ type }}</option>
+                </select>
+              </div>
+
             </div>
             <div class="is-flex is-justify-content-space-between m-2">
               <label class="label">PC's infos</label>
@@ -73,7 +76,10 @@ export default {
     'campain',
     'user',
   ],
-  components: {
+  computed: {
+    isGameMaster() {
+      return this.user.id === this.campain.game_master.user.id
+    }
   },
   data() {
     return {
@@ -101,6 +107,9 @@ export default {
   methods: {
     onSubmit() {
       this.errors = []
+      if (!this.isGameMaster) {
+        this.itemType = 'MEMO'
+      }
       if (this.itemName === '') {
         this.errors.push('Name required.')
         return

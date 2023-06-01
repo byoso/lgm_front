@@ -52,8 +52,10 @@ export default {
   mounted() {
     let elem_pc = document.getElementById('data_pc')
     elem_pc.innerHTML = this.dataPC
-    let elem_gm = document.getElementById('data_gm')
-    elem_gm.innerHTML = this.dataGM
+    if (this.isGameMaster) {
+      let elem_gm = document.getElementById('data_gm')
+      elem_gm.innerHTML = this.dataGM
+    }
   },
   computed:{
     isGameMaster() {

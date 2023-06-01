@@ -22,7 +22,7 @@
             <ul>
               <li v-for="owner in table.owners" :key="owner.id"  class="mt-2">
                 {{ owner.username }}
-                <fa v-if="is_owner & table.owners.length > 1" icon="arrow-right" class="arrow is-pulled-right ml-2"
+                <fa v-if="is_owner & table.owners.length > 1 & user.id != owner.id" icon="arrow-right" class="arrow is-pulled-right ml-2"
                 @click="switchGuestOwner(owner.id)"/>
               </li>
             </ul>
@@ -61,9 +61,11 @@ export default {
       table: {name: "no name",},
       campains: [],
       is_owner: false,
+      user: {},
     }
   },
   beforeMount() {
+    this.user = this.$store.user;
     this.table = this.$store.state.current_table;
     if (this.table.owners.some(e => e.id === this.$store.user.id) & this.$store.user.is_subscriber) {
       this.is_owner = true;
