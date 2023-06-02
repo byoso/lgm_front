@@ -18,9 +18,8 @@
       <p>
         <p>
           <figure v-if="campain.image_url">
-            <img :src="campain.image_url">
+            <img :src="campain.image_url" />
           </figure>
-
         </p>
 
         <router-link :to="{name: 'table', params: {id: table.id} }">
@@ -39,6 +38,7 @@
       </div>
       <div v-if="showSettings" >
         <div class="m-2">
+          <router-link :to="{name: 'CampainEditView', params: {id: campain.id}}" class="m-2 button is-small is-warning">Edit campain...</router-link>
           <label class="label">Danger zone</label>
           <button class="button is-warning is-small"
           @click="allowDeleteCampain = !allowDeleteCampain">

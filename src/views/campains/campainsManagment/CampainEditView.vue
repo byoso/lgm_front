@@ -1,8 +1,8 @@
 <template>
 <div>
   <form class="form">
-    <h1 class="title">Start a New Campain</h1>
-    <h2 class="subtitle"> {{ table.name }} </h2>
+    <h1 class="title">Edit Campain</h1>
+    <h2 class="subtitle"> {{ campainTitle }} </h2>
 
     <ul v-if="errors.length">
       <li class="is-danger" v-for="error in errors" :key="error" style="color: red;">
@@ -14,7 +14,7 @@
     <div class="mt-2">
 
       <label class="label">Language</label>
-      <select name="" id="" v-model="language">
+      <select v-model="language">
         <option value="ar">Arabic</option>
         <option value="cs">Czech</option>
         <option value="zh">Chinese</option>
@@ -89,9 +89,11 @@
 import axios from "axios"
 
 export default {
-  name: "NewCampainView",
+  name: "CampainEditView",
   data() {
     return {
+      user: this.$store.state.user,
+      campain: {},
       table: {},
       players: [],
       pcs: {},
@@ -106,11 +108,29 @@ export default {
   },
   beforeMount() {
     this.table = this.$store.state.current_table
+    this.campain = this.$store.state.current_campain
     this.players = this.table.owners.concat(this.table.guests)
+    console.log("characters: ", this.campain.campain_pcs)
     for (var i=0; this.players.length > i; i++) {
-      this.pcs[this.players[i].id] = {id: this.players[i].id, name: ""}
+      console.log("player: ", this.players[i])
+      let character = this.campain.campain_pcs.find(pc => pc.user.id === this.players[i].id)
+      this.pcs[this.players[i].id] = {id: this.players[i].id, name: character.character_name}
     }
+    this.game = this.campain.game
+    this.image_url = this.campain.image_url
+    this.language = this.campain.language
+    this.campainTitle = this.campain.title
+    this.camapainDescription = this.campain.description
+    this.gameMasterId = this.campain.game_master.user.id
+    console.log("campain: \n",this.campain)
 
+
+
+  },
+  computed: {
+    isGameMaster() {
+      return this.user.id === this.campain.game_master.user.id;
+    },
   },
   methods: {
     onSubmit() {
@@ -123,43 +143,44 @@ export default {
         this.errors.push("You must enter a title")
       }
       if (this.gameMasterId === null) {
-        this.errors.push("You must select a game master")
+        this.errors.push("You must select a master")
       }
       if (this.errors.length > 0) {
         return
 
       }
-      axios({
-        method: 'post',
-        url: '/campains/campains/',
-        headers: {
-          'Authorization': `Token ${this.$store.state.token}`
-        },
-        data: {
-          table_id: this.table.id,
-          game: this.game,
-          master_id: this.gameMasterId,
-          title: this.campainTitle,
-          pcs: this.pcs,
-          description: this.camapainDescription,
-          image_url: this.image_url,
-          language: this.language,
-        }
-      })
-      .then(response => {
-        console.log(response.data)
-        this.$router.push({name: "table", params: {id: this.$store.state.current_table.id}})
-      })
-      .catch(error => {
-        console.log(error.response.data.errors)
-        if (typeof(error) == Array) {
-          this.errors = error.response.data.errors
-        } else {
-          // the expected way
-          this.errors.push(
-            error.response.data.errors[0])
-        }
-      })
+      console.log("send to update: \n", this.campain)
+      // axios({
+      //   method: 'put',
+      //   url: '/campains/update/',
+      //   headers: {
+      //     'Authorization': `Token ${this.$store.state.token}`
+      //   },
+      //   data: {
+      //     table_id: this.table.id,
+      //     game: this.game,
+      //     master_id: this.gameMasterId,
+      //     title: this.campainTitle,
+      //     pcs: this.pcs,
+      //     description: this.camapainDescription,
+      //     image_url: this.image_url,
+      //     language: this.language,
+      //   }
+      // })
+      // .then(response => {
+      //   console.log(response.data)
+      //   this.$router.push({name: "table", params: {id: this.$store.state.current_table.id}})
+      // })
+      // .catch(error => {
+      //   console.log(error.response.data.errors)
+      //   if (typeof(error) == Array) {
+      //     this.errors = error.response.data.errors
+      //   } else {
+      //     // the expected way
+      //     this.errors.push(
+      //       error.response.data.errors[0])
+      //   }
+      // })
 
     }
   }
