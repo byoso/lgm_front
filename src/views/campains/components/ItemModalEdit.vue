@@ -161,6 +161,7 @@ export default {
         name: this.itemName,
         type: this.itemType,
         image_url: this.itemImageUrl,
+        language: 'en',
         data_pc: this.itemPCsInfos,
         data_gm: this.itemGmInfos,
       }

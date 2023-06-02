@@ -17,11 +17,8 @@
     <div v-if="showInfo">
       <p>
         <p>
-          <figure>
-            <a v-if="campain.game.image_url" :href="campain.game.official_site" target="_blank">
-              <img :src="campain.game.image_url">
-            </a>
-            <img v-else src="https://bulma.io/images/placeholders/128x128.png">
+          <figure v-if="campain.image_url">
+            <img :src="campain.image_url">
           </figure>
 
         </p>

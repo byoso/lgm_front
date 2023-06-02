@@ -1,12 +1,11 @@
 <template>
 <div class="box m-2 is-half campain" @click="gotoCampain(campain.id)">
   <h1 class="campainTitle">{{ campain.title}}</h1>
-  <h2 >{{ campain.game.name }}</h2>
+  <h2 >{{ campain.game }}</h2>
 
 
-  <figure class="image is-128x128 is-pulled-right">
-    <img v-if="campain.game.image_url" :src="campain.game.image_url">
-    <img v-else src="https://bulma.io/images/placeholders/128x128.png">
+  <figure v-if="campain.image_url" class="image is-128x128 is-pulled-right">
+    <img :src="campain.image_url">
   </figure>
   <ul>
     <li>game master: {{ campain.game_master.character_name }}</li>

@@ -11,15 +11,43 @@
     </ul>
 
 
-    <label class="label">Game</label>
-    <div class="select">
-      <select v-model="selectedGame">
-        <option v-for="game in games" :key="game.id" :value="game.id">{{ game.name }}</option>
-      </select>
-    </div>
     <div class="mt-2">
+
+      <label class="label">Language</label>
+      <select name="" id="" v-model="language">
+        <option value="ar">Arabic</option>
+        <option value="cs">Czech</option>
+        <option value="zh">Chinese</option>
+        <option value="da">Danish</option>
+        <option value="nl">Dutch</option>
+        <option value="en">English</option>
+        <option value="fi">Finnish</option>
+        <option value="fr">French</option>
+        <option value="de">German</option>
+        <option value="el">Greek</option>
+        <option value="hi">Hindi</option>
+        <option value="hu">Hungarian</option>
+        <option value="it">Italian</option>
+        <option value="ja">Japanese</option>
+        <option value="ko">Korean</option>
+        <option value="no">Norwegian</option>
+        <option value="fa">Persian</option>
+        <option value="pl">Polish</option>
+        <option value="pt">Portuguese</option>
+        <option value="ru">Russian</option>
+        <option value="es">Spanish</option>
+        <option value="sv">Swedish</option>
+        <option value="th">Thai</option>
+        <option value="tr">Turkish</option>
+        <option value="vi">Vietnamese</option>
+
+      </select>
+      <label class="label">Game</label>
+      <input type="text" placeholder="Game name" class="input" v-model="game">
       <label class="label">Campain title</label>
-      <input type="text" placeholder="Campain name" class="input" v-model="campainTitle">
+      <input type="text" placeholder="Campain title" class="input" v-model="campainTitle">
+      <label class="label">Image url</label>
+      <input type="text" placeholder="Image url" class="input" v-model="image_url">
       <label class="label">Description</label>
       <textarea class="textarea" placeholder="Campain description" v-model="camapainDescription"></textarea>
 
@@ -67,7 +95,9 @@ export default {
       table: {},
       players: [],
       pcs: {},
-      games: [],
+      game: '',
+      image_url: '',
+      language: 'en',
       selectedGame: null,
       master: null,
       campainTitle: "",
@@ -81,35 +111,20 @@ export default {
     for (var i=0; this.players.length > i; i++) {
       this.pcs[this.players[i].id] = {id: this.players[i].id, name: ""}
     }
-    axios({
-      method: "get",
-      url: "/campains/get_games_list/",
-      headers: {
-        Authorization: `Token ${this.$store.state.token}`
-      },
-    })
-    .then(response => {
-      this.games = response.data
-      console.log("games: ", this.games)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-
 
   },
   methods: {
     onSubmit() {
       this.errors = []
 
-      if (this.master === null) {
-        this.errors.push("You must select a master")
-      }
-      if (this.selectedGame === null) {
-        this.errors.push("You must select a game")
+      if (this.game === '') {
+        this.errors.push("You must enter a game")
       }
       if (this.campainTitle === "") {
         this.errors.push("You must enter a title")
+      }
+      if (this.master === null) {
+        this.errors.push("You must select a master")
       }
       if (this.errors.length > 0) {
         return
@@ -123,11 +138,13 @@ export default {
         },
         data: {
           table_id: this.table.id,
-          game_id: this.selectedGame,
+          game: this.game,
           master_id: this.master,
           title: this.campainTitle,
           pcs: this.pcs,
           description: this.camapainDescription,
+          image_url: this.image_url,
+          language: this.language,
         }
       })
       .then(response => {
