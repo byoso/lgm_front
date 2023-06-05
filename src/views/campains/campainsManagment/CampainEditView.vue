@@ -124,8 +124,6 @@ export default {
     this.gameMasterId = this.campain.game_master.user.id
     console.log("campain: \n",this.campain)
 
-
-
   },
   computed: {
     isGameMaster() {
@@ -149,23 +147,25 @@ export default {
         return
 
       }
-      console.log("send to update: \n", this.campain)
+
+      let data = {
+        table_id: this.table.id,
+        game: this.game,
+        master_id: this.gameMasterId,
+        title: this.campainTitle,
+        pcs: this.pcs,
+        description: this.camapainDescription,
+        image_url: this.image_url,
+        language: this.language,
+      }
+      console.log("send to update: \n", data)
       // axios({
       //   method: 'put',
       //   url: '/campains/update/',
       //   headers: {
       //     'Authorization': `Token ${this.$store.state.token}`
       //   },
-      //   data: {
-      //     table_id: this.table.id,
-      //     game: this.game,
-      //     master_id: this.gameMasterId,
-      //     title: this.campainTitle,
-      //     pcs: this.pcs,
-      //     description: this.camapainDescription,
-      //     image_url: this.image_url,
-      //     language: this.language,
-      //   }
+      //   data: data
       // })
       // .then(response => {
       //   console.log(response.data)

@@ -53,7 +53,7 @@
 
     </div>
 
-    <div @click="showPlayers = !showPlayers" class="topic">Players
+    <div @click="showPlayers = !showPlayers" class="topic">Player Characters
       <div class="is-pulled-right mr-2">
         <fa v-if="showPlayers" icon="angle-down"/>
         <fa v-if="!showPlayers" icon="angle-right"/>
