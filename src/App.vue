@@ -22,7 +22,7 @@
 
       <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
 
-        <span style="color: white;">{{ $store.user.username }} </span>
+        <span style="color: white;">{{ user.username }} </span>
 
         <a class="navbar-link">
           <fa icon="user"/>
@@ -86,6 +86,11 @@ export default {
       this.$store.commit('removeToken');
     }
   },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
+  },
 
 // Add and adapt this in the lifecycle
   beforeCreate() {
@@ -97,6 +102,7 @@ export default {
     } else {
       axios.defaults.headers.common['Authorization'] = '';
     }
+    this.user = this.$store.state.user;
 
     // Bulma - navbar burger
     document.addEventListener('DOMContentLoaded', () => {

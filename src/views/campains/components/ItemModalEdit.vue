@@ -120,7 +120,7 @@ export default {
   },
   computed: {
     isGameMaster() {
-      return this.user.id === this.campain.game_master.user.id
+      return this.user.id === this.campain.game_master.id
     },
   },
   methods: {

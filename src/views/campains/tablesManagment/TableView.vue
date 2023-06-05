@@ -41,7 +41,7 @@
     </table>
 
     <div v-if="campains.length" class="container-campain">
-        <CampainBox v-for="campain in campains" :key="campain.id" :campain="campain"/>
+        <CampainBox v-for="campain in campains" :key="campain.id" :campain="campain" class="is-2"/>
     </div>
 
   </div>
@@ -60,16 +60,17 @@ export default {
     return {
       table: {name: "no name",},
       campains: [],
-      is_owner: false,
-      user: {},
+      user: this.$store.state.user,
     }
   },
+  computed: {
+    is_owner() {
+      return (this.table.owners.some(owner => owner.id === this.$store.state.user.id) & this.$store.state.user.is_subscriber)
+    },
+  },
   beforeMount() {
-    this.user = this.$store.user;
     this.table = this.$store.state.current_table;
-    if (this.table.owners.some(e => e.id === this.$store.user.id) & this.$store.user.is_subscriber) {
-      this.is_owner = true;
-    }
+
     // campains datas
     axios({
       method: 'get',
@@ -111,8 +112,8 @@ export default {
         }
       ).then(response => {
         this.table = response.data.table;
-        this.$store.current_table = response.data.table;
-        if (this.table.owners.some(e => e.id === this.$store.user.id) & this.$store.user.is_subscriber) {
+        this.$store.state.current_table = response.data.table;
+        if (this.table.owners.some(e => e.id === this.$store.state.user.id) & this.$store.state.user.is_subscriber) {
           this.is_owner = true;
         } else {
           this.is_owner = false;
@@ -155,5 +156,6 @@ th
   flex-wrap: wrap;
   min-height: 600px;
 }
+
 
 </style>

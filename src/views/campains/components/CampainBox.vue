@@ -1,5 +1,5 @@
 <template>
-<div class="box m-2 is-half campain" @click="gotoCampain(campain.id)">
+<div class="box m-2 is-3 campain" @click="gotoCampain(campain.id)">
   <h1 class="campainTitle">{{ campain.title}}</h1>
   <h2 >{{ campain.game }}</h2>
 
@@ -8,7 +8,7 @@
     <img :src="campain.image_url">
   </figure>
   <ul>
-    <li>game master: {{ campain.game_master.character_name }}</li>
+    <li>game master: {{ campain.game_master.username }}</li>
     <li>description: {{ campain.description }}</li>
     <li>is ended ? : {{ campain.is_ended }}</li>
     <ul>
@@ -23,10 +23,12 @@
 <script>
 export default {
   name: "CampainBox",
-  props: ['campain'],
+  props: [
+    'campain'
+  ],
   methods: {
     gotoCampain(id) {
-      this.$store.current_campain = this.campain;
+      this.$store.state.current_campain = this.campain;
       this.$router.push({name: 'CampainView', params: {id: id}});
     }
   }

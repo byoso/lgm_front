@@ -33,7 +33,7 @@
             :hidden="!showpcsPreview" class="content border p-1">
             </div>
 
-            <div v-if="user.id === campain.game_master.user.id">
+            <div v-if="isGameMaster">
             <div class="is-flex is-justify-content-space-between m-2">
               <label class="label">GM's infos</label>
               <button class="is-small" @click="MDPreview('gmInfos')">preview</button>
@@ -78,7 +78,7 @@ export default {
   ],
   computed: {
     isGameMaster() {
-      return this.user.id === this.campain.game_master.user.id
+      return this.user.id === this.campain.game_master.id
     }
   },
   data() {

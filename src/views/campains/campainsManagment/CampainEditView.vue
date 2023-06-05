@@ -53,29 +53,6 @@
 
     </div>
 
-    <table class="table is-fullwidth mt-2">
-      <thead>
-        <tr>
-          <th>Players</th>
-          <th>Characters</th>
-          <th>Master</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="player in players" :key="player.id">
-          <td>
-            {{ player.username }}
-          </td>
-          <td>
-            <input type="text" placeholder="Character name" class="input" v-model="pcs[player.id].name">
-          </td>
-          <td>
-            <input type="radio" name="gameMasterId" :value="player.id" v-model="gameMasterId" class="radio">
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
 
     <button class="button is-success" @click.prevent="onSubmit">Confirm</button>
   </form>
@@ -95,8 +72,6 @@ export default {
       user: this.$store.state.user,
       campain: {},
       table: {},
-      players: [],
-      pcs: {},
       game: '',
       image_url: '',
       language: 'en',
@@ -109,25 +84,18 @@ export default {
   beforeMount() {
     this.table = this.$store.state.current_table
     this.campain = this.$store.state.current_campain
-    this.players = this.table.owners.concat(this.table.guests)
-    console.log("characters: ", this.campain.campain_pcs)
-    for (var i=0; this.players.length > i; i++) {
-      console.log("player: ", this.players[i])
-      let character = this.campain.campain_pcs.find(pc => pc.user.id === this.players[i].id)
-      this.pcs[this.players[i].id] = {id: this.players[i].id, name: character.character_name}
-    }
     this.game = this.campain.game
     this.image_url = this.campain.image_url
     this.language = this.campain.language
     this.campainTitle = this.campain.title
     this.camapainDescription = this.campain.description
-    this.gameMasterId = this.campain.game_master.user.id
+    this.gameMasterId = this.campain.game_master.id
     console.log("campain: \n",this.campain)
 
   },
   computed: {
     isGameMaster() {
-      return this.user.id === this.campain.game_master.user.id;
+      return this.user.id === this.campain.game_master.id;
     },
   },
   methods: {
@@ -153,7 +121,7 @@ export default {
         game: this.game,
         master_id: this.gameMasterId,
         title: this.campainTitle,
-        pcs: this.pcs,
+        // pcs: this.pcs,
         description: this.camapainDescription,
         image_url: this.image_url,
         language: this.language,

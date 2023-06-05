@@ -14,8 +14,6 @@
 
 <hr>
 
-  <label>Password for the guests</label>
-  <input type="text" class="input" placeholder="Password for the guests" v-model="table_password">
 
   <h2 class="subtitle">The Guests</h2>
   <p class="mb-2">You can add guests later if you prefer.</p>
@@ -66,7 +64,6 @@ export default {
       guests: [],
       base_key: 0,
       errors: [],
-      table_password: "",
 
     }
   },
@@ -113,7 +110,6 @@ export default {
             name: this.name,
             description: this.description,
             guests: guestsList,
-            table_password: this.table_password,
           }
         })
         .then(response => {

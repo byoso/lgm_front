@@ -56,6 +56,7 @@ export default {
           duration: 5000,
         });
         this.$router.push({ name: 'account' })
+        this.$store.state.user.username = this.username;
       })
       .catch(error => {
         this.errors.push(error.response.data);

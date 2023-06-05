@@ -53,31 +53,9 @@
 
     </div>
 
-    <table class="table is-fullwidth mt-2">
-      <thead>
-        <tr>
-          <th>Players</th>
-          <th>Characters</th>
-          <th>Master</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="player in players" :key="player.id">
-          <td>
-            {{ player.username }}
-          </td>
-          <td>
-            <input type="text" placeholder="Character name" class="input" v-model="pcs[player.id].name">
-          </td>
-          <td>
-            <input type="radio" name="gameMasterId" :value="player.id" v-model="gameMasterId" class="radio">
-          </td>
-        </tr>
-      </tbody>
-    </table>
 
 
-    <button class="button is-success" @click.prevent="onSubmit">Confirm</button>
+    <button class="button is-success mt-2" @click.prevent="onSubmit">Confirm</button>
   </form>
 
 </div>
@@ -93,12 +71,9 @@ export default {
   data() {
     return {
       table: {},
-      players: [],
-      pcs: {},
       game: '',
       image_url: '',
       language: 'en',
-      gameMasterId: null,
       campainTitle: "",
       camapainDescription: "",
       errors: [],
@@ -106,11 +81,6 @@ export default {
   },
   beforeMount() {
     this.table = this.$store.state.current_table
-    this.players = this.table.owners.concat(this.table.guests)
-    for (var i=0; this.players.length > i; i++) {
-      this.pcs[this.players[i].id] = {id: this.players[i].id, name: ""}
-    }
-
   },
   methods: {
     onSubmit() {
@@ -121,9 +91,6 @@ export default {
       }
       if (this.campainTitle === "") {
         this.errors.push("You must enter a title")
-      }
-      if (this.gameMasterId === null) {
-        this.errors.push("You must select a game master")
       }
       if (this.errors.length > 0) {
         return
@@ -138,9 +105,7 @@ export default {
         data: {
           table_id: this.table.id,
           game: this.game,
-          master_id: this.gameMasterId,
           title: this.campainTitle,
-          pcs: this.pcs,
           description: this.camapainDescription,
           image_url: this.image_url,
           language: this.language,

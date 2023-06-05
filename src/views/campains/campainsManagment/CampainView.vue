@@ -17,7 +17,8 @@
       </div>
       <div class="column is-3 ">
         <CampainTools class="campain-tools"
-        :campain="campain" :user="user" :refreshSpin="refreshSpin"
+        :campain="$store.state.current_campain" :user="$store.state.user"
+        :refreshSpin="refreshSpin"
         :maxItemsDisplay="maxItemsDisplay"
         :itemsDisplayMode="itemsDisplayMode"
         @refreshCampain="refresh_campain()"
@@ -75,6 +76,7 @@ export default {
     return {
       user: {},
       campain: {title: "no title"},
+      // campain: this.$store.state.current_campain,
       table: {},
       refreshSpin: false,
       itemsDisplayMode: 'mini',
@@ -90,10 +92,12 @@ export default {
   },
   computed: {
     isGameMaster() {
-      return this.user.id === this.campain.game_master.user.id;
+      return this.user.id === this.campain.game_master.id;
     },
   },
   beforeMount() {
+    this.user = this.$store.state.user;
+    this.campain = this.$store.state.current_campain;
     this.refresh_campain();
   },
   methods: {
@@ -171,9 +175,6 @@ export default {
       if (index !== -1) {
         this.$store.state.current_campain.items.splice(index, 1, response_item);
       }
-      // this.campain = this.$store.state.current_campain;
-
-      // let shownItem = this.shownItems.find(item => item.id === response_item.id)[0];
 
 
     },
@@ -192,8 +193,8 @@ export default {
       }
     },
     refresh_campain() {
-      this.user = this.$store.user;
-      this.campain = this.$store.current_campain;
+      this.user = this.$store.state.user;
+      this.campain = this.$store.state.current_campain;
       console.log("shownItems: ", this.shownItems)
       this.table = this.$store.state.current_table;
       this.refreshSpin = true;

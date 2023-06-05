@@ -48,6 +48,7 @@ export default {
     })
     .then(response => {
       this.user = response.data;
+      this.$store.user = this.user;
     })
     .catch(error => {
       console.log(error);

@@ -94,7 +94,7 @@ export default {
     };
   },
   beforeMount() {
-    this.user =  this.$store.user;
+    this.user =  this.$store.state.user;
     axios(
       {
         method: 'get',

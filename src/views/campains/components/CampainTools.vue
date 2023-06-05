@@ -25,7 +25,7 @@
         <router-link :to="{name: 'table', params: {id: table.id} }">
         {{ table.name }}
         </router-link>
-        <h3 class="subtitle">by {{ campain.game_master.character_name }}</h3>
+        <h3 class="subtitle">by {{ campain.game_master.username }}</h3>
       </p>
     </div>
 
@@ -60,6 +60,7 @@
       </div>
     </div>
     <div v-if="showPlayers">
+      <button v-if="isGameMaster" class="button is-small is-success m-2" @click="toggleCreatePCModal">+ New PC</button>
       <div v-for="player in campain.campain_pcs" :key="player.id" class="line-hoverable">
         {{ player.user.username }}
         <span class="is-pulled-right">{{ player.character_name }}
@@ -158,7 +159,7 @@ export default {
   ],
   computed: {
     isGameMaster() {
-      return this.user.id === this.campain.game_master.user.id;
+      return this.user.id === this.campain.game_master.id;
     },
   },
   data() {
@@ -183,6 +184,7 @@ export default {
       showPlayers: false,
       showCreateItemModal: false,
       showDisplayItemModal: false,
+      showCreatePCModal: false,
       showSettings: false,
       allowDeleteCampain: false,
       filterBy: '--All--',
@@ -211,6 +213,10 @@ export default {
     },
     toggleCreateItemModal(){
       this.showCreateItemModal = !this.showCreateItemModal;
+    },
+    toggleCreatePCModal(){
+      this.showCreatePCModal = !this.showCreatePCModal;
+      console.log("TODO: display create PC modal")
     },
     deleteCampain(id) {
       axios({
