@@ -8,6 +8,7 @@
       </button>
     </div>
 
+
     <div @click="showInfo = !showInfo" class="topic">Campain infos
       <div class="is-pulled-right mr-2">
         <fa v-if="showInfo" icon="angle-down"/>
@@ -61,13 +62,12 @@
     </div>
     <div v-if="showPlayers">
       <button v-if="isGameMaster" class="button is-small is-success m-2" @click="toggleCreatePCModal">+ New PC</button>
-      <div v-for="player in campain.campain_pcs" :key="player.id" class="line-hoverable">
-        {{ player.user.username }}
-        <span class="is-pulled-right">{{ player.character_name }}
-          <span v-if="player.user.id === campain.game_master.user.id">(GM)</span>
-        </span>
+      <div v-for="pc in campain.campain_pcs" :key="pc.id" class="line-hoverable">
+        <span v-if="pc.name"> {{ pc.name }} </span>
+        <span v-if="!pc.name">---  </span>
 
-      <div class="sep"></div>
+        <span v-if="pc.user != null" class="is-pulled-right">{{ pc.user.username }}</span>
+
       </div>
     </div>
 
@@ -138,17 +138,26 @@
     @addItem="addItem"
     />
 
+    <PCModalCreate v-if="showCreatePCModal"
+    :campain="campain" :showCreatePCModal="showCreatePCModal"
+    :user="user"
+    @closeCreatePCModal="toggleCreatePCModal"
+    @addPC="addPC"
+    />
+
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import CreateItemModal from './CreateItemModal.vue';
+import PCModalCreate from './PCModalCreate.vue';
 
 export default {
   name: "CampainTools",
   components: {
     CreateItemModal,
+    PCModalCreate,
   },
   props: [
     'user',
@@ -196,6 +205,7 @@ export default {
     this.table = this.$store.state.current_table;
     this.maxItems = this.maxItemsDisplay;
     console.log("user is ", this.user)
+    console.log('campain pcs: ', this.campain.campain_pcs)
   },
   methods: {
     changeDisplayMode() {
@@ -206,6 +216,9 @@ export default {
       this.$emit('changeMaxItemsDisplay', this.maxItems);
     },
     addItem() {
+      this.refreshCampain();
+    },
+    addPC() {
       this.refreshCampain();
     },
     refreshCampain() {
@@ -272,6 +285,7 @@ img {
 }
 .line-hoverable {
   user-select: none;
+  cursor: pointer;
 }
 .line-hoverable:hover {
   background-color: rgb(130, 234, 229);
