@@ -11,9 +11,6 @@
     <li>game master: {{ campain.game_master.username }}</li>
     <li>description: {{ campain.description }}</li>
     <li>is ended ? : {{ campain.is_ended }}</li>
-    <ul>
-      <li v-for="pc in campain.campain_pcs" :key=pc.id>- {{ pc.name }}</li>
-    </ul>
 
   </ul>
 

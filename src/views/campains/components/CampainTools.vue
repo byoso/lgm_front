@@ -62,12 +62,12 @@
     </div>
     <div v-if="showPlayers">
       <button v-if="isGameMaster" class="button is-small is-success m-2" @click="toggleCreatePCModal">+ New PC</button>
-      <div v-for="pc in campain.campain_pcs" :key="pc.id" class="line-hoverable">
+      <div v-for="pc in campain.campain_pcs" :key="pc.id" class="line-hoverable" @click="showPC(pc)">
         <span v-if="pc.name"> {{ pc.name }} </span>
         <span v-if="!pc.name">---  </span>
-
         <span v-if="pc.user != null" class="is-pulled-right">{{ pc.user.username }}</span>
-
+        <span v-else class="is-pulled-right">---</span>
+        <div class="sep"></div>
       </div>
     </div>
 
@@ -132,18 +132,36 @@
     </div>
 
     <CreateItemModal v-if="showCreateItemModal"
-    :campain="campain" :showCreateItemModal="showCreateItemModal"
-    :user="user"
-    @closeCreateItemModal="toggleCreateItemModal"
-    @addItem="addItem"
+      :campain="campain" :showCreateItemModal="showCreateItemModal"
+      :user="user"
+      @closeCreateItemModal="toggleCreateItemModal"
+      @addItem="addItem"
     />
 
     <PCModalCreate v-if="showCreatePCModal"
-    :campain="campain" :showCreatePCModal="showCreatePCModal"
-    :user="user"
-    @closeCreatePCModal="toggleCreatePCModal"
-    @addPC="addPC"
+      :campain="campain" :showCreatePCModal="showCreatePCModal"
+      :user="user"
+      @closeCreatePCModal="toggleCreatePCModal"
+      @addPC="addPC"
     />
+
+
+    <PCModalDisplay v-if="showPCModalDisplaySwitch"
+      :showIt="showPCModalDisplaySwitch"
+      :pc="pcToDisplay" :user="user"
+      :campain="campain"
+      @closePCModalDisplay="showPCModalDisplaySwitch = !showPCModalDisplaySwitch"
+      @editionModePC="editionModePC($event)"
+    />
+
+    <PCModalEdit v-if="showPCModalEditSwitch"
+    :showIt="showPCModalEditSwitch"
+    :pc="pcToDisplay" :user="user"
+    :campain="campain"
+    @closeEditPCModal="showPCModalEditSwitch = !showPCModalEditSwitch"
+
+    />
+
 
   </div>
 </template>
@@ -152,12 +170,16 @@
 import axios from 'axios';
 import CreateItemModal from './CreateItemModal.vue';
 import PCModalCreate from './PCModalCreate.vue';
+import PCModalDisplay from './PCModalDisplay.vue';
+import PCModalEdit from './PCModalEdit.vue';
 
 export default {
   name: "CampainTools",
   components: {
     CreateItemModal,
     PCModalCreate,
+    PCModalDisplay,
+    PCModalEdit,
   },
   props: [
     'user',
@@ -194,6 +216,9 @@ export default {
       showCreateItemModal: false,
       showDisplayItemModal: false,
       showCreatePCModal: false,
+      showPCModalDisplaySwitch: false,
+      showPCModalEditSwitch: false,
+      pcToDisplay: {},
       showSettings: false,
       allowDeleteCampain: false,
       filterBy: '--All--',
@@ -208,6 +233,12 @@ export default {
     console.log('campain pcs: ', this.campain.campain_pcs)
   },
   methods: {
+    editionModePC(pc) {
+      console.log("PC to edit: ", pc)
+      this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
+      this.pcToDisplay = pc;
+      this.showPCModalEditSwitch = !this.showPCModalEditSwitch;
+    },
     changeDisplayMode() {
       this.$emit('changeDisplayMode', this.displayMode);
     },
@@ -246,7 +277,13 @@ export default {
       .catch(error => {
         console.log(error)
       })
-    }
+    },
+    showPC(pc) {
+      console.log("show pc: ", pc)
+      this.pcToDisplay = pc;
+      this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
+    },
+
   }
 
 

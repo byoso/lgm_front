@@ -28,6 +28,7 @@
         @sortItems="sortItems($event)"
         @searchItems="searchItems($event)"
         @resetSearch="resetSearch()"
+
         />
 
       </div>
@@ -35,23 +36,24 @@
   </div>
 
   <ItemModalDisplay
-   v-if="showItemModalDisplaySwitch"
-   :item="itemToDisplay" :user="user"
-   :campain="campain"
-   :showIt="showItemModalDisplaySwitch"
-   @showModalDisplay="showItemModalDisplay($event)"
-   @editionMode="showItemModalEditOn($event)"
+    v-if="showItemModalDisplaySwitch"
+    :item="itemToDisplay" :user="user"
+    :campain="campain"
+    :showIt="showItemModalDisplaySwitch"
+    @showModalDisplay="showItemModalDisplay($event)"
+    @editionMode="showItemModalEditOn($event)"
   />
 
   <ItemModalEdit
-  v-if="showItemModalEditSwitch"
-  :item="itemToDisplay" :user="user"
-  :campain="campain"
-  :showIt="showItemModalEditSwitch"
-  @showModalEdit="showItemModalEditOff($event)"
-  @itemUpdated="getUpdatedItem($event)"
-  @itemDeleted="itemDeleted($event)"
+    v-if="showItemModalEditSwitch"
+    :item="itemToDisplay" :user="user"
+    :campain="campain"
+    :showIt="showItemModalEditSwitch"
+    @showModalEdit="showItemModalEditOff($event)"
+    @itemUpdated="getUpdatedItem($event)"
+    @itemDeleted="itemDeleted($event)"
   />
+
 
 </div>
 </template>
