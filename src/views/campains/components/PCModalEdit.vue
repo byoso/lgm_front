@@ -169,8 +169,8 @@ export default {
         this.$emit('closeEditPCModal')
       })
       .catch(error => {
-        console.log(error)
-        this.errors = error
+        console.log(error.response.data.message)
+        this.errors.push(error.response.data.message)
       })
 
     },

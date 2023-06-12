@@ -62,12 +62,26 @@
     </div>
     <div v-if="showPlayers">
       <button v-if="isGameMaster" class="button is-small is-success m-2" @click="toggleCreatePCModal">+ New PC</button>
-      <div v-for="pc in campain.campain_pcs" :key="pc.id" class="line-hoverable" @click="showPC(pc)">
-        <span v-if="pc.name"> {{ pc.name }} </span>
-        <span v-if="!pc.name">---  </span>
-        <span v-if="pc.user != null" class="is-pulled-right">{{ pc.user.username }}</span>
-        <span v-else class="is-pulled-right">---</span>
-        <div class="sep"></div>
+
+
+      <div v-for="pc in campain.campain_pcs" :key="pc.id">
+        <div v-if="isGameMaster | !pc.locked">
+          <div class="line-hoverable" @click="showPC(pc)">
+            <span class="mr-2"
+            v-if="isGameMaster"
+            @click="togglePcLock(pc)"
+            @mouseover="PCModalAvailable = false"
+            @mouseleave="PCModalAvailable = true">
+              <fa v-if="pc.locked" icon="eye-slash" style="color: red;" />
+              <fa v-else icon="eye" style="color: green;" />
+            </span>
+            <span v-if="pc.name"> {{ pc.name }} </span>
+            <span v-if="!pc.name">---  </span>
+            <span v-if="pc.user != null" class="is-pulled-right">{{ pc.user.username }}</span>
+            <span v-else class="is-pulled-right">---</span>
+          </div>
+          <div class="sep"></div>
+        </div>
       </div>
     </div>
 
@@ -218,6 +232,7 @@ export default {
       showDisplayItemModal: false,
       showCreatePCModal: false,
       showPCModalDisplaySwitch: false,
+      PCModalAvailable: true,
       showPCModalEditSwitch: false,
       pcToDisplay: {},
       showSettings: false,
@@ -263,6 +278,25 @@ export default {
       this.showCreatePCModal = !this.showCreatePCModal;
       console.log("TODO: display create PC modal")
     },
+    togglePcLock(pc){
+      pc.locked = !pc.locked;
+      axios({
+        method: 'put',
+        url: `/campains/pc/update/`,
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+        data: {
+          id: pc.id,
+          locked: pc.locked,
+        }
+      }).then(response => {
+        console.log(response)
+        this.$emit('updatePC', pc);
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     deleteCampain(id) {
       axios({
         method: 'delete',
@@ -281,8 +315,10 @@ export default {
     },
     showPC(pc) {
       console.log("show pc: ", pc)
-      this.pcToDisplay = pc;
-      this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
+      if (this.PCModalAvailable) {
+        this.pcToDisplay = pc;
+        this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
+      }
     },
     updatePC(pc) {
       this.$emit('updatePC', pc);

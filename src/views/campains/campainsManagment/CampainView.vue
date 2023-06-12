@@ -220,6 +220,7 @@ export default {
         console.log(this.campain.title)
         this.refreshSpin = false;
         this.filterItems(this.filterBy);
+        console.log("refreshed campain: \n", this.campain)
       })
       .catch(error => {
         console.log(error)
