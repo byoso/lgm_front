@@ -159,6 +159,7 @@
     :pc="pcToDisplay" :user="user"
     :campain="campain"
     @closeEditPCModal="showPCModalEditSwitch = !showPCModalEditSwitch"
+    @updatePC="updatePC($event)"
 
     />
 
@@ -282,6 +283,9 @@ export default {
       console.log("show pc: ", pc)
       this.pcToDisplay = pc;
       this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
+    },
+    updatePC(pc) {
+      this.$emit('updatePC', pc);
     },
 
   }

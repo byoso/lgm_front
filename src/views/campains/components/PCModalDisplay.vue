@@ -110,10 +110,6 @@ export default {
       }
     },
   },
-  data() {
-    return {
-    }
-  },
   methods: {
     editionMode(item) {
       console.log('editionMode ON')

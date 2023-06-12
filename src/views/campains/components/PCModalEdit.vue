@@ -120,6 +120,7 @@ export default {
       pcs_infos: '',
       player_infos: '',
       gm_infos: '',
+      id: null,
     }
   },
   beforeMount() {
@@ -127,6 +128,16 @@ export default {
     this.players = this.campain.table.owners.concat(this.campain.table.guests)
     console.log("players: ", this.players)
     this.name = this.pc.name
+    this.image_url = this.pc.image_url
+    if (this.pc.user !== null) {
+      this.player_id = this.pc.user.id
+    } else {
+      this.player_id = null
+    }
+    this.pcs_infos = this.pc.data_pc
+    this.player_infos = this.pc.data_player
+    this.gm_infos = this.pc.data_gm
+    this.id = this.pc.id
   },
   methods: {
     onSubmit(){
@@ -135,6 +146,7 @@ export default {
       }
       console.log("submit...")
       let data = {
+        id: this.id,
         campain_id: this.campain.id,
         name: this.name,
         image_url: this.image_url,
@@ -145,20 +157,20 @@ export default {
       }
       console.log(data)
       axios({
-        method: 'post',
-        url: '/campains/pc/edit/',
+        method: 'put',
+        url: '/campains/pc/update/',
         data: data,
         headers: {
           Authorization:  `Token ${this.$store.state.token}`
         }
       })
       .then(response => {
-        console.log(response.data)
+        this.$emit('updatePC', response.data)
         this.$emit('closeEditPCModal')
       })
       .catch(error => {
-        console.log(error.response)
-        this.errors = error.response.data
+        console.log(error)
+        this.errors = error
       })
 
     },
