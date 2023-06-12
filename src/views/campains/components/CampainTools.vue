@@ -174,6 +174,7 @@
     :campain="campain"
     @closeEditPCModal="showPCModalEditSwitch = !showPCModalEditSwitch"
     @updatePC="updatePC($event)"
+    @deletePC="deletePC($event)"
 
     />
 
@@ -314,7 +315,6 @@ export default {
       })
     },
     showPC(pc) {
-      console.log("show pc: ", pc)
       if (this.PCModalAvailable) {
         this.pcToDisplay = pc;
         this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
@@ -322,6 +322,9 @@ export default {
     },
     updatePC(pc) {
       this.$emit('updatePC', pc);
+    },
+    deletePC(pc_id) {
+      this.$emit('deletePC', pc_id);
     },
 
   }

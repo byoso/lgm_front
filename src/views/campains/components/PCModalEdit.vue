@@ -73,6 +73,12 @@
           <fa icon="circle-info" />
           <span class="tooltiptext">Edition tips</span>
         </a>
+        <div v-if="isGameMaster">
+          <button class="button is-warning is-small ml-2" @click="deleteActive=!deleteActive">delete</button>
+          <button class="button is-danger is-small" :disabled="deleteActive" @click="deletePC">
+            confirm delete
+          </button>
+        </div>
         <div>
           <p v-for="error in errors" :key="error" style="color: red;">{{ error }}</p>
         </div>
@@ -121,6 +127,7 @@ export default {
       player_infos: '',
       gm_infos: '',
       id: null,
+      deleteActive: true,
     }
   },
   beforeMount() {
@@ -140,6 +147,27 @@ export default {
     this.id = this.pc.id
   },
   methods: {
+    deletePC(){
+      this.errors = []
+      axios({
+        method: 'delete',
+        url: '/campains/pc/delete/',
+        data: {
+          id: this.id,
+          campain_id: this.campain.id,
+        },
+        headers: {
+          Authorization:  `Token ${this.$store.state.token}`
+        }
+      })
+      .then(
+        this.$emit('deletePC', this.id),
+        this.$emit('closeEditPCModal')
+      )
+      .catch(error => {
+        console.log(error.response.data)
+      })
+    },
     onSubmit(){
       if (this.player_id === '') {
         this.player_id = null

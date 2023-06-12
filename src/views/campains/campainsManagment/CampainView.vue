@@ -29,6 +29,7 @@
         @searchItems="searchItems($event)"
         @resetSearch="resetSearch()"
         @updatePC="updatePC($event)"
+        @deletePC="deletePC($event)"
 
         />
 
@@ -234,6 +235,15 @@ export default {
         this.campain.campain_pcs.splice(index, 1, pc);
       }
     },
+    deletePC(pc_id){
+      console.log("delete pc: ", pc_id)
+      let old_pc = this.campain.campain_pcs.find(item => item.id == pc_id);
+      let index = this.campain.campain_pcs.indexOf(old_pc)
+      if (index !== -1) {
+        this.campain.campain_pcs.splice(index, 1);
+      }
+
+    }
   }
 
 }
