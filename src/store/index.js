@@ -9,6 +9,9 @@ export default createStore({
     // The real values are set in TableView.vue
     current_table: {name: "current_table", id: "no_id"},
     current_campain: {name: "current_campain", id: "no_id"},
+    prefs: {
+      ItemsdisplayMode: 'mini',
+    },
   },
   getters: {
   },

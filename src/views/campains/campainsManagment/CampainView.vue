@@ -100,6 +100,7 @@ export default {
     },
   },
   beforeMount() {
+    this.itemsDisplayMode = this.$store.state.prefs.itemsDisplayMode;
     this.user = this.$store.state.user;
     this.campain = this.$store.state.current_campain;
     this.refresh_campain();
@@ -183,7 +184,8 @@ export default {
 
     },
     changeDisplayMode(value){
-      console.log("changeDisplayMode in vue: ", value)
+      console.log("this.$store.state.prefs.itemsDisplayMode: ", this.$store.state.prefs.itemsDisplayMode)
+      this.$store.state.prefs.itemsDisplayMode = value;
       this.itemsDisplayMode = value;
     },
     changeMaxItemsDisplay(value){

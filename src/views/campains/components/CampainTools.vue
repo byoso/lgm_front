@@ -40,15 +40,6 @@
       <div v-if="showSettings" >
         <div class="m-2">
           <router-link :to="{name: 'CampainEditView', params: {id: campain.id}}" class="m-2 button is-small is-warning">Edit campain...</router-link>
-          <label class="label">Danger zone</label>
-          <button class="button is-warning is-small"
-          @click="allowDeleteCampain = !allowDeleteCampain">
-          delete campain
-          </button>
-          <button  :disabled="!allowDeleteCampain"
-          @click.prevent="deleteCampain(campain.id)"
-          class="button is-danger is-small">Confirm deletion
-          </button>
         </div>
       </div>
 
@@ -237,13 +228,14 @@ export default {
       showPCModalEditSwitch: false,
       pcToDisplay: {},
       showSettings: false,
-      allowDeleteCampain: false,
       filterBy: '--All--',
       sortBy: 'date+',
       searchBy: '',
     }
   },
   beforeMount() {
+
+    this.displayMode = this.$store.state.prefs.itemsDisplayMode,
     this.table = this.$store.state.current_table;
     this.maxItems = this.maxItemsDisplay;
     console.log("user is ", this.user)
@@ -295,22 +287,6 @@ export default {
         console.log(response)
         this.$emit('updatePC', pc);
       }).catch(error => {
-        console.log(error)
-      })
-    },
-    deleteCampain(id) {
-      axios({
-        method: 'delete',
-        url: `/campains/campains/${this.campain.id}/`,
-        headers: {
-          'Authorization': `Token ${this.$store.state.token}`
-        }
-      })
-      .then(response => {
-        console.log(response)
-        this.$router.push({name: 'table', params: {id: this.table.id}});
-      })
-      .catch(error => {
         console.log(error)
       })
     },

@@ -54,7 +54,17 @@
     </div>
 
 
-    <button class="button is-success" @click.prevent="onSubmit">Confirm</button>
+    <button class="button is-success mt-2" @click.prevent="onSubmit">Confirm</button>
+    <button class="button is-secondary m-2" @click.prevent="onCancel">Cancel</button>
+
+    <button class="button is-warning m-2"
+    @click="allowDeleteCampain = !allowDeleteCampain">
+    delete campain
+    </button>
+    <button  :disabled="!allowDeleteCampain"
+    @click.prevent="deleteCampain(campain.id)"
+    class="button is-danger m-2">Confirm deletion
+    </button>
   </form>
 
 </div>
@@ -79,6 +89,7 @@ export default {
       campainTitle: "",
       camapainDescription: "",
       errors: [],
+      allowDeleteCampain: false,
     }
   },
   beforeMount() {
@@ -117,40 +128,51 @@ export default {
       }
 
       let data = {
-        table_id: this.table.id,
+        campain_id: this.campain.id,
         game: this.game,
-        master_id: this.gameMasterId,
         title: this.campainTitle,
-        // pcs: this.pcs,
         description: this.camapainDescription,
         image_url: this.image_url,
         language: this.language,
       }
       console.log("send to update: \n", data)
-      // axios({
-      //   method: 'put',
-      //   url: '/campains/update/',
-      //   headers: {
-      //     'Authorization': `Token ${this.$store.state.token}`
-      //   },
-      //   data: data
-      // })
-      // .then(response => {
-      //   console.log(response.data)
-      //   this.$router.push({name: "table", params: {id: this.$store.state.current_table.id}})
-      // })
-      // .catch(error => {
-      //   console.log(error.response.data.errors)
-      //   if (typeof(error) == Array) {
-      //     this.errors = error.response.data.errors
-      //   } else {
-      //     // the expected way
-      //     this.errors.push(
-      //       error.response.data.errors[0])
-      //   }
-      // })
+      axios({
+        method: 'put',
+        url: '/campains/update_campain/',
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+        data: data
+      })
+      .then(response => {
+        console.log(response)
+        this.$router.push({name: "CampainView", params: {id: this.$store.state.current_campain.id}})
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        this.errors.push(error.response.data.message)
+      })
 
-    }
+    },
+    onCancel() {
+      this.$router.push({name: "CampainView", params: {id: this.$store.state.current_campain.id}})
+    },
+    deleteCampain(id) {
+      axios({
+        method: 'delete',
+        url: `/campains/campains/${this.campain.id}/`,
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        }
+      })
+      .then(response => {
+        console.log(response)
+        this.$router.push({name: 'table', params: {id: this.table.id}});
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
   }
 
 }
