@@ -216,7 +216,7 @@ export default {
       typeSelected: '--All--',
       sortBySelected: 'date',
       maxItems: null,
-      displayMode: 'mini',
+      displayMode: null,
       showInfo: true,
       showItemTools: false,
       showPlayers: false,

@@ -13,36 +13,39 @@
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
       <router-link v-if="$store.state.isAuthenticated" to="/dashboard" class="navbar-item">
-        Dashboard
+        Tables
+      </router-link>
+      <router-link v-if="$store.state.isAuthenticated" to="/collections" class="navbar-item">
+        Collections
       </router-link>
     </div>
 
     <div class="navbar-end">
       <div class="navbar-item">
 
-      <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
+        <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
 
-        <span style="color: white;">{{ user.username }} </span>
+          <span style="color: white;">{{ user.username }} </span>
 
-        <a class="navbar-link">
-          <fa icon="user"/>
-        </a>
-
-        <div class="navbar-dropdown">
-          <router-link to="/account" class="navbar-item">
-            account informations
-          </router-link>
-
-          <hr class="navbar-divider">
-          <router-link to="/about" class="navbar-item">
-            About
-          </router-link>
-
-          <a class="navbar-item" href="https://github.com/byoso/lgm_front/issues" target="_blank">
-            Report an issue
+          <a class="navbar-link">
+            <fa icon="user"/>
           </a>
+
+          <div class="navbar-dropdown">
+            <router-link to="/account" class="navbar-item">
+              account informations
+            </router-link>
+
+            <hr class="navbar-divider">
+            <router-link to="/about" class="navbar-item">
+              About
+            </router-link>
+
+            <a class="navbar-item" href="https://github.com/byoso/lgm_front/issues" target="_blank">
+              Report an issue
+            </a>
+          </div>
         </div>
-      </div>
 
 
 

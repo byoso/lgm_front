@@ -19,6 +19,8 @@ import AccountView from '../views/auth/AccountView.vue'
 import ChangeUsernameView from '../views/auth/ChangeUsernameView.vue'
 import ChangePasswordView from '../views/auth/ChangePasswordView.vue'
 import ChangeEmailView from '../views/auth/ChangeEmailView.vue'
+
+import CollectionsView from '../views/campains/collections/CollectionsView.vue'
 // store
 import store from '../store'
 
@@ -125,6 +127,12 @@ const routes = [
     path: '/campain/edit/:id',
     name: 'CampainEditView',
     component: CampainEditView,
+    meta: { requireLogin: true }
+  },
+  {
+    path: '/collections/',
+    name: 'CollectionsView',
+    component: CollectionsView,
     meta: { requireLogin: true }
   },
 ]
