@@ -20,7 +20,10 @@ import ChangeUsernameView from '../views/auth/ChangeUsernameView.vue'
 import ChangePasswordView from '../views/auth/ChangePasswordView.vue'
 import ChangeEmailView from '../views/auth/ChangeEmailView.vue'
 
+// collections
 import CollectionsView from '../views/campains/collections/CollectionsView.vue'
+import CollectionDetailView from '../views/campains/collections/CollectionDetailView.vue'
+
 // store
 import store from '../store'
 
@@ -133,6 +136,12 @@ const routes = [
     path: '/collections/',
     name: 'CollectionsView',
     component: CollectionsView,
+    meta: { requireLogin: true }
+  },
+  {
+    path: '/collection/:id',
+    name: 'collectionDetailView',
+    component: CollectionDetailView,
     meta: { requireLogin: true }
   },
 ]
