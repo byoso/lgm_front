@@ -54,7 +54,7 @@ export default {
   name: 'CollectionsView',
   data(){
     return {
-      showMyCollections: false,
+      showMyCollections: true,
       showSharedCollections: false,
       myCollections: [],
     }
