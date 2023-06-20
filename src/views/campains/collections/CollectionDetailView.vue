@@ -1,11 +1,12 @@
 <template>
-<div class="container">
+<div class="container" @keydown.ctrl.s.prevent.stop="saveCollection">
   <div class="columns">
     <!-- left column -->
     <div class="column">
 
       <div class="center-elems">
-        <button class="button is-success is-small" @click="saveCollection">Save Collection</button>
+        <button class="button is_secondary is-small" v-if="anyModif" @click="cancel">Cancel</button>
+        <button class="button is-success is-small ml-2" @click="saveCollection" id="save-button">Save Collection</button>
         <button class="button is-warning is-small ml-2" @click="allowDeletion=!allowDeletion">Delete Collection</button>
         <button class="button is-danger is-small ml-2" :disabled="!allowDeletion" @click="deleteCollection">Confirm deletion</button>
       </div>
@@ -172,10 +173,11 @@
 
     <!-- right column -->
     <div class="column is-5">
-      <ItemForm
+      <ItemForm  v-if="itemToEdit.id"
       :showItemForm="showItemForm"
       :item="itemToEdit"
-      @modifiedItem="modifiedItem($event)"
+      @updateItem="updateItem($event)"
+      @deleteItem="deleteItem($event)"
       />
 
     </div>
@@ -201,6 +203,7 @@ export default {
   },
   data(){
     return {
+      initID: 0,
       showEdit: false,
       showItems: false,
       showPCs: false,
@@ -210,10 +213,12 @@ export default {
       id: null,
       showItemForm: true,
       itemList: [
-        {id: "1", name: "item1", type: null, data_pc: "test pc data"},
-        {id: "2", name: "item2", type: null, data_gm: "test gm data"}],
+        {id: "1", name: "item1", type: 'MEMO', data_pc: "test pc data"},
+        {id: "2", name: "item2", type: 'NPC', data_gm: "test gm data"}],
       itemToEdit: {},
-      itemModifiedList: [],
+      itemCreatedList: {},
+      itemUpdatedList: {},
+      itemDeletedList: [],
       pcList: [],
     }
   },
@@ -221,18 +226,66 @@ export default {
     this.id = this.$route.params.id
     this.getCollectionDetail()
   },
+  computed: {
+    anyModif() {
+      return Object.keys(this.itemCreatedList).length > 0 ||
+      Object.keys(this.itemUpdatedList).length > 0 ||
+      this.itemDeletedList.length > 0
+    },
+  },
   methods: {
-    modifiedItem(id) {
-      console.log('modified item: ', id)
-      this.itemModifiedList.push({id: id, action: update})
+    cancel(){
+      this.$router.push({name: 'CollectionsView'})
+    },
+    get_temp_id() {
+      this.initID += 1
+      return "temp_id_" + this.initID.toString()
     },
     editItem(item) {
       this.showItemForm = true
       this.itemToEdit = item
-      console.log(this.itemToEdit.name)
+      console.log('itemToEdit: ', this.itemToEdit.name)
+    },
+    updateItem(item) {
+      console.log('modified item: ', item)
+      if (item.id.startsWith('temp_id_')) {
+        this.itemCreatedList[item.id] = item
+      }
+      else {
+        this.itemUpdatedList[item.id] = item
+      }
+      console.log('itemUpdatedList: ', this.itemUpdatedList)
+      console.log('itemCreatedList: ', this.itemCreatedList)
     },
     createItem() {
-      this.itemList.push({id: null, name: "New Item"})
+      let new_item = {
+        id: this.get_temp_id(),
+        name: "New Item",
+        type: "MEMO",
+        }
+      this.itemList.unshift(new_item)
+      this.itemCreatedList[new_item.id] = new_item
+      console.log('itemCreatedList: ', this.itemCreatedList)
+      console.log('itemUpdatedList: ', this.itemUpdatedList)
+    },
+    deleteItem(id){
+      this.itemList = this.itemList.filter(item => item.id !== id)
+      // If the item is not a temporary item, add it to the list of items to delete
+      if (!id.startsWith('temp_id_')) {
+        this.itemDeletedList.push(id)
+      }
+      // If the item is a temporary item, remove it from the list of items to create
+      else {
+        delete this.itemCreatedList[id]
+      }
+      // anyway, remove the item from the list of items to update
+      delete this.itemUpdatedList[id]
+
+      this.itemToEdit = {}
+      console.log('delete item: ', id)
+      console.log('itemUpdatedList', this.itemUpdatedList)
+      console.log('itemCreatedList: ', this.itemCreatedList)
+      console.log('itemDeletedList: ', this.itemDeletedList)
     },
     createPC() {
       console.log('create pc')

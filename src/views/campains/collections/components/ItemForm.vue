@@ -4,12 +4,18 @@
         <form>
           <div class="control">
             <label class="label">Name</label>
-            <input class="input" type="text" placeholder="Name" v-model="item.name">
+            <input class="input" type="text" placeholder="Name" v-model="item.name" @keyup="updateItem">
             <label class="label">Image url</label>
-            <input class="input" type="text" placeholder="image url" v-model="item.image_url">
+            <div class="center-elems">
+              <input class="input mr-2" type="text" placeholder="image url"
+              v-model="item.image_url"  @keyup="updateItem"
+              >
+              <img v-if="item.image_url" :src="item.image_url" alt="not found" class="image-preview">
+              <img v-else src="https://bulma.io/images/placeholders/128x128.png" alt="not found" class="image-preview">
 
+            </div>
               <label class="label">Type</label>
-              <div class="select">
+              <div class="select"  @change="updateItem">
                 <select v-model="item.type">
                   <option v-for="type in itemTypes" :key="type">{{ type }}</option>
                 </select>
@@ -21,7 +27,11 @@
               <button class="is-small" @click="MDPreview('pcsInfos')">preview</button>
             </div>
             <div :hidden="showpcsPreview">
-              <textarea class="textarea" placeholder="Informations for the players" id="pcsInfos" v-model="item.data_pc"></textarea>
+              <textarea
+               @keyup="updateItem"
+              class="textarea" placeholder="Informations for the players"
+              id="pcsInfos" v-model="item.data_pc">
+              </textarea>
             </div>
             <div id="pcsInfosPreview" @click="MDPreview('pcsInfos')"
             :hidden="!showpcsPreview" class="content border p-1">
@@ -33,7 +43,11 @@
               <button class="is-small" @click="MDPreview('gmInfos')">preview</button>
             </div>
             <div :hidden="showgmPreview">
-              <textarea class="textarea" placeholder="Informations for the GM only" id="gmInfos" v-model="item.data_gm"></textarea>
+              <textarea
+               @keyup="updateItem"
+              class="textarea" placeholder="Informations for the GM only"
+              id="gmInfos" v-model="item.data_gm">
+              </textarea>
             </div>
             <div id="gmInfosPreview" @click="MDPreview('gmInfos')"
             :hidden="!showgmPreview" class="content border p-1">
@@ -43,6 +57,9 @@
         </form>
         <div>
           <p v-for="error in errors" :key="error" style="color: red;">{{ error }}</p>
+        </div>
+        <div class="mt-2">
+          <button class="button is-danger is-small" @click="$emit('deleteItem', item.id)">Delete</button>
         </div>
 
   </div>
@@ -90,14 +107,27 @@ export default {
       let previewElem = document.getElementById(textId + 'Preview')
       previewElem.innerHTML = this.MDPreviewContent
     },
-    modifiedItem(item) {
-      this.$emit('modifiedItem', item.id)
+    updateItem() {
+      this.$emit('updateItem', this.item)
+    },
+    deleteItem(item) {
+      this.$emit('deleteItem', item.id)
     },
   }
 
 }
 </script>
 
-<style>
+<style scoped>
+.image-preview {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.center-elems {
+  margin: 4px;
+  display: flex;
+  justify-content: center;
+}
 
 </style>

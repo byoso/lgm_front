@@ -110,10 +110,6 @@ export default {
       if (!this.isGameMaster) {
         this.itemType = 'MEMO'
       }
-      if (this.itemName === '') {
-        this.errors.push('Name required.')
-        return
-      }
       if (this.itemType === null) {
         this.errors.push('Type required.')
         return

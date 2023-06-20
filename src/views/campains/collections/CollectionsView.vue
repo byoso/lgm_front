@@ -11,7 +11,7 @@
 
     <div v-if="showMyCollections">
       <button class="button is-success is-small m-2" @click="collectionCreate">+ New Collection</button>
-      <div>
+      <div v-if="myCollections.length">
         <table class="table is-fullwidth">
           <thead>
             <tr>
