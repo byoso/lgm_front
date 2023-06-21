@@ -1,5 +1,5 @@
 <template>
-<div class="container" @keydown.ctrl.s.prevent.stop="saveCollection">
+<div class="" @keydown.ctrl.s.prevent.stop="saveCollection">
   <div class="columns">
     <!-- left column -->
     <div class="column">
@@ -146,9 +146,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in itemList" :key="item.id" class="hoverable is-small" @click="editItem(item)">
+            <tr v-for="item in itemList" :key="item.id" class="hoverable is-small" @click="editItem(item)"
+            :class="{'item-creation': item.id.startsWith('temp_id_')}"
+            >
               <td >{{item.name}}</td>
-              <td>{{item.type}}</td>
+              <td :class="item.type">{{item.type}}</td>
             </tr>
           </tbody>
 
@@ -215,11 +217,11 @@ export default {
       itemList: [
         {id: "1", name: "item1", type: 'MEMO', data_pc: "test pc data"},
         {id: "2", name: "item2", type: 'NPC', data_gm: "test gm data"}],
+      pcList: [],
       itemToEdit: {},
       itemCreatedList: {},
       itemUpdatedList: {},
       itemDeletedList: [],
-      pcList: [],
     }
   },
   beforeMount(){
@@ -282,6 +284,7 @@ export default {
       delete this.itemUpdatedList[id]
 
       this.itemToEdit = {}
+
       console.log('delete item: ', id)
       console.log('itemUpdatedList', this.itemUpdatedList)
       console.log('itemCreatedList: ', this.itemCreatedList)
@@ -302,8 +305,17 @@ export default {
         }
       })
       .then(response => {
-        this.collection = response.data
-        console.log(this.collection)
+        this.collection = response.data.collection_details
+        this.itemList = response.data.items
+        // this.pcList = response.data.pcs
+        // console.log(this.collection)
+        this.itemCreatedList = {}
+        this.itemUpdatedList = {}
+        this.itemDeletedList = []
+
+        if (this.itemToEdit.id.startsWith('temp_id_')){
+          this.itemToEdit = {}
+        }
       })
       .catch(error => {
         console.log(error);
@@ -342,6 +354,10 @@ export default {
           description: this.collection.description,
           image_url: this.collection.image_url,
           is_shared: this.collection.is_shared,
+          // items actions
+          items_to_create: this.itemCreatedList,
+          items_to_update: this.itemUpdatedList,
+          items_to_delete: this.itemDeletedList,
         }
       })
       .then(response => {
@@ -354,6 +370,7 @@ export default {
           duration: 2000,
         });
         console.log(response.data)
+        this.getCollectionDetail()
       })
       .catch(error => {
         toast({
@@ -402,4 +419,35 @@ img {
   color: rgb(92, 92, 92);
   cursor: pointer;
 }
+
+.item-creation {
+  background-color: rgb(192, 209, 255);
+}
+
+
+.NPC {
+  background-color: #ffa76d;
+}
+.ORGANIZATION {
+  background-color: #8a9df3;
+}
+.EVENT {
+  background-color: #ec746c;
+}
+.LOCATION {
+  background-color: #7bc881;
+}
+.NOTE {
+  background-color: #a8dae3;
+}
+.RECAP {
+  background-color: #d096e4;
+}
+.MISC {
+  background-color: #bbbbbb;
+}
+.MEMO {
+  background-color: #f5e570;
+}
+
 </style>

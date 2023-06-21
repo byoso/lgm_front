@@ -3,6 +3,7 @@
   <div :class="{'is-active': showItemForm}">
         <form>
           <div class="control">
+            <div v-if="item.id.startsWith('temp_id_')" class="item-creation">* Item Creation</div>
             <label class="label">Name</label>
             <input class="input" type="text" placeholder="Name" v-model="item.name" @keyup="updateItem">
             <label class="label">Image url</label>
@@ -119,6 +120,10 @@ export default {
 </script>
 
 <style scoped>
+img {
+  color: red;
+}
+
 .image-preview {
   max-width: 40px;
   max-height: 40px;
@@ -129,5 +134,10 @@ export default {
   display: flex;
   justify-content: center;
 }
+
+.item-creation {
+  background-color: rgb(192, 209, 255);
+}
+
 
 </style>
