@@ -248,10 +248,7 @@ export default {
       showItemForm: false,
       showPcForm: false,
       itemList: [],
-      pcList: [
-        {id: '1', name: 'PC1'},
-        {id: '2', name: 'PC2'},
-      ],
+      pcList: [],
       itemToEdit: {},
       itemCreatedList: {},
       itemUpdatedList: {},
@@ -395,7 +392,7 @@ export default {
       .then(response => {
         this.collection = response.data.collection_details
         this.itemList = response.data.items
-        // this.pcList = response.data.pcs
+        this.pcList = response.data.pcs
         // console.log(this.collection)
         this.itemCreatedList = {}
         this.itemUpdatedList = {}
@@ -404,13 +401,17 @@ export default {
         this.pcUpdatedList = {}
         this.pcDeletedList = []
 
-        if (this.itemToEdit.id.startsWith('temp_id_')){
-          this.itemToEdit = {}
-          this.showItemForm = false
+        if ('id' in this.itemToEdit) {
+          if (this.itemToEdit.id.startsWith('temp_id_')){
+            this.itemToEdit = {}
+            this.showItemForm = false
+          }
         }
-        if (this.pcToEdit.id.startsWith('temp_id_')){
-          this.pcToEdit = {}
-          this.showPcForm = false
+        if ('id' in this.pcToEdit) {
+          if (this.pcToEdit.id.startsWith('temp_id_')){
+            this.pcToEdit = {}
+            this.showPcForm = false
+          }
         }
       })
       .catch(error => {
