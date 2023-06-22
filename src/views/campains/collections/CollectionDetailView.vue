@@ -7,8 +7,20 @@
       <div class="center-elems">
         <button class="button is_secondary is-small" v-if="anyModif" @click="cancel">Cancel</button>
         <button class="button is-success is-small ml-2" @click="saveCollection" id="save-button">Save Collection</button>
-        <button class="button is-warning is-small ml-2" @click="allowDeletion=!allowDeletion">Delete Collection</button>
-        <button class="button is-danger is-small ml-2" :disabled="!allowDeletion" @click="deleteCollection">Confirm deletion</button>
+        <button class="button is-warning is-small ml-2" @click="allowDeletion=!allowDeletion">
+          <span v-if="!allowDeletion">
+            Delete Collection
+          </span>
+          <span v-else>
+            NO ! Cancel !
+          </span>
+        </button>
+        <div v-if="allowDeletion">
+          <span style="color: red;" class="m-2">Are you really sure ?</span>
+          <button class="button is-danger is-small ml-2" @click="deleteCollection">
+            YES ! Confirm deletion
+          </button>
+        </div>
       </div>
 
       <!-- details section -->
@@ -153,7 +165,6 @@
               <td :class="item.type">{{item.type}}</td>
             </tr>
           </tbody>
-
         </table>
 
       </div>
@@ -168,21 +179,43 @@
         </div>
       </div>
       <div v-if="showPCs">
-        <p class="hoverable" @click="createPC">+ New PC</p>
+        <p class="hoverable" @click="createPc">+ New PC</p>
+        <table v-if="pcList.length" class="table is-fullwidth is-narrow">
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="pc in pcList" :key="pc.id" class="hoverable is-small" @click="editPc(pc)"
+            :class="{'item-creation': pc.id.startsWith('temp_id_')}"
+            >
+              <td >{{pc.name}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
     </div>
 
     <!-- right column -->
     <div class="column is-5">
-      <ItemForm  v-if="itemToEdit.id"
+      <ItemForm  v-if="showItemForm"
       :showItemForm="showItemForm"
       :item="itemToEdit"
       @updateItem="updateItem($event)"
       @deleteItem="deleteItem($event)"
       />
 
+      <PcForm  v-if="showPcForm"
+      :showPcForm="showPcForm"
+      :pc="pcToEdit"
+      @updatePc="updatePc($event)"
+      @deletePc="deletePc($event)"
+      />
+
     </div>
+
 
   </div>
 
@@ -195,13 +228,13 @@
 import axios from 'axios';
 import {toast} from 'bulma-toast';
 import ItemForm from './components/ItemForm.vue'
-import PCForm from './components/PCForm.vue'
+import PcForm from './components/PcForm.vue'
 
 export default {
   name: 'CollectionDetailView',
   components: {
     ItemForm,
-    PCForm,
+    PcForm,
   },
   data(){
     return {
@@ -209,19 +242,24 @@ export default {
       showEdit: false,
       showItems: false,
       showPCs: false,
-      showEditionWindow: true,
       allowDeletion: false,
       collection: {},
       id: null,
-      showItemForm: true,
-      itemList: [
-        {id: "1", name: "item1", type: 'MEMO', data_pc: "test pc data"},
-        {id: "2", name: "item2", type: 'NPC', data_gm: "test gm data"}],
-      pcList: [],
+      showItemForm: false,
+      showPcForm: false,
+      itemList: [],
+      pcList: [
+        {id: '1', name: 'PC1'},
+        {id: '2', name: 'PC2'},
+      ],
       itemToEdit: {},
       itemCreatedList: {},
       itemUpdatedList: {},
       itemDeletedList: [],
+      pcToEdit: {},
+      pcCreatedList: {},
+      pcUpdatedList: {},
+      pcDeletedList: [],
     }
   },
   beforeMount(){
@@ -232,7 +270,9 @@ export default {
     anyModif() {
       return Object.keys(this.itemCreatedList).length > 0 ||
       Object.keys(this.itemUpdatedList).length > 0 ||
-      this.itemDeletedList.length > 0
+      this.itemDeletedList.length > 0 ||
+      Object.keys(this.pcCreatedList).length > 0 ||
+      Object.keys(this.pcUpdatedList).length > 0
     },
   },
   methods: {
@@ -243,10 +283,29 @@ export default {
       this.initID += 1
       return "temp_id_" + this.initID.toString()
     },
+    editPc(pc) {
+      this.showItemForm = false
+      this.showPcForm = true
+      this.pcToEdit = pc
+      console.log('pcToEdit: ', this.pcToEdit.name)
+    },
     editItem(item) {
+      this.showPcForm = false
       this.showItemForm = true
       this.itemToEdit = item
       console.log('itemToEdit: ', this.itemToEdit.name)
+    },
+    updatePc(pc){
+      console.log('modified pc: ', pc)
+      if (pc.id.startsWith('temp_id_')) {
+        this.pcCreatedList[pc.id] = pc
+      }
+      else {
+        this.pcUpdatedList[pc.id] = pc
+      }
+      console.log('itemUpdatedList: ', this.pcUpdatedList)
+      console.log('itemCreatedList: ', this.pcCreatedList)
+
     },
     updateItem(item) {
       console.log('modified item: ', item)
@@ -259,6 +318,17 @@ export default {
       console.log('itemUpdatedList: ', this.itemUpdatedList)
       console.log('itemCreatedList: ', this.itemCreatedList)
     },
+    createPc() {
+      console.log('create pc')
+      let new_pc = {
+        id: this.get_temp_id(),
+        name: "New PC",
+        }
+      this.pcList.unshift(new_pc)
+      this.pcCreatedList[new_pc.id] = new_pc
+      console.log('pcCreatedList: ', this.pcCreatedList)
+      console.log('pcUpdatedList: ', this.pcUpdatedList)
+    },
     createItem() {
       let new_item = {
         id: this.get_temp_id(),
@@ -269,6 +339,27 @@ export default {
       this.itemCreatedList[new_item.id] = new_item
       console.log('itemCreatedList: ', this.itemCreatedList)
       console.log('itemUpdatedList: ', this.itemUpdatedList)
+    },
+    deletePc(id){
+      this.pcList = this.pcList.filter(pc => pc.id !== id)
+      // If the pc is not a temporary pc, add it to the list of pcs to delete
+      if (!id.startsWith('temp_id_')) {
+        this.pcDeletedList.push(id)
+      }
+      // If the pc is a temporary pc, remove it from the list of pcs to create
+      else {
+        delete this.pcCreatedList[id]
+      }
+      // anyway, remove the pc from the list of pcs to update
+      delete this.pcUpdatedList[id]
+      this.showPcForm = false
+      this.pcToEdit = {}
+
+      console.log('delete pc: ', id)
+      console.log('pcUpdatedList', this.pcUpdatedList)
+      console.log('pcCreatedList: ', this.pcCreatedList)
+      console.log('pcDeletedList: ', this.pcDeletedList)
+
     },
     deleteItem(id){
       this.itemList = this.itemList.filter(item => item.id !== id)
@@ -282,16 +373,13 @@ export default {
       }
       // anyway, remove the item from the list of items to update
       delete this.itemUpdatedList[id]
-
+      this.showItemForm = false
       this.itemToEdit = {}
 
       console.log('delete item: ', id)
       console.log('itemUpdatedList', this.itemUpdatedList)
       console.log('itemCreatedList: ', this.itemCreatedList)
       console.log('itemDeletedList: ', this.itemDeletedList)
-    },
-    createPC() {
-      console.log('create pc')
     },
     getCollectionDetail(){
       axios({
@@ -312,9 +400,17 @@ export default {
         this.itemCreatedList = {}
         this.itemUpdatedList = {}
         this.itemDeletedList = []
+        this.pcCreatedList = {}
+        this.pcUpdatedList = {}
+        this.pcDeletedList = []
 
         if (this.itemToEdit.id.startsWith('temp_id_')){
           this.itemToEdit = {}
+          this.showItemForm = false
+        }
+        if (this.pcToEdit.id.startsWith('temp_id_')){
+          this.pcToEdit = {}
+          this.showPcForm = false
         }
       })
       .catch(error => {
@@ -358,6 +454,10 @@ export default {
           items_to_create: this.itemCreatedList,
           items_to_update: this.itemUpdatedList,
           items_to_delete: this.itemDeletedList,
+          // pcs actions
+          pcs_to_create: this.pcCreatedList,
+          pcs_to_update: this.pcUpdatedList,
+          pcs_to_delete: this.pcDeletedList,
         }
       })
       .then(response => {
