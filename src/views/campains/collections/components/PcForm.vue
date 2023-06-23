@@ -1,6 +1,7 @@
 <template>
 
-  <div :class="{'is-active': showPcForm}">
+  <div :class="{'is-active': showPcForm}"
+  >
         <form>
           <div class="control">
             <div v-if="pc.id.startsWith('temp_id_')" class="item-creation">* PC Creation</div>
@@ -16,50 +17,55 @@
 
             </div>
 
+            <!-- PCs -->
             <div class="is-flex is-justify-content-space-between m-2">
               <label class="label">PC's infos</label>
-              <button class="is-small" @click="MDPreview('pcsInfos')">preview</button>
+              <button class="is-small" @click="showpcsPreview=!showpcsPreview">preview</button>
             </div>
             <div :hidden="showpcsPreview">
               <textarea
                @keyup="updatePc"
               class="textarea" placeholder="Informations for the players"
-              id="pcsInfos" v-model="pc.data_pc">
+              v-model="pc.data_pc">
               </textarea>
             </div>
-            <div id="pcsInfosPreview" @click="MDPreview('pcsInfos')"
-            :hidden="!showpcsPreview" class="content border p-1">
+            <div @click="showpcsPreview=false"
+            :hidden="!showpcsPreview" class="content border p-1 hoverable">
+              <div v-html="pcPreview"></div>
             </div>
 
+            <!-- Player -->
             <div class="is-flex is-justify-content-space-between m-2">
               <label class="label">Player's infos</label>
-              <button class="is-small" @click="MDPreview('playerInfos')">preview</button>
+              <button class="is-small" @click="showplayerPreview=!showplayerPreview">preview</button>
             </div>
             <div :hidden="showplayerPreview">
               <textarea
                @keyup="updatePc"
               class="textarea" placeholder="Informations for the player of the character"
-              id="playerInfos" v-model="pc.data_player">
+              v-model="pc.data_player">
               </textarea>
             </div>
-            <div id="playerInfosPreview" @click="MDPreview('playerInfos')"
-            :hidden="!showpcsPreview" class="content border p-1">
+            <div @click="showplayerPreview=false"
+            :hidden="!showplayerPreview" class="content border p-1 hoverable">
+              <div v-html="playerPreview"></div>
             </div>
 
-
+            <!-- GM -->
             <div class="is-flex is-justify-content-space-between m-2">
               <label class="label">GM's infos</label>
-              <button class="is-small" @click="MDPreview('gmInfos')">preview</button>
+              <button class="is-small" @click="showgmPreview=!showgmPreview">preview</button>
             </div>
             <div :hidden="showgmPreview">
               <textarea
                @keyup="updatePc"
               class="textarea" placeholder="Informations for the GM only"
-              id="gmInfos" v-model="pc.data_gm">
+              v-model="pc.data_gm">
               </textarea>
             </div>
-            <div id="gmInfosPreview" @click="MDPreview('gmInfos')"
-            :hidden="!showgmPreview" class="content border p-1">
+            <div @click="showgmPreview=false"
+            :hidden="!showgmPreview" class="content border p-1 hoverable">
+              <div v-html="gmPreview"></div>
             </div>
 
           </div>
@@ -89,25 +95,41 @@ export default {
       errors: [],
       pcName: this.pc.name,
       pcImageUrl: this.pc.imageUrl,
-      pcPCsInfos: this.pc.pcsInfos,
-      pcGmInfos: this.pc.gmInfos,
+    }
+  },
+  computed:{
+    pcPCsInfos(){
+      return this.pc.data_pc
+    },
+    pcPreview(){
+      let render = ""
+      if (this.pcPCsInfos !== null && this.pcPCsInfos !== undefined) {
+        render = marked.parse(this.pcPCsInfos)
+      }
+      return render
+    },
+    playerInfos(){
+      return this.pc.data_player
+    },
+    playerPreview(){
+      let render = ""
+      if (this.playerInfos !== null && this.playerInfos !== undefined) {
+        render = marked.parse(this.playerInfos)
+      }
+      return render
+    },
+    pcGmInfos(){
+      return this.pc.data_gm
+    },
+    gmPreview(){
+      let render = ""
+      if (this.pcGmInfos !== null && this.pcGmInfos !== undefined) {
+        render = marked.parse(this.pcGmInfos)
+      }
+      return render
     }
   },
   methods: {
-    MDPreview(textId) {
-      if (textId === 'pcsInfos') {
-        this.showpcsPreview = !this.showpcsPreview
-      } else if (textId === 'gmInfos') {
-        this.showgmPreview = !this.showgmPreview
-      } else if (textId === 'playerInfos') {
-        this.showplayerPreview = !this.showplayerPreview
-      }
-      let elem = document.getElementById(textId);
-      let text = elem.value;
-      this.MDPreviewContent = marked.parse(text)
-      let previewElem = document.getElementById(textId + 'Preview')
-      previewElem.innerHTML = this.MDPreviewContent
-    },
     updatePc() {
       this.$emit('updatePc', this.pc)
     },
@@ -137,6 +159,10 @@ img {
 
 .item-creation {
   background-color: rgb(192, 209, 255);
+}
+
+.hoverable:hover {
+  cursor: pointer;
 }
 
 

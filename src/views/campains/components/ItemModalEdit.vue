@@ -145,10 +145,6 @@ export default {
     },
     confirmUpdate() {
       this.errors = [];
-      if (this.itemName === '') {
-        this.errors.push('Name required.');
-        return
-      }
       if (!this.isGameMaster) {
         this.itemType = 'MEMO'
       }

@@ -2,9 +2,9 @@
 <div class="" @keydown.ctrl.s.prevent.stop="saveCollection">
   <div class="columns">
     <!-- left column -->
-    <div class="column">
-
-      <div class="center-elems">
+    <div class="column left-column">
+      <h1 class="subtitle">{{ collection.name }}</h1>
+      <div class="center-elems unscrollable">
         <button class="button is_secondary is-small" v-if="anyModif" @click="cancel">Cancel</button>
         <button class="button is-success is-small ml-2" @click="saveCollection" id="save-button">Save Collection</button>
         <button class="button is-warning is-small ml-2" @click="allowDeletion=!allowDeletion">
@@ -23,197 +23,211 @@
         </div>
       </div>
 
-      <!-- details section -->
-      <h1 class="title">{{ collection.name }}</h1>
 
-      <div @click="showEdit = !showEdit" class="topic">Edit
-        <div class="is-pulled-right mr-2">
-          <fa v-if="showEdit" icon="angle-down"/>
-          <fa v-if="!showEdit" icon="angle-right"/>
-        </div>
-      </div>
-      <div v-if="showEdit">
+      <div class="scrollable">
+        <!-- details section -->
 
-        <div class="field is-horizontal mt-2">
-          <div class="field-label">
-            <label class="label is-small">Name</label>
+        <div @click="showEdit = !showEdit" class="topic">Edit
+          <div class="is-pulled-right mr-2">
+            <fa v-if="showEdit" icon="angle-down"/>
+            <fa v-if="!showEdit" icon="angle-right"/>
           </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <input class="input is-small" type="text" placeholder="Collection name" v-model="collection.name">
+        </div>
+        <div v-if="showEdit">
+
+          <div class="field is-horizontal mt-2">
+            <div class="field-label">
+              <label class="label is-small">Name</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input is-small" type="text" placeholder="Collection name" v-model="collection.name">
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <label class="label is-small">Game</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <input class="input is-small" type="text" placeholder="Game" v-model="collection.game">
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <label class="label is-small">Game</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input is-small" type="text" placeholder="Game" v-model="collection.game">
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <label class="label is-small">language</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <select v-model="collection.language" class="is-small">
-                  <option value="ar">Arabic</option>
-                  <option value="cs">Czech</option>
-                  <option value="zh">Chinese</option>
-                  <option value="da">Danish</option>
-                  <option value="nl">Dutch</option>
-                  <option value="en">English</option>
-                  <option value="fi">Finnish</option>
-                  <option value="fr">French</option>
-                  <option value="de">German</option>
-                  <option value="el">Greek</option>
-                  <option value="hi">Hindi</option>
-                  <option value="hu">Hungarian</option>
-                  <option value="it">Italian</option>
-                  <option value="ja">Japanese</option>
-                  <option value="ko">Korean</option>
-                  <option value="no">Norwegian</option>
-                  <option value="fa">Persian</option>
-                  <option value="pl">Polish</option>
-                  <option value="pt">Portuguese</option>
-                  <option value="ru">Russian</option>
-                  <option value="es">Spanish</option>
-                  <option value="sv">Swedish</option>
-                  <option value="th">Thai</option>
-                  <option value="tr">Turkish</option>
-                  <option value="vi">Vietnamese</option>
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <label class="label is-small">language</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <select v-model="collection.language" class="is-small">
+                    <option value="ar">Arabic</option>
+                    <option value="cs">Czech</option>
+                    <option value="zh">Chinese</option>
+                    <option value="da">Danish</option>
+                    <option value="nl">Dutch</option>
+                    <option value="en">English</option>
+                    <option value="fi">Finnish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="el">Greek</option>
+                    <option value="hi">Hindi</option>
+                    <option value="hu">Hungarian</option>
+                    <option value="it">Italian</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="no">Norwegian</option>
+                    <option value="fa">Persian</option>
+                    <option value="pl">Polish</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                    <option value="es">Spanish</option>
+                    <option value="sv">Swedish</option>
+                    <option value="th">Thai</option>
+                    <option value="tr">Turkish</option>
+                    <option value="vi">Vietnamese</option>
 
-                </select>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <label class="label is-small">Image url</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <input class="input is-small" type="text" placeholder="Image url" v-model="collection.image_url">
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <label class="label is-small">Image url</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input is-small" type="text" placeholder="Image url" v-model="collection.image_url">
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <label class="label is-small">Description</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <textarea class="textarea is-small"
-                placeholder="Description" v-model="collection.description">
-                </textarea>
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <label class="label is-small">Description</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <textarea class="textarea is-small"
+                  placeholder="Description" v-model="collection.description">
+                  </textarea>
+                </div>
               </div>
             </div>
           </div>
+
+          <p>
+              <label class="label">Share with the community:
+                <input type="checkbox" v-model="collection.is_shared">
+              </label>
+          </p>
+          <div class="center-elems">
+            <img :src="collection.image_url"
+            alt="[image not found]" v-if="collection.image_url!==''">
+          </div>
+
         </div>
 
-        <p>
-            <label class="label">Share with the community:
-              <input type="checkbox" v-model="collection.is_shared">
-            </label>
-        </p>
-        <div class="center-elems">
-          <img :src="collection.image_url"
-          alt="[image not found]" v-if="collection.image_url!==''">
+        <!-- items section -->
+
+        <div @click="showItems = !showItems" class="topic">Items
+          <div class="is-pulled-right mr-2">
+            <fa v-if="showItems" icon="angle-down"/>
+            <fa v-if="!showItems" icon="angle-right"/>
+          </div>
+        </div>
+        <div v-if="showItems">
+          <p class="hoverable" @click="createItem">+ New Item</p>
+          <table v-if="itemList.length" class="table is-fullwidth is-narrow">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in itemList" :key="item.id" class="hoverable is-small" @click="editItem(item)"
+              :class="{'item-creation': item.id.startsWith('temp_id_')}"
+              >
+                <td >{{item.name}}</td>
+                <td :class="item.type">{{item.type}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+
+        <!-- PCs section -->
+
+        <div @click="showPCs = !showPCs" class="topic">PCs
+          <div class="is-pulled-right mr-2">
+            <fa v-if="showPCs" icon="angle-down"/>
+            <fa v-if="!showPCs" icon="angle-right"/>
+          </div>
+        </div>
+        <div v-if="showPCs">
+          <p class="hoverable" @click="createPc">+ New PC</p>
+          <table v-if="pcList.length" class="table is-fullwidth is-narrow">
+            <thead>
+              <tr>
+                <th>Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="pc in pcList" :key="pc.id" class="hoverable is-small" @click="editPc(pc)"
+              :class="{'item-creation': pc.id.startsWith('temp_id_')}"
+              >
+                <td >{{pc.name}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
       </div>
 
-      <!-- items section -->
-
-      <div @click="showItems = !showItems" class="topic">Items
-        <div class="is-pulled-right mr-2">
-          <fa v-if="showItems" icon="angle-down"/>
-          <fa v-if="!showItems" icon="angle-right"/>
-        </div>
-      </div>
-      <div v-if="showItems">
-        <p class="hoverable" @click="createItem">+ New Item</p>
-        <table v-if="itemList.length" class="table is-fullwidth is-narrow">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in itemList" :key="item.id" class="hoverable is-small" @click="editItem(item)"
-            :class="{'item-creation': item.id.startsWith('temp_id_')}"
-            >
-              <td >{{item.name}}</td>
-              <td :class="item.type">{{item.type}}</td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-
-
-      <!-- PCs section -->
-
-      <div @click="showPCs = !showPCs" class="topic">PCs
-        <div class="is-pulled-right mr-2">
-          <fa v-if="showPCs" icon="angle-down"/>
-          <fa v-if="!showPCs" icon="angle-right"/>
-        </div>
-      </div>
-      <div v-if="showPCs">
-        <p class="hoverable" @click="createPc">+ New PC</p>
-        <table v-if="pcList.length" class="table is-fullwidth is-narrow">
-          <thead>
-            <tr>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="pc in pcList" :key="pc.id" class="hoverable is-small" @click="editPc(pc)"
-            :class="{'item-creation': pc.id.startsWith('temp_id_')}"
-            >
-              <td >{{pc.name}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
 
     </div>
 
     <!-- right column -->
-    <div class="column is-5">
-      <ItemForm  v-if="showItemForm"
-      :showItemForm="showItemForm"
-      :item="itemToEdit"
-      @updateItem="updateItem($event)"
-      @deleteItem="deleteItem($event)"
-      />
+    <div class="column is-6">
+      <div class="unscrollable">
+        <div v-if="showItemForm">
+          <h1 class="subtitle" :class="itemToEdit.type">{{ itemToEdit.name }}</h1>
+        </div>
+        <div v-if="showPcForm">
+          <h1 class="subtitle edit-title">{{ pcToEdit.name }}</h1>
+        </div>
+      </div>
 
-      <PcForm  v-if="showPcForm"
-      :showPcForm="showPcForm"
-      :pc="pcToEdit"
-      @updatePc="updatePc($event)"
-      @deletePc="deletePc($event)"
-      />
+      <div class="scrollable">
+        <ItemForm  v-if="showItemForm"
+        :showItemForm="showItemForm"
+        :item="itemToEdit"
+        @updateItem="updateItem($event)"
+        @deleteItem="deleteItem($event)"
+        />
 
+        <PcForm  v-if="showPcForm"
+        :showPcForm="showPcForm"
+        :pc="pcToEdit"
+        @updatePc="updatePc($event)"
+        @deletePc="deletePc($event)"
+        />
+      </div>
     </div>
 
 
@@ -492,9 +506,25 @@ export default {
 </script>
 
 <style scoped>
+.left-column{
+  margin-top: -40px;
+}
+.unscrollable{
+  margin-top: -40px;
+}
+.scrollable {
+  margin-top: 5px;
+  padding: 15px;
+  height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
+.edit-title {
+  background-color: rgb(209, 209, 209);
+}
 .center-elems {
-  margin: 4px;
+  margin-right: 4px;
   display: flex;
   justify-content: center;
 }

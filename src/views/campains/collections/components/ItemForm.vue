@@ -25,33 +25,34 @@
 
             <div class="is-flex is-justify-content-space-between m-2">
               <label class="label">PC's infos</label>
-              <button class="is-small" @click="MDPreview('pcsInfos')">preview</button>
+              <button class="is-small" @click="showpcsPreview=!showpcsPreview">preview</button>
             </div>
             <div :hidden="showpcsPreview">
               <textarea
-               @keyup="updateItem"
+               @keyup="updatePc"
               class="textarea" placeholder="Informations for the players"
-              id="pcsInfos" v-model="item.data_pc">
+              v-model="item.data_pc">
               </textarea>
             </div>
-            <div id="pcsInfosPreview" @click="MDPreview('pcsInfos')"
-            :hidden="!showpcsPreview" class="content border p-1">
+            <div @click="showpcsPreview=false"
+            :hidden="!showpcsPreview" class="content border p-1 hoverable">
+              <div v-html="pcPreview"></div>
             </div>
-
 
             <div class="is-flex is-justify-content-space-between m-2">
               <label class="label">GM's infos</label>
-              <button class="is-small" @click="MDPreview('gmInfos')">preview</button>
+              <button class="is-small" @click="showgmPreview=!showgmPreview">preview</button>
             </div>
             <div :hidden="showgmPreview">
               <textarea
-               @keyup="updateItem"
+               @keyup="updatePc"
               class="textarea" placeholder="Informations for the GM only"
-              id="gmInfos" v-model="item.data_gm">
+              v-model="item.data_gm">
               </textarea>
             </div>
-            <div id="gmInfosPreview" @click="MDPreview('gmInfos')"
-            :hidden="!showgmPreview" class="content border p-1">
+            <div @click="showgmPreview=false"
+            :hidden="!showgmPreview" class="content border p-1 hoverable">
+              <div v-html="gmPreview"></div>
             </div>
 
           </div>
@@ -95,19 +96,29 @@ export default {
       itemGmInfos: this.item.gmInfos,
     }
   },
-  methods: {
-    MDPreview(textId) {
-      if (textId === 'pcsInfos') {
-        this.showpcsPreview = !this.showpcsPreview
-      } else if (textId === 'gmInfos') {
-        this.showgmPreview = !this.showgmPreview
-      }
-      let elem = document.getElementById(textId);
-      let text = elem.value;
-      this.MDPreviewContent = marked.parse(text)
-      let previewElem = document.getElementById(textId + 'Preview')
-      previewElem.innerHTML = this.MDPreviewContent
+  computed:{
+    pcPCsInfos(){
+      return this.item.data_pc
     },
+    pcPreview(){
+      let render = ""
+      if (this.pcPCsInfos !== null && this.pcPCsInfos !== undefined) {
+        render = marked.parse(this.pcPCsInfos)
+      }
+      return render
+    },
+    pcGmInfos(){
+      return this.item.data_gm
+    },
+    gmPreview(){
+      let render = ""
+      if (this.pcGmInfos !== null && this.pcGmInfos !== undefined) {
+        render = marked.parse(this.pcGmInfos)
+      }
+      return render
+    }
+  },
+  methods: {
     updateItem() {
       this.$emit('updateItem', this.item)
     },
@@ -137,6 +148,10 @@ img {
 
 .item-creation {
   background-color: rgb(192, 209, 255);
+}
+
+.hoverable {
+  cursor: pointer;
 }
 
 

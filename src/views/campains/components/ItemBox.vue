@@ -90,7 +90,7 @@ export default {
 .item-box {
   border: 1px solid black;
   border-radius: 5px;
-  width: 256px;
+  width: 240px;
   min-height: 96px;
 }
 
