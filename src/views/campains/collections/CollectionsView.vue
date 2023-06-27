@@ -38,8 +38,89 @@
       </div>
     </div>
 
+
+    <div @click="showFavorites = !showFavorites" class="topic">My Favorite Collections
+      <div class="is-pulled-right mr-2">
+        <fa v-if="showFavorites" icon="angle-down"/>
+        <fa v-if="!showFavorites" icon="angle-right"/>
+      </div>
+    </div>
+
+    <!-- favorites -->
+
+    <div v-if="showFavorites">
+      <div v-if="favorites.length">
+        <table class="table is-fullwidth">
+          <thead>
+            <tr>
+              <th>name</th>
+              <th>game</th>
+              <th>rating</th>
+              <th>actions</th>
+              <th>author</th>
+              <th>language</th>
+              <th>last updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="collection in favorites" :key="collection.id">
+              <td class="table-name">
+                  {{ collection.name }}
+              </td>
+              <td>
+                <OfficialMark v-if="collection.is_official" :collection="collection"/>
+                {{ collection.game }}
+              </td>
+              <td>{{ collection.rating }}</td>
+              <td>
+                <div class="dropdown is-hoverable">
+                  <div class="dropdown-trigger">
+                    <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu3">
+                      <span>actions</span>
+                      <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        <fa icon="angle-down"/>
+                      </span>
+                    </button>
+                  </div>
+                  <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                    <div class="dropdown-content">
+                      <a class="dropdown-item">
+                        Use as new campain
+                      </a>
+                      <a class="dropdown-item">
+                        Exchange Interface
+                      </a>
+                      <a class="dropdown-item" @click="removeFromFavorites(collection)">
+                        <span>
+                          <fa icon="heart-crack" style="color: red;"/>
+                          remove from favorites
+                        </span>
+
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+              </td>
+              <td>{{ collection.author }}</td>
+              <td>{{ collection.language }}</td>
+              <td>{{ formatDate(collection.date_updated) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div v-else>
+        you don't have favorites yet.
+
+      </div>
+    </div>
+
+
+    <!-- shared collections -->
+
     <div @click="showSharedCollections = !showSharedCollections" class="topic">
-      Shared Collections <span v-if="!$store.state.user.is_subscriber"> (Subscribers only)</span>
+      Browse Shared Collections <span v-if="!$store.state.user.is_subscriber"> (Subscribers only)</span>
       <div v-if="$store.state.user.is_subscriber" class="is-pulled-right mr-2">
         <fa v-if="showSharedCollections" icon="angle-down"/>
         <fa v-if="!showSharedCollections" icon="angle-right"/>
@@ -100,6 +181,7 @@
             <tr>
               <th>name</th>
               <th>game</th>
+              <th>rating</th>
               <th>actions</th>
               <th>author</th>
               <th>language</th>
@@ -115,6 +197,7 @@
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
                 {{ collection.game }}
               </td>
+              <td>{{ collection.rating }}</td>
               <td>
                 <div class="dropdown is-hoverable">
                   <div class="dropdown-trigger">
@@ -128,13 +211,13 @@
                   </div>
                   <div class="dropdown-menu" id="dropdown-menu3" role="menu">
                     <div class="dropdown-content">
-                      <a href="" class="dropdown-item">
+                      <a  class="dropdown-item">
                         Use as new campain
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a  class="dropdown-item">
                         Exchange Interface
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a class="dropdown-item" @click="addToFavorites(collection)">
                         <span>
                           <fa icon="heart" style="color: red;"/>
                           add to favorites
@@ -176,15 +259,67 @@ export default {
       language: 'en',
       only_officials: false,
       showMyCollections: true,
+      showFavorites: false,
       showSharedCollections: false,
       myCollections: [],
+      favorites: [],
       sharedCollections: [],
     }
   },
   beforeMount(){
     this.getMyCollectionList()
+    this.getFavoritesList()
   },
   methods: {
+    getFavoritesList() {
+      axios({
+        method: 'get',
+        url: "campains/favorite_collection/",
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+      }).then(response => {
+        console.log("Response: ", response.data)
+        this.favorites = response.data
+      }).catch(error => {
+        console.log(error);
+      })
+    },
+    removeFromFavorites(collection) {
+      axios({
+        method: 'delete',
+        url: "campains/favorite_collection/",
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+        data: {
+          'collection_id': collection.id,
+        }
+      }).then(response => {
+        console.log("Response: ", response.data)
+        this.favorites = this.favorites.filter(item => item.id != collection.id)
+      }).catch(error => {
+        console.log(error);
+      })
+    },
+    addToFavorites(collection) {
+      axios({
+        method: 'post',
+        url: "campains/favorite_collection/",
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+        data: {
+          'collection_id': collection.id,
+        }
+      }).then(response => {
+        console.log("Response: ", response.data)
+        this.favorites = this.favorites.filter(item => item.id != collection.id)
+        this.favorites.unshift(collection)
+      }).catch(error => {
+        console.log(error);
+      });
+    },
     searchSharedCollections(){
       this.sharedCollections = []
       axios({
