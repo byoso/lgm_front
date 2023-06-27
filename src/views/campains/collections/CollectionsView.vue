@@ -73,35 +73,11 @@
               </td>
               <td>{{ collection.rating }}</td>
               <td>
-                <div class="dropdown is-hoverable">
-                  <div class="dropdown-trigger">
-                    <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu3">
-                      <span>actions</span>
-                      <span class="icon is-small">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                        <fa icon="angle-down"/>
-                      </span>
-                    </button>
-                  </div>
-                  <div class="dropdown-menu" id="dropdown-menu3" role="menu">
-                    <div class="dropdown-content">
-                      <a class="dropdown-item">
-                        Use as new campain
-                      </a>
-                      <a class="dropdown-item">
-                        Exchange Interface
-                      </a>
-                      <a class="dropdown-item" @click="removeFromFavorites(collection)">
-                        <span>
-                          <fa icon="heart-crack" style="color: red;"/>
-                          remove from favorites
-                        </span>
-
-                      </a>
-                    </div>
-                  </div>
-
-                </div>
+                  <ActionsButton
+                  :collection="collection"
+                  :tables="tables"
+                  @favoritesAction="favoritesAction($event)"
+                  />
               </td>
               <td>{{ collection.author }}</td>
               <td>{{ collection.language }}</td>
@@ -199,35 +175,11 @@
               </td>
               <td>{{ collection.rating }}</td>
               <td>
-                <div class="dropdown is-hoverable">
-                  <div class="dropdown-trigger">
-                    <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu3">
-                      <span>actions</span>
-                      <span class="icon is-small">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                        <fa icon="angle-down"/>
-                      </span>
-                    </button>
-                  </div>
-                  <div class="dropdown-menu" id="dropdown-menu3" role="menu">
-                    <div class="dropdown-content">
-                      <a  class="dropdown-item">
-                        Use as new campain
-                      </a>
-                      <a  class="dropdown-item">
-                        Exchange Interface
-                      </a>
-                      <a class="dropdown-item" @click="addToFavorites(collection)">
-                        <span>
-                          <fa icon="heart" style="color: red;"/>
-                          add to favorites
-                        </span>
-
-                      </a>
-                    </div>
-                  </div>
-
-                </div>
+                  <ActionsButton
+                  :collection="collection"
+                  :tables="tables"
+                  @favoritesAction="favoritesAction($event)"
+                  />
               </td>
               <td>{{ collection.author }}</td>
               <td>{{ collection.language }}</td>
@@ -246,14 +198,17 @@
 <script>
 import axios from 'axios'
 import OfficialMark from './components/OfficialMark.vue'
+import ActionsButton from './components/ActionsButton.vue'
 
 export default {
   name: 'CollectionsView',
   components: {
     OfficialMark,
+    ActionsButton,
   },
   data(){
     return {
+      tables: [],
       searchBy: 'game',
       searchText: '',
       language: 'en',
@@ -284,6 +239,13 @@ export default {
       }).catch(error => {
         console.log(error);
       })
+    },
+    favoritesAction(collection) {
+      if (this.favorites.filter(item => item.id == collection.id).length) {
+        this.removeFromFavorites(collection)
+      } else {
+        this.addToFavorites(collection)
+      }
     },
     removeFromFavorites(collection) {
       axios({
@@ -360,8 +322,9 @@ export default {
         },
       })
       .then(response => {
-        this.myCollections = response.data
-        console.log(this.myCollections)
+        this.myCollections = response.data.collections
+        this.tables = response.data.tables
+        console.log("initial datas get: ", response.data)
       })
       .catch(error => {
         console.log(error);

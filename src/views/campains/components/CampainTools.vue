@@ -16,18 +16,16 @@
       </div>
     </div>
     <div v-if="showInfo">
-      <p>
-        <p>
-          <figure v-if="campain.image_url">
-            <img :src="campain.image_url" />
-          </figure>
-        </p>
-
-        <router-link :to="{name: 'table', params: {id: table.id} }">
-        {{ table.name }}
-        </router-link>
-        <h3 class="subtitle">by {{ campain.game_master.username }}</h3>
-      </p>
+      <figure v-if="campain.image_url">
+        <img :src="campain.image_url" />
+      </figure>
+      <div v-if="campain.is_official">
+        <OfficialMark :collection="campain"/><br>
+      </div>
+      <router-link :to="{name: 'table', params: {id: table.id} }" class="button is-small is-secondary m-2">
+      {{ table.name }}
+      </router-link>
+      <h3 class="subtitle">by {{ campain.game_master.username }}</h3>
     </div>
 
     <div v-if="isGameMaster">
@@ -179,6 +177,7 @@ import CreateItemModal from './CreateItemModal.vue';
 import PCModalCreate from './PCModalCreate.vue';
 import PCModalDisplay from './PCModalDisplay.vue';
 import PCModalEdit from './PCModalEdit.vue';
+import OfficialMark from '../collections/components/OfficialMark.vue';
 
 export default {
   name: "CampainTools",
@@ -187,6 +186,7 @@ export default {
     PCModalCreate,
     PCModalDisplay,
     PCModalEdit,
+    OfficialMark,
   },
   props: [
     'user',
@@ -238,12 +238,14 @@ export default {
     this.displayMode = this.$store.state.prefs.itemsDisplayMode,
     this.table = this.$store.state.current_table;
     this.maxItems = this.maxItemsDisplay;
-    console.log("user is ", this.user)
-    console.log('campain pcs: ', this.campain.campain_pcs)
+    // console.log("user is ", this.user)
+    // console.log('campain pcs: ', this.campain.campain_pcs)
+    console.log('campain: ', this.campain.title)
+    console.log("is_official: ", this.campain.is_official)
   },
   methods: {
     editionModePC(pc) {
-      console.log("PC to edit: ", pc)
+      // console.log("PC to edit: ", pc)
       this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
       this.pcToDisplay = pc;
       this.showPCModalEditSwitch = !this.showPCModalEditSwitch;
@@ -252,7 +254,7 @@ export default {
       this.$emit('changeDisplayMode', this.displayMode);
     },
     changeMaxItemsDisplay() {
-      console.log("Max items: ", this.maxItems)
+      // console.log("Max items: ", this.maxItems)
       this.$emit('changeMaxItemsDisplay', this.maxItems);
     },
     addItem() {
@@ -269,7 +271,6 @@ export default {
     },
     toggleCreatePCModal(){
       this.showCreatePCModal = !this.showCreatePCModal;
-      console.log("TODO: display create PC modal")
     },
     togglePcLock(pc){
       pc.locked = !pc.locked;

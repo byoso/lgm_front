@@ -1,5 +1,5 @@
 <template>
-  <span class="official" :class="{'hoverable-official': has_url}">
+  <span class="official m-2" :class="{'hoverable-official': has_url}">
     <a v-if="has_url" :href="collection.official_url" target="_blank" style="text-decoration: none;">
       official
     </a>
