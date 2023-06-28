@@ -129,10 +129,19 @@
             </div>
           </div>
 
-          <p>
+          <p class="m-4">
               <label class="label">Share with the community:
                 <input type="checkbox" v-model="collection.is_shared">
               </label>
+              <label class="label">
+                Is totally free (no copyright, users may use your creations in their own shared collections) ?
+              </label>
+              <button @click="IUnderstand = true" class="button is-small is-warning mr-4">
+                I understand
+              </button>
+              <input type="checkbox" v-model="collection.is_copy_free"
+              @click="IUnderstand = false"
+              :disabled="copyFreeCheckbox">
           </p>
           <div class="center-elems">
             <img :src="collection.image_url"
@@ -252,8 +261,9 @@ export default {
   },
   data(){
     return {
+      IUnderstand: false,
       initID: 0,
-      showEdit: false,
+      showEdit: true,
       showItems: false,
       showPCs: false,
       allowDeletion: false,
@@ -278,6 +288,16 @@ export default {
     this.getCollectionDetail()
   },
   computed: {
+    copyFreeCheckbox(){
+      if (this.IUnderstand) {
+        return false
+      } else if (this.collection.is_copy_free) {
+        return false
+      } else {
+        return true
+      }
+
+    },
     anyModif() {
       return Object.keys(this.itemCreatedList).length > 0 ||
       Object.keys(this.itemUpdatedList).length > 0 ||
@@ -465,6 +485,7 @@ export default {
           description: this.collection.description,
           image_url: this.collection.image_url,
           is_shared: this.collection.is_shared,
+          is_copy_free: this.collection.is_copy_free,
           // items actions
           items_to_create: this.itemCreatedList,
           items_to_update: this.itemUpdatedList,

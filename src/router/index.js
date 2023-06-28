@@ -24,6 +24,9 @@ import ChangeEmailView from '../views/auth/ChangeEmailView.vue'
 import CollectionsView from '../views/campains/collections/CollectionsView.vue'
 import CollectionDetailView from '../views/campains/collections/CollectionDetailView.vue'
 
+// exchanges
+import ExchangesView from '../views/campains/exchanges/ExchangesView.vue'
+
 // store
 import store from '../store'
 
@@ -144,6 +147,12 @@ const routes = [
     component: CollectionDetailView,
     meta: { requireLogin: true }
   },
+  {
+    path: '/exchanges/',
+    name: 'exchangesView',
+    component: ExchangesView,
+    meta: { requireLogin: true }
+  }
 ]
 
 const router = createRouter({

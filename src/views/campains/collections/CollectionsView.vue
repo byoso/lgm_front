@@ -6,7 +6,8 @@
 
 
     <button class="button is-primary is-small m-2" @click="collectionCreate">+ New Collection</button>
-    <button class="button is-secondary is-small m-2" @click="">Open exchange interface</button>
+    <router-link class="button is-secondary is-small m-2" :to="{ name: 'exchangesView' }">Open exchanges interface</router-link>
+
 
     <div @click="showMyCollections = !showMyCollections" class="topic">My Collections
       <div class="is-pulled-right mr-2">

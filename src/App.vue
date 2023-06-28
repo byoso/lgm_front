@@ -18,6 +18,10 @@
       <router-link v-if="$store.state.isAuthenticated" to="/collections" class="navbar-item">
         Collections
       </router-link>
+      <router-link v-if="$store.state.isAuthenticated"
+      class="navbar-item" :to="{ name: 'exchangesView' }">
+        Exchanges
+      </router-link>
     </div>
 
     <div class="navbar-end">
