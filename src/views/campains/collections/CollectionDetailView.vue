@@ -3,7 +3,7 @@
   <div class="columns">
     <!-- left column -->
     <div class="column left-column">
-      <h1 class="subtitle">{{ collection.name }}</h1>
+      <h1 class="subtitle">{{ collection.name.slice(0, 25) }}</h1>
       <div class="center-elems unscrollable">
         <button class="button is_secondary is-small" v-if="anyModif" @click="cancel">Cancel</button>
         <button class="button is-success is-small ml-2" @click="saveCollection" id="save-button">Save Collection</button>

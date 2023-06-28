@@ -28,8 +28,8 @@
           <tbody>
             <tr v-for="collection in myCollections" class="hoverable" :key="collection.id"
             @click="viewCollectionDetail(collection.id)">
-              <td class="table-name">{{ collection.name }}</td>
-              <td>{{ collection.game }}</td>
+              <td class="table-name">{{ collection.name.slice(0, 25) }}</td>
+              <td>{{ collection.game.slice(0, 25) }}</td>
               <td>{{ formatDate(collection.date_updated) }}</td>
             </tr>
           </tbody>
@@ -65,11 +65,11 @@
           <tbody>
             <tr v-for="collection in favorites" :key="collection.id">
               <td class="table-name">
-                  {{ collection.name }}
+                  {{ collection.name.slice(0, 25) }}
               </td>
               <td>
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
-                {{ collection.game }}
+                {{ collection.game.slice(0, 25) }}
               </td>
               <td>{{ collection.rating }}</td>
               <td>
@@ -79,7 +79,7 @@
                   @favoritesAction="favoritesAction($event)"
                   />
               </td>
-              <td>{{ collection.author }}</td>
+              <td>{{ collection.author.slice(0, 25) }}</td>
               <td>{{ collection.language }}</td>
               <td>{{ formatDate(collection.date_updated) }}</td>
             </tr>
@@ -151,6 +151,26 @@
         <input class="input m-1 is-small" type="text" placeholder="Your search..." v-model="searchText">
         <button class="button is-primary m-1 is-small" @click="searchSharedCollections">Go</button>
       </div>
+
+      <!-- pagination -->
+
+      <span>Collections found: {{ sharedCount }}</span>
+
+      <div v-if="sharedPages > 1" class="my-pagination">
+        <button @click="getSharedPage('previous')"
+          :disabled="sharedPage == 1"
+          class="mr-5 button is-small is-rounded">&#60&#60
+        </button>
+        <div>Page {{sharedPage}}/{{ sharedPages }}</div>
+        <button @click="getSharedPage('next')"
+          :disabled="sharedPages == sharedPage"
+          class="ml-5 button is-small is-rounded"
+          >&#62&#62
+        </button>
+      </div>
+
+      <!-- shared collections -->
+
       <div v-if="sharedCollections.length">
         <table class="table is-fullwidth">
           <thead>
@@ -167,11 +187,11 @@
           <tbody>
             <tr v-for="collection in sharedCollections" :key="collection.id">
               <td class="table-name">
-                  {{ collection.name }}
+                  {{ collection.name.slice(0, 25) }}
               </td>
               <td>
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
-                {{ collection.game }}
+                {{ collection.game.slice(0, 25) }}
               </td>
               <td>{{ collection.rating }}</td>
               <td>
@@ -181,7 +201,7 @@
                   @favoritesAction="favoritesAction($event)"
                   />
               </td>
-              <td>{{ collection.author }}</td>
+              <td>{{ collection.author.slice(0, 20) }}</td>
               <td>{{ collection.language }}</td>
               <td>{{ formatDate(collection.date_updated) }}</td>
             </tr>
@@ -219,6 +239,12 @@ export default {
       myCollections: [],
       favorites: [],
       sharedCollections: [],
+      // pagination
+      sharedNext: null,
+      sharedPrevious: null,
+      sharedCount: 0,
+      sharedPages: 0,
+      sharedPage: 0,
     }
   },
   beforeMount(){
@@ -282,11 +308,37 @@ export default {
         console.log(error);
       });
     },
+    getSharedPage(action){
+      let url = ''
+      if (action === 'next') {
+        url = this.sharedNext
+      } else if (action === 'previous'){
+        url = this.sharedPrevious
+      }
+      axios({
+        method: 'get',
+        url: url,
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+      }).then(response => {
+        this.sharedCollections = response.data.results
+        this.sharedNext = response.data.pagination.next
+        this.sharedPrevious = response.data.pagination.previous
+        this.sharedCount = response.data.pagination.total
+        this.sharedPages = response.data.pagination.pages
+        this.sharedPage = response.data.pagination.page
+        console.log("Response: ", response.data)
+      }).catch(error => {
+        console.log(error);
+      });
+
+    },
     searchSharedCollections(){
       this.sharedCollections = []
       axios({
         method: 'get',
-        url: "campains/get_shared_collections/",
+        url: "campains/shared_collections/",
         headers: {
           'Authorization': `Token ${this.$store.state.token}`
         },
@@ -298,7 +350,12 @@ export default {
         }
       })
       .then(response => {
-        this.sharedCollections = response.data
+        this.sharedCollections = response.data.results
+        this.sharedNext = response.data.pagination.next
+        this.sharedPrevious = response.data.pagination.previous
+        this.sharedCount = response.data.pagination.total
+        this.sharedPages = response.data.pagination.pages
+        this.sharedPage = response.data.pagination.page
         console.log("Response: ", response.data)
       })
       .catch(error => {
@@ -379,5 +436,13 @@ export default {
 .table-name{
   font-weight: bold;
   color: gray;
+}
+
+.my-pagination{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 </style>

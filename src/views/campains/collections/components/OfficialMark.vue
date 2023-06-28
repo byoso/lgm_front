@@ -41,17 +41,17 @@ a:visited {
 }
 
 .hoverable-official:hover {
-  background-color: gold;
+  background-color: rgb(255, 239, 145);
   color: black;
   cursor: pointer;
 }
 
 .official {
   color: black;
-  background-color: goldenrod;
+  background-color: rgb(255, 208, 89);
   font-weight: bold;
   font-size: 0.9rem;
-  border: 2px solid black;
+  border: 2px solid rgb(230, 60, 60);
   border-radius: 5px;
   margin: 4px;
   user-select: none;

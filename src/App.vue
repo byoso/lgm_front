@@ -130,7 +130,7 @@ export default {
 @import '~bulma/css/bulma.css';
 
 html {
-  background-color: #f5f5f5;
+  background-color: #dbe2ea;
   padding: 5px;
   margin-top: 40px;
 }
