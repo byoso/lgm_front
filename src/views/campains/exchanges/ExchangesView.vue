@@ -4,14 +4,26 @@
   <!-- column A -->
   <div class="columns">
     <div class="column">
-      <select class="select" v-if="campainASelected === null" v-model="campainASelected" @change="getCampain(campainASelected)">
+      <select class="select is-fullwidth" v-if="campainASelected === null" v-model="campainASelected" @change="getCampainA(campainASelected)">
         <option selected hidden value="null">Choose a campain</option>
         <option v-for="campain in campains" :value="campain" :key="campain.id">
-          [{{campain.game}}] {{campain.title}}
+          <span>
+            [{{campain.game}}]
+            <span v-if="!campain.is_copy_free"> [copy locked !] </span>
+            {{campain.title}}
+          </span>
         </option>
       </select>
       <div v-if="campainASelected !== null">
-        <h2 class="subtitle">{{ campainASelected.title }}<button class="button is-small is-pulled-right" @click="cancel">Cancel</button></h2>
+        <h2 class="subtitle">{{ campainASelected.title }}
+          <span class="is-pulled-right">
+            <button class="button is-small is-success mr-2" @click="applyExchanges" v-if="exportsList.length">
+              Apply exchanges
+            </button>
+            <button class="button is-small" @click="cancel">Cancel</button>
+
+          </span>
+        </h2>
 
         <span v-if="campainASelected.is_copy_free"><fa icon="unlock" style="color: green;"/> Exports allowed</span>
         <span v-else><fa icon="lock" style="color: red;"/> Exports locked (copy protected collection)</span>
@@ -22,14 +34,16 @@
       <thead>
         <th>Name</th>
         <th>Type</th>
-        <th v-if="campainASelected.is_copy_free">Copy to other</th>
+        <th v-if="campainASelected.is_copy_free">Copy to <fa icon="arrow-right"/></th>
       </thead>
       <tbody>
         <tr v-for="item in campainA.items" :key="item.id" class="hoverable"
-          @click="toExports('item', item.id)">
+          @click="toExportsList(campainASelected, 'item', item.id, typeB, campainBSelected)">
           <td>{{ item.name.slice(0, 25) }}</td>
           <td :class="item.type">{{ item.type }}</td>
-          <td v-if="campainASelected.is_copy_free"><fa v-if="checked(item.id)" icon="check" style="color: green;"/></td>
+          <td v-if="campainASelected.is_copy_free">
+            <fa v-if="checked(item.id)" icon="arrow-right" style="color: #8a9df3;" class="is-pulled-right" />
+          </td>
         </tr>
       </tbody>
 
@@ -38,21 +52,92 @@
     <table class="table is-fullwidth" v-if="campainASelected !== null">
       <thead>
         <th>Name</th>
+        <th v-if="campainASelected.is_copy_free">Copy to <fa icon="arrow-right"/></th>
       </thead>
       <tbody>
-        <tr v-for="pc in campainA.campain_pcs" :key="pc.id" class="hoverable">
+        <tr v-for="pc in campainA.campain_pcs" :key="pc.id" class="hoverable"
+        @click="toExportsList(campainASelected, 'pc', pc.id, typeB, campainBSelected)">
           <td>{{ pc.name.slice(0, 25) }}</td>
+          <td v-if="campainASelected.is_copy_free">
+            <fa v-if="checked(pc.id)" icon="arrow-right" style="color: #8a9df3;" class="is-pulled-right" />
+          </td>
         </tr>
       </tbody>
     </table>
-
-
 
     </div>
 
     <!-- column B -->
     <div class="column">
-      B
+      <label class="label" v-if="(campainBSelected === null) & (campainASelected !== null)">
+        Exchange with:
+        <div class="control">
+          <label class="radio m-2">
+            <input type="radio" name="answer" v-model="typeB" value="campain">
+            a Campain
+          </label>
+          <label class="radio m-2">
+            <input type="radio" name="answer" v-model="typeB" value="collection">
+            a Collection
+          </label>
+
+          <select class="select" v-if="typeB === 'campain'" v-model="campainBSelected" @change="getCampainB(campainBSelected)">
+            <option selected hidden value="null">Choose a campain</option>
+            <option v-for="campain in campainsAvailableInB" :value="campain" :key="campain.id">
+              <span>
+                [{{campain.game}}]
+                <span v-if="!campain.is_copy_free"> [copy locked !] </span>
+                {{campain.title}}
+              </span>
+            </option>
+          </select>
+
+        </div>
+      </label>
+      <div v-if="campainBSelected !== null">
+        <h2 class="subtitle">{{ campainBSelected.title }}
+        </h2>
+        <span v-if="campainBSelected.is_copy_free"><fa icon="unlock" style="color: green;"/> Exports allowed</span>
+        <span v-else><fa icon="lock" style="color: red;"/> Exports locked (copy protected collection)</span>
+
+      </div>
+
+      <div>
+
+        <table class="table is-fullwidth" v-if="campainBSelected !== null">
+          <thead>
+            <th v-if="campainBSelected.is_copy_free"><fa icon="arrow-left"/> Copy to</th>
+            <th>Type</th>
+            <th>Name</th>
+          </thead>
+          <tbody>
+            <tr v-for="item in campainB.items" :key="item.id" class="hoverable"
+              @click="toExportsList(campainBSelected, 'item', item.id, typeA, campainASelected)">
+              <td v-if="campainBSelected.is_copy_free"><fa v-if="checked(item.id)" icon="arrow-left" style="color: #8a9df3;"/></td>
+              <td :class="item.type">{{ item.type }}</td>
+              <td>{{ item.name.slice(0, 25) }}</td>
+
+            </tr>
+          </tbody>
+
+        </table>
+
+        <table class="table is-fullwidth" v-if="campainBSelected !== null">
+          <thead>
+
+            <th v-if="campainASelected.is_copy_free"><fa icon="arrow-left"/> Copy to</th>
+            <th>Name</th>
+          </thead>
+          <tbody>
+            <tr v-for="pc in campainB.campain_pcs" :key="pc.id" class="hoverable"
+            @click="toExportsList(campainBSelected, 'pc', pc.id, typeA, campainASelected)">
+              <td v-if="campainBSelected.is_copy_free"><fa v-if="checked(pc.id)" icon="arrow-left" style="color: #8a9df3;"/></td>
+              <td>{{ pc.name.slice(0, 25) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </div>
 </div>
@@ -60,6 +145,7 @@
 
 <script>
 import axios from 'axios';
+import { toast } from 'bulma-toast';
 
 export default {
   name: 'ExchangesView',
@@ -67,9 +153,12 @@ export default {
     return {
       campains: [],
       campainASelected: null,
+      campainBSelected: null,
       campainA: [],
-      exports: [],
+      campainB: [],
+      exportsList: [],
       sourceA: {},
+      typeB: 'campain',
       sourceB: {},
     }
   },
@@ -88,31 +177,49 @@ export default {
     })
   },
   computed: {
+    campainsAvailableInB(){
+      if (this.campainASelected === null) {
+        return []
+      }
+      return this.campains.filter(campain => campain.id !== this.campainASelected.id)
+    },
   },
   methods: {
-    toExports(type, id){
-      console.log("exports", this.exports)
-      if (this.exports.filter(obj => obj.id === id).length) {
-        let index = this.exports.findIndex(obj => obj.id === id)
-        this.exports.splice(index, 1)
+    applyExchanges(){
+      console.log("apply exchanges... (TODO)")
+    },
+    toExportsList(export_from, type, id, export_to_type, export_to){
+      if (this.campainBSelected === null){
+        console.log("campainSelectedB: ", this.campainBSelected)
+        toast({
+          message: 'Please select a campain or a collection to exchange with',
+          type: 'is-warning',
+          position: 'center',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 10000,
+        });
         return
       }
-      if (!this.campainASelected.is_copy_free){
-        console.log("campainSelectedA: ", this.campainASelected)
+      if (this.exportsList.filter(obj => obj.id === id).length) {
+        let index = this.exportsList.findIndex(obj => obj.id === id)
+        this.exportsList.splice(index, 1)
+        console.log("exportsList", this.exportsList)
         return
       }
-      this.exports.push({
+      if (!export_from.is_copy_free){
+        return
+      }
+      this.exportsList.push({
         type: type,
         id: id,
-        // to_type: '' //'collection' or 'campain'
-        // to: this.sourceB.id,
-        to_type: "mock",
-        to_id: "mock"
+        to_type: export_to_type,
+        to: export_to.id,
       })
-      console.log("exports", this.exports)
+      console.log("exportsList", this.exportsList)
     },
     checked(id){
-      if (this.exports.filter(obj => obj.id === id).length) {
+      if (this.exportsList.filter(obj => obj.id === id).length) {
         return true
       }
       return false
@@ -125,14 +232,14 @@ export default {
       } else if (!this.campainASelected.is_copy_free){
         return
       } else {
-        this.exports.push({
+        this.exportsList.push({
           type: type,
           id: id,
           to: sourceB.id
         })
       }
     },
-    getCampain(campain) {
+    getCampainA(campain) {
       if (this.campainASelected === null) {
         return
       }
@@ -152,8 +259,29 @@ export default {
     },
     cancel() {
       this.campainASelected = null
+      this.campainBSelected = null
       this.campainA = []
-      this.exports = []
+      this.campainB = []
+      this.exportsList = []
+    },
+    getCampainB(campain) {
+      if (this.campainBSelected === null) {
+        return
+      }
+      console.log('get datas for : ', campain.title)
+      axios({
+        method: 'get',
+        url: `/campains/campains/${campain.id}/`,
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+      }).then(response => {
+        this.campainB = response.data;
+        console.log(this.campainB)
+      }).catch(error => {
+        console.log(error)
+      })
+
     },
   },
 }

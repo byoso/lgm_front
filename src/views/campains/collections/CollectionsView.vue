@@ -23,6 +23,7 @@
             <tr>
               <th>name</th>
               <th>game</th>
+              <th></th>
               <th>last updated</th>
             </tr>
           </thead>
@@ -31,6 +32,14 @@
             @click="viewCollectionDetail(collection.id)">
               <td class="table-name">{{ collection.name.slice(0, 25) }}</td>
               <td>{{ collection.game.slice(0, 25) }}</td>
+              <td>
+                <button class="button is-small is-secondary"
+                  @mouseover="allowViewCollectionDetail=false"
+                  @mouseout="allowViewCollectionDetail=true"
+                  @click="newCampainFromMyCollection(collection)">
+                    Use for a new campain
+                </button>
+              </td>
               <td>{{ formatDate(collection.date_updated) }}</td>
             </tr>
           </tbody>
@@ -213,6 +222,15 @@
 
     </div>
 
+    <TablesModal
+      :show="showTablesModal"
+      :tables="tables"
+      :collection="collectionForModal"
+      @closeTablesModal="showTablesModal=false"
+     />
+
+
+
   </div>
 </template>
 
@@ -221,14 +239,20 @@ import axios from 'axios'
 import OfficialMark from './components/OfficialMark.vue'
 import ActionsButton from './components/ActionsButton.vue'
 
+import TablesModal from './components/TablesModal.vue'
+
 export default {
   name: 'CollectionsView',
   components: {
     OfficialMark,
     ActionsButton,
+    TablesModal,
   },
   data(){
     return {
+      showTablesModal: false,
+      collectionForModal: null,
+      allowViewCollectionDetail: true,
       tables: [],
       searchBy: 'game',
       searchText: '',
@@ -253,6 +277,10 @@ export default {
     this.getFavoritesList()
   },
   methods: {
+    newCampainFromMyCollection(collection){
+      this.collectionForModal = collection
+      this.showTablesModal = true
+    },
     getFavoritesList() {
       axios({
         method: 'get',
@@ -364,7 +392,9 @@ export default {
       });
     },
     viewCollectionDetail(id){
-      this.$router.push({name: 'collectionDetailView', params: {id: id}})
+      if (this.allowViewCollectionDetail) {
+        this.$router.push({name: 'collectionDetailView', params: {id: id}})
+      }
     },
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -403,7 +433,7 @@ export default {
       .catch(error => {
         console.log(error);
       });
-    }
+    },
   }
 
 }
