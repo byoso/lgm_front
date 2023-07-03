@@ -3,7 +3,7 @@
   <div class="columns">
     <!-- left column -->
     <div class="column left-column">
-      <h1 class="subtitle">{{ collection.name.slice(0, 25) }}</h1>
+      <h1 class="subtitle">{{ collection.title.slice(0, 25) }}</h1>
       <div class="center-elems unscrollable">
         <button class="button is_secondary is-small" v-if="anyModif" @click="cancel">Cancel</button>
         <button class="button is-success is-small ml-2" @click="saveCollection" id="save-button">Save Collection</button>
@@ -42,7 +42,7 @@
             <div class="field-body">
               <div class="field">
                 <div class="control">
-                  <input class="input is-small" type="text" placeholder="Collection name" v-model="collection.name">
+                  <input class="input is-small" type="text" placeholder="Collection name" v-model="collection.title">
                 </div>
               </div>
             </div>
@@ -479,7 +479,7 @@ export default {
         },
         data: {
           id: this.id,
-          name: this.collection.name,
+          title: this.collection.title,
           game: this.collection.game,
           language: this.collection.language,
           description: this.collection.description,

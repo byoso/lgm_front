@@ -231,18 +231,18 @@ export default {
       })
     },
     updatePC(pc){
-      let old_pc = this.campain.campain_pcs.find(item => item.id == pc.id);
-      let index = this.campain.campain_pcs.indexOf(old_pc)
+      let old_pc = this.campain.pcs.find(item => item.id == pc.id);
+      let index = this.campain.pcs.indexOf(old_pc)
       if (index !== -1) {
-        this.campain.campain_pcs.splice(index, 1, pc);
+        this.campain.pcs.splice(index, 1, pc);
       }
     },
     deletePC(pc_id){
       console.log("delete pc: ", pc_id)
-      let old_pc = this.campain.campain_pcs.find(item => item.id == pc_id);
-      let index = this.campain.campain_pcs.indexOf(old_pc)
+      let old_pc = this.campain.pcs.find(item => item.id == pc_id);
+      let index = this.campain.pcs.indexOf(old_pc)
       if (index !== -1) {
-        this.campain.campain_pcs.splice(index, 1);
+        this.campain.pcs.splice(index, 1);
       }
 
     }

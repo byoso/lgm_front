@@ -84,14 +84,13 @@
 <script>
 
 import axios from 'axios';
-// import store from './store';
 
 export default {
   name: 'App',
   methods: {
     logout() {
       this.$store.commit('removeToken');
-    }
+    },
   },
   computed: {
     user() {

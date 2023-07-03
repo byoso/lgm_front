@@ -21,7 +21,7 @@
         <table class="table is-fullwidth">
           <thead>
             <tr>
-              <th>name</th>
+              <th>Title</th>
               <th>game</th>
               <th></th>
               <th>last updated</th>
@@ -30,7 +30,7 @@
           <tbody>
             <tr v-for="collection in myCollections" class="hoverable" :key="collection.id"
             @click="viewCollectionDetail(collection.id)">
-              <td class="table-name">{{ collection.name.slice(0, 25) }}</td>
+              <td class="table-name">{{ collection.title.slice(0, 25) }}</td>
               <td>{{ collection.game.slice(0, 25) }}</td>
               <td>
                 <button class="button is-small is-secondary"
@@ -63,7 +63,7 @@
         <table class="table is-fullwidth">
           <thead>
             <tr>
-              <th>name</th>
+              <th>Title</th>
               <th>game</th>
               <th>rating</th>
               <th>actions</th>
@@ -75,7 +75,7 @@
           <tbody>
             <tr v-for="collection in favorites" :key="collection.id">
               <td class="table-name">
-                  {{ collection.name.slice(0, 25) }}
+                  {{ collection.title.slice(0, 25) }}
               </td>
               <td>
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
@@ -154,7 +154,7 @@
         <div class="select m-1 is-small">
           <select v-model="searchBy">
             <option value="game">Game</option>
-            <option value="name">Collection Name</option>
+            <option value="title">Collection Title</option>
             <option value="author">Author</option>
           </select>
         </div>
@@ -185,7 +185,7 @@
         <table class="table is-fullwidth">
           <thead>
             <tr>
-              <th>name</th>
+              <th>Title</th>
               <th>game</th>
               <th>rating</th>
               <th>actions</th>
@@ -197,7 +197,7 @@
           <tbody>
             <tr v-for="collection in sharedCollections" :key="collection.id">
               <td class="table-name">
-                  {{ collection.name.slice(0, 25) }}
+                  {{ collection.title.slice(0, 25) }}
               </td>
               <td>
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>

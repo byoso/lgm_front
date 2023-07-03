@@ -53,7 +53,7 @@
       <button v-if="isGameMaster" class="button is-small is-success m-2" @click="toggleCreatePCModal">+ New PC</button>
 
 
-      <div v-for="pc in campain.campain_pcs" :key="pc.id">
+      <div v-for="pc in campain.pcs" :key="pc.id">
         <div v-if="isGameMaster | !pc.locked">
           <div class="line-hoverable" @click="showPC(pc)">
             <span class="mr-2"
@@ -239,7 +239,7 @@ export default {
     this.table = this.$store.state.current_table;
     this.maxItems = this.maxItemsDisplay;
     // console.log("user is ", this.user)
-    // console.log('campain pcs: ', this.campain.campain_pcs)
+    // console.log('campain pcs: ', this.campain.pcs)
     console.log('campain: ', this.campain.title)
     console.log("is_official: ", this.campain.is_official)
   },
