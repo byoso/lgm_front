@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <div class="top-line">
-      <span class="campain-title">{{ campain.title }} </span>
+      <span class="campain-title">{{ charLimit(campain.title) }} </span>
       <button class="button is-success is-small mb-2" :disabled="refreshSpin" @click="refreshCampain">
         <fa icon="arrows-rotate" class="mr-2" :class="{'spinner': refreshSpin}"/>
       refresh
@@ -23,9 +23,9 @@
         <OfficialMark :collection="campain"/><br>
       </div>
       <router-link :to="{name: 'table', params: {id: table.id} }" class="button is-small is-secondary m-2">
-      {{ table.name }}
+      {{ charLimit(table.name) }}
       </router-link>
-      <h3 class="subtitle">by {{ campain.game_master.username }}</h3>
+      <h3 class="subtitle">by {{ charLimit(campain.game_master.username) }}</h3>
     </div>
 
     <div v-if="isGameMaster">
@@ -64,9 +64,9 @@
               <fa v-if="pc.locked" icon="eye-slash" style="color: red;" />
               <fa v-else icon="eye" style="color: green;" />
             </span>
-            <span v-if="pc.name"> {{ pc.name }} </span>
+            <span v-if="pc.name"> {{ charLimit(pc.name) }} </span>
             <span v-if="!pc.name">---  </span>
-            <span v-if="pc.user != null" class="is-pulled-right">{{ pc.user.username }}</span>
+            <span v-if="pc.user != null" class="is-pulled-right">{{ charLimit(pc.user.username) }}</span>
             <span v-else class="is-pulled-right">---</span>
           </div>
           <div class="sep"></div>
@@ -244,6 +244,12 @@ export default {
     console.log("is_official: ", this.campain.is_official)
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     editionModePC(pc) {
       // console.log("PC to edit: ", pc)
       this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;

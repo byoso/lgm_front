@@ -15,7 +15,7 @@
               <div class="select">
                 <select v-model="player_id">
                   <option value="">None</option>
-                  <option v-for="user in players" :key="user.id" :value="user.id">{{ user.username }}</option>
+                  <option v-for="user in players" :key="user.id" :value="user.id">{{ charLimit(user.username) }}</option>
                 </select>
               </div>
 
@@ -126,6 +126,12 @@ export default {
     console.log("players: ", this.players)
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     onSubmit(){
       if (this.player_id === '') {
         this.player_id = null

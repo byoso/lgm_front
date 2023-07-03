@@ -3,7 +3,7 @@
   <div class="columns">
     <!-- left column -->
     <div class="column left-column">
-      <h1 class="subtitle">{{ collection.title.slice(0, 25) }}</h1>
+      <h1 class="subtitle">{{ charLimit(collection.title) }}</h1>
       <div class="center-elems unscrollable">
         <button class="button is_secondary is-small" v-if="anyModif" @click="cancel">Cancel</button>
         <button class="button is-success is-small ml-2" @click="saveCollection" id="save-button">Save Collection</button>
@@ -215,10 +215,10 @@
     <div class="column is-6">
       <div class="unscrollable">
         <div v-if="showItemForm">
-          <h1 class="subtitle" :class="itemToEdit.type">{{ itemToEdit.name }}</h1>
+          <h1 class="subtitle" :class="itemToEdit.type">{{ charLimit(itemToEdit.name) }}</h1>
         </div>
         <div v-if="showPcForm">
-          <h1 class="subtitle edit-title">{{ pcToEdit.name }}</h1>
+          <h1 class="subtitle edit-title">{{ charLimit(pcToEdit.name) }}</h1>
         </div>
       </div>
 
@@ -307,6 +307,15 @@ export default {
     },
   },
   methods: {
+    charLimit(text) {
+      if (!text) {
+        return ''
+      }
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     cancel(){
       this.$router.push({name: 'CollectionsView'})
     },

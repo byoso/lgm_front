@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-  <h1 class="title">Dashboard - {{ user.username }}</h1>
+  <h1 class="title">Dashboard - {{ charLimit(user.username) }}</h1>
 
 
 <br>
@@ -19,19 +19,23 @@
       </thead>
       <tbody>
         <tr v-for="table in tables_as_owner" :key="table.id">
-          <td><router-link @click="storeTable(table)" :to="{name: 'table', params: {id: table.id} }">{{ table.name }}</router-link></td>
+          <td>
+            <router-link @click="storeTable(table)" :to="{name: 'table', params: {id: table.id} }">
+              {{ charLimit(table.name) }}
+            </router-link>
+          </td>
 
           <td>
             <ul>
               <li v-for="owner in table.owners" :key="owner.id">
-                {{ owner.email }} - {{ owner.username }}
+                {{ charLimit(owner.email) }} - {{ charLimit(owner.username) }}
               </li>
             </ul>
           </td>
           <td>
             <ul>
               <li v-for="guest in table.guests" :key="guest.id">
-                {{ guest.email }} - {{ guest.username }}
+                {{ charLimit(guest.email) }} - {{ charLimit(guest.username) }}
               </li>
             </ul>
           </td>
@@ -54,16 +58,20 @@
       </thead>
       <tbody>
         <tr v-for="table in tables_as_guest" :key="table.id">
-          <td><router-link :to="{name: 'table', params: {id: table.id} }" @click="storeTable(table)">{{ table.name }}</router-link></td>
+          <td>
+            <router-link :to="{name: 'table', params: {id: table.id} }" @click="storeTable(table)">
+              {{ charLimit(table.name) }}
+            </router-link>
+          </td>
           <td>
             <ul>
-              <li v-for="owner in table.owners" :key="owner.id">{{ owner.username }}</li>
+              <li v-for="owner in table.owners" :key="owner.id">{{ charLimit(owner.username) }}</li>
             </ul>
           </td>
           <td>
             <ul>
               <li v-for="guest in table.guests" :key="guest.id">
-                {{ guest.email }} - {{ guest.username }}
+                {{ charLimit(guest.email) }} - {{ charLimit(guest.username) }}
               </li>
             </ul>
           </td>
@@ -112,6 +120,12 @@ export default {
 
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     storeTable(table) {
       this.$store.state.current_table = table;
     },

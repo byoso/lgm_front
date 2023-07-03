@@ -2,7 +2,7 @@
 <div>
   <form class="form">
     <h1 class="title">Edit Campain</h1>
-    <h2 class="subtitle"> {{ campainTitle }} </h2>
+    <h2 class="subtitle"> {{ charLimit(campainTitle) }} </h2>
 
     <ul v-if="errors.length">
       <li class="is-danger" v-for="error in errors" :key="error" style="color: red;">
@@ -110,6 +110,12 @@ export default {
     },
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     onSubmit() {
       this.errors = []
 

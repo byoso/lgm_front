@@ -30,8 +30,8 @@
           <tbody>
             <tr v-for="collection in myCollections" class="hoverable" :key="collection.id"
             @click="viewCollectionDetail(collection.id)">
-              <td class="table-name">{{ collection.title.slice(0, 25) }}</td>
-              <td>{{ collection.game.slice(0, 25) }}</td>
+              <td class="table-name">{{ charLimit(collection.title) }}</td>
+              <td>{{ charLimit(collection.game) }}</td>
               <td>
                 <button class="button is-small is-secondary"
                   @mouseover="allowViewCollectionDetail=false"
@@ -75,11 +75,11 @@
           <tbody>
             <tr v-for="collection in favorites" :key="collection.id">
               <td class="table-name">
-                  {{ collection.title.slice(0, 25) }}
+                  {{ charLimit(collection.title) }}
               </td>
               <td>
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
-                {{ collection.game.slice(0, 25) }}
+                {{ charLimit(collection.game) }}
               </td>
               <td>{{ collection.rating }}</td>
               <td>
@@ -89,7 +89,7 @@
                   @favoritesAction="favoritesAction($event)"
                   />
               </td>
-              <td>{{ collection.author.slice(0, 25) }}</td>
+              <td>{{ charLimit(collection.author) }}</td>
               <td>{{ collection.language }}</td>
               <td>{{ formatDate(collection.date_updated) }}</td>
             </tr>
@@ -197,11 +197,11 @@
           <tbody>
             <tr v-for="collection in sharedCollections" :key="collection.id">
               <td class="table-name">
-                  {{ collection.title.slice(0, 25) }}
+                  {{ charLimit(collection.title) }}
               </td>
               <td>
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
-                {{ collection.game.slice(0, 25) }}
+                {{ charLimit(collection.game) }}
               </td>
               <td>{{ collection.rating }}</td>
               <td>
@@ -211,7 +211,7 @@
                   @favoritesAction="favoritesAction($event)"
                   />
               </td>
-              <td>{{ collection.author.slice(0, 20) }}</td>
+              <td>{{ charLimit(collection.author) }}</td>
               <td>{{ collection.language }}</td>
               <td>{{ formatDate(collection.date_updated) }}</td>
             </tr>
@@ -277,6 +277,12 @@ export default {
     this.getFavoritesList()
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     newCampainFromMyCollection(collection){
       this.collectionForModal = collection
       this.showTablesModal = true

@@ -4,7 +4,7 @@
     <div class="modal-background" @click="$emit('showModalDisplay', item)"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <span class="modal-card-title">{{ item.name }}</span>
+        <span class="modal-card-title">{{ charLimit(item.name) }}</span>
         <span class="item-type">{{ item.type }}</span>
         <span v-if="isGameMaster | item.type === 'MEMO'" class="button is-small is-success mr-2"
         @click="editionMode(item)">
@@ -77,6 +77,12 @@ export default {
     }
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     editionMode(item) {
       this.$emit('showModalDisplay', item)
       this.$emit('editionMode', item)

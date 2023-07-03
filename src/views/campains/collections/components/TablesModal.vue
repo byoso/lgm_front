@@ -13,7 +13,7 @@
           class="button is-small"
           @click="createCampainFromCollection(table)"
           >
-            {{ table.name }}
+            {{ charLimit(table.name) }}
           </button>
         </div>
       </div>
@@ -34,6 +34,12 @@ export default {
     'show',
   ],
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     createCampainFromCollection(table) {
       axios({
         method: 'post',

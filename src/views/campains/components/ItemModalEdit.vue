@@ -5,7 +5,7 @@
     <div class="modal-background" @click="$emit('showModalEdit', item)"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <span class="modal-card-title">{{ itemName }}</span>
+        <span class="modal-card-title">{{ charLimit(itemName) }}</span>
 
         <button class="delete" aria-label="close" @click="$emit('showModalEdit', item)"></button>
       </header>
@@ -124,6 +124,12 @@ export default {
     },
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     deleteItem() {
       this.errors = []
       let id = this.item.id;

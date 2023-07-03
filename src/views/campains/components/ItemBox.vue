@@ -12,7 +12,7 @@
           <fa v-if="locked" icon="eye-slash" style="color: red;" />
           <fa v-else icon="eye" style="color: green;" />
         </div>
-      {{ item.name }}
+      {{ charLimit(item.name) }}
 
     </div>
     <div v-if="displayMode === 'image'" class="is-centered">
@@ -57,6 +57,12 @@ export default {
     },
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     openDetailsModal(item) {
       if (this.openDetailsModalSwitch) {
         this.$emit('showModalDisplay', item)

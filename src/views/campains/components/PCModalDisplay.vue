@@ -4,7 +4,7 @@
     <div class="modal-background" @click="$emit('closePCModalDisplay', pc)"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <span class="modal-card-title">{{ pc.name }}</span>
+        <span class="modal-card-title">{{ charLimit(pc.name) }}</span>
         <span v-if="isGameMaster | isPlayer" class="button is-small is-success mr-2"
         @click="editionMode">
           Edit
@@ -111,6 +111,12 @@ export default {
     },
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     editionMode(item) {
       console.log('editionMode ON')
       this.$emit('showPCModalDisplay', this.pc)

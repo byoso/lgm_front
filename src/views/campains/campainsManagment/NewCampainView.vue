@@ -2,7 +2,7 @@
 <div>
   <form class="form">
     <h1 class="title">Start a New Campain</h1>
-    <h2 class="subtitle"> {{ table.name }} </h2>
+    <h2 class="subtitle"> {{ charLimit(table.name) }} </h2>
 
     <ul v-if="errors.length">
       <li class="is-danger" v-for="error in errors" :key="error" style="color: red;">
@@ -83,6 +83,12 @@ export default {
     this.table = this.$store.state.current_table
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     onSubmit() {
       this.errors = []
 

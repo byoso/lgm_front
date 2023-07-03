@@ -15,9 +15,6 @@
         <a class="dropdown-item" @click="showTablesModal=!showTablesModal">
           Use for a new campain
         </a>
-        <a class="dropdown-item">
-          Exchange Interface
-        </a>
         <a class="dropdown-item" @click="$emit('favoritesAction', collection)">
           <span>
             <fa icon="heart" style="color: red;"/>

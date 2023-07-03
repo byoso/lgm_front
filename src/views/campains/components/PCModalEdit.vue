@@ -4,7 +4,7 @@
     <div class="modal-background" @click="$emit('closeEditPCModal')"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">{{ name }}</p>
+        <p class="modal-card-title">{{ charLimit(name) }}</p>
         <button class="delete" aria-label="close" @click="$emit('closeEditPCModal')"></button>
       </header>
       <section class="modal-card-body">
@@ -15,7 +15,9 @@
               <div class="select">
                 <select v-model="player_id">
                   <option value="">None</option>
-                  <option v-for="user in players" :key="user.id" :value="user.id">{{ user.username }}</option>
+                  <option v-for="user in players" :key="user.id" :value="user.id">
+                    {{ charLimit(user.username) }}
+                  </option>
                 </select>
               </div>
 
@@ -147,6 +149,12 @@ export default {
     this.id = this.pc.id
   },
   methods: {
+    charLimit(text) {
+      if (text.length <= 25) {
+        return text;
+      }
+      return text.slice(0, 22) + '...';
+    },
     deletePC(){
       this.errors = []
       axios({

@@ -38,7 +38,15 @@
               {{charLimit(collection.title)}}
             </span>
           </option>
-          <option value="" disabled>--- Favorites ---</option>
+          <option value="" disabled>--- Favorites (export to campain only)---</option>
+          <option v-for="favorite in favorites" :value="favorite" :key="favorite.id">
+            <span>
+              [{{charLimit(favorite.game)}}]
+              <span v-if="!favorite.is_copy_free"> [copy locked !] </span>
+              {{charLimit(favorite.title)}}
+            </span>
+          </option>
+
         </select>
 
 
@@ -188,6 +196,7 @@ export default {
       campainA: [],
       campainB: [],
       collections: [],
+      favorites: [],
       exportsList: [],
       sourceA: {},
       typeA: 'campain',
@@ -205,8 +214,10 @@ export default {
     }).then(response => {
       this.campains = response.data.campains;
       this.collections = response.data.collections;
+      this.favorites = response.data.favorites;
       console.log(this.campains)
       console.log(this.collections)
+      console.log(this.favorites)
     }).catch(error => {
       console.log(error)
     })
