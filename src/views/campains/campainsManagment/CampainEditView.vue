@@ -51,6 +51,29 @@
       <label class="label">Description</label>
       <textarea class="textarea" placeholder="Campain description" v-model="camapainDescription"></textarea>
 
+      <div v-if="campain.is_copy_free">
+        <label class="label m-2">is copy locked ?
+          <p>
+            Once it is checked, it can not be unchecked.
+          </p>
+          <p>
+            A locked camapain will not be albe to export any items at all,
+            but will be able to import items from any other campains and collections.
+          </p>
+          <p>
+            This feature prevents copyright issues.
+          </p>
+          <div class="m-2">
+          <button class="button is-small is-warning mr-2" @click="allowCopyLock=true">I Understand</button>
+          <input type="checkbox"  v-model="is_copy_locked" :disabled="!allowCopyLock">
+
+          </div>
+        </label>
+      </div>
+      <div v-else>
+        <p>This campain is copy locked <fa icon="lock" style="color: red;"/> </p>
+      </div>
+
     </div>
 
 
@@ -88,8 +111,10 @@ export default {
       gameMasterId: null,
       campainTitle: "",
       camapainDescription: "",
+      is_copy_locked: false,
       errors: [],
       allowDeleteCampain: false,
+      allowCopyLock: false,
     }
   },
   beforeMount() {
@@ -101,6 +126,7 @@ export default {
     this.campainTitle = this.campain.title
     this.camapainDescription = this.campain.description
     this.gameMasterId = this.campain.game_master.id
+    this.is_copy_locked = !this.campain.is_copy_free
     console.log("campain: \n",this.campain)
 
   },
@@ -140,6 +166,7 @@ export default {
         description: this.camapainDescription,
         image_url: this.image_url,
         language: this.language,
+        is_copy_free: !this.is_copy_locked,
       }
       console.log("send to update: \n", data)
       axios({
@@ -184,7 +211,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .form {
   width: 50%;

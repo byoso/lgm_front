@@ -11,6 +11,7 @@
     <li>game master: {{ charLimit(campain.game_master.username) }}</li>
     <li>description: {{ campain.description }}</li>
     <li>is ended ? : {{ campain.is_ended }}</li>
+    <li>is copy free ? : {{ campain.is_copy_free }}</li>
 
   </ul>
 

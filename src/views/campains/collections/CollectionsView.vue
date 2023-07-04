@@ -278,6 +278,9 @@ export default {
   },
   methods: {
     charLimit(text) {
+      if (!text){
+        return ''
+      }
       if (text.length <= 25) {
         return text;
       }
