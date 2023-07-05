@@ -65,7 +65,7 @@
         </h2>
 
         <span v-if="!aIsLocked"><fa icon="unlock" style="color: green;"/> Free exports</span>
-        <span v-else><fa icon="lock" style="color: red;"/> Exports restricted (copy protected collection)</span>
+        <span v-else><fa icon="lock" style="color: red;"/> Exports restricted (copy protected)</span>
 
       </div>
 
@@ -120,7 +120,7 @@
             a Collection
           </label>
 
-          <select class="select" v-if="typeB === 'campain'" v-model="columnBSelected" @change="getCampainB(columnBSelected)">
+          <select class="select is-fullwidth" v-if="typeB === 'campain'" v-model="columnBSelected" @change="getCampainB(columnBSelected)">
             <option selected hidden value="null">Choose a campain</option>
             <option v-for="campain in campainsAvailableInB" :value="campain" :key="campain.id">
               <span>
@@ -131,13 +131,37 @@
             </option>
           </select>
 
+          <!-- column B: select a collection -->
+          <select class="select is-fullwidth" v-if="typeB === 'collection'"
+            v-model="columnBSelected" @change="getCollectionB(columnBSelected)">
+            <option selected hidden value="null">Choose a collection</option>
+            <option value="" disabled>--- My collections ---</option>
+            <option v-for="collection in collections" :value="collection" :key="collection.id">
+              <span>
+                [{{charLimit(collection.game)}}]
+                <span v-if="!collection.is_copy_free"> [copy restricted] </span>
+                {{charLimit(collection.title)}}
+              </span>
+            </option>
+            <option value="" disabled>--- Favorites ---</option>
+            <option v-for="favorite in favorites" :value="favorite" :key="favorite.id">
+              <span>
+                [{{charLimit(favorite.game)}}]
+                <span v-if="!favorite.is_copy_free"> [copy restricted] </span>
+                {{charLimit(favorite.title)}}
+              </span>
+            </option>
+
+          </select>
+
+
         </div>
       </label>
       <div v-if="columnBSelected !== null">
         <h2 class="subtitle">{{ charLimit(columnBSelected.title) }} ({{ typeB }})
         </h2>
         <span v-if="!bIsLocked"><fa icon="unlock" style="color: green;"/> Free exports</span>
-        <span v-else><fa icon="lock" style="color: red;"/> Exports restricted (copy protected collection)</span>
+        <span v-else><fa icon="lock" style="color: red;"/> Exports restricted (copy protected)</span>
 
       </div>
 
@@ -236,17 +260,151 @@ export default {
     },
   },
   methods: {
-    resetLocks(){
-      return
+    applyExchanges(){
+      console.log("apply exchanges... (TODO)")
+      axios({
+        method: 'post',
+        url: '/campains/apply_exchanges/',
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+        data: {
+          exports: this.exportsList,
+        }
+      }).then(response => {
+        console.log(response.data)
+        toast({
+          message: 'Exchanges applied',
+          type: 'is-success',
+          position: 'bottom-right',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 3000,
+        });
+        this.exportsList = []
+      }).catch(error => {
+        console.log(error)
+      })
+
+    },
+    setLocks(){
+      console.log("column A: ", this.columnASelected)
+      console.log("column B: ", this.columnBSelected)
+      // collection to collection
+      if ((this.typeA === this.typeB) & this.typeA === 'collection') {
+        console.log("collection to collection")
+        if (this.columnBSelected.is_copy_free & (this.columnASelected.author === this.$store.state.user.id)){
+          this.aIsLocked = true
+          this.bIsLocked = false
+        } else if (this.columnASelected.is_copy_free & (this.columnBSelected.author === this.$store.state.user.id)) {
+          this.aIsLocked = false
+          this.bIsLocked = true
+        } else {
+          this.aIsLocked = true
+          this.bIsLocked = true
+        }
+        if ((this.columnASelected.author === this.columnBSelected.author)
+             & this.columnASelected.author === this.$store.state.user.id) {
+          this.aIsLocked = false
+          this.bIsLocked = false
+        }
+      }
+      // campain to campain
+      if (this.typeA === 'campain'){
+        if (this.typeB === 'campain'){
+          console.log('campain to campain')
+          if (this.columnASelected.is_copy_free === this.columnBSelected.is_copy_free){
+            console.log('both locked or both unlocked')
+            this.aIsLocked = false
+            this.bIsLocked = false
+          } else {
+            if (!this.columnASelected.is_copy_free){
+              this.aIsLocked = true
+              this.bIsLocked = false
+            } else {
+              this.aIsLocked = false
+              this.bIsLocked = true
+            }
+          }
+        }
+        if (this.typeB === 'collection'){
+          if (!this.columnASelected.is_copy_free) {
+            this.aIsLocked = true
+            this.bIsLocked = false
+          }
+          if (this.columnASelected.is_copy_free) {
+            if (!this.columnBSelected.is_copy_free) {
+              this.aIsLocked = true
+              this.bIsLocked = true
+            }
+            if (this.columnBSelected.is_copy_free) {
+              this.aIsLocked = true
+              this.bIsLocked = false
+            }
+            if (this.columnBSelected.author === this.$store.state.user.id) {
+              this.aIsLocked = false
+              this.bIsLocked = false
+            }
+          }
+        }
+      }
+
+      // campain to collection
+      if (this.typeA === 'campain' & this.typeB === 'collection'){
+        if (!this.columnASelected.is_copy_free) {
+          this.aIsLocked = true
+          this.bIsLocked = false
+        }
+        if (this.columnASelected.is_copy_free) {
+          if (!this.columnBSelected.is_copy_free) {
+            this.aIsLocked = true
+            this.bIsLocked = true
+            if (this.columnBSelected.author === this.$store.state.user.id) {
+              this.aIsLocked = false
+              this.bIsLocked = false
+            }
+          }
+          if (this.columnBSelected.is_copy_free) {
+            this.aIsLocked = true
+            this.bIsLocked = false
+            if (this.columnBSelected.author === this.$store.state.user.id) {
+              this.aIsLocked = false
+              this.bIsLocked = false
+            }
+          }
+        }
+      }
+      // collection to campain
+      if (this.typeA === 'collection' & this.typeB === 'campain'){
+        if (!this.columnBSelected.is_copy_free) {
+          this.aIsLocked = false
+          this.bIsLocked = true
+        }
+        if (this.columnBSelected.is_copy_free) {
+          if (!this.columnASelected.is_copy_free) {
+            this.aIsLocked = true
+            this.bIsLocked = true
+            if (this.columnASelected.author === this.$store.state.user.id) {
+              this.aIsLocked = false
+              this.bIsLocked = false
+            }
+          }
+          if (this.columnASelected.is_copy_free) {
+            this.aIsLocked = false
+            this.bIsLocked = true
+            if (this.columnASelected.author === this.$store.state.user.id) {
+              this.aIsLocked = false
+              this.bIsLocked = false
+            }
+          }
+        }
+      }
     },
     charLimit(text) {
       if (text.length <= 25) {
         return text;
       }
       return text.slice(0, 22) + '...';
-    },
-    applyExchanges(){
-      console.log("apply exchanges... (TODO)")
     },
     toExportsList(export_from, type, id, export_to_type, export_to){
       if (this.columnBSelected === null){
@@ -298,7 +456,6 @@ export default {
     },
     getCollectionA(collection) {
       this.aIsLocked = !collection.is_copy_free
-      console.log('TODO: get collection A')
       if (this.columnASelected === null) {
         return
       }
@@ -318,8 +475,29 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-
-
+    },
+    getCollectionB(collection){
+      this.bIsLocked = !collection.is_copy_free
+      if (this.columnBSelected === null) {
+        return
+      }
+      console.log('get datas for : ', collection.title)
+      axios({
+        url: `/campains/collection/`,
+        method: 'get',
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+        params: {
+          id: collection.id,
+        }
+      }).then(response => {
+        this.campainB = response.data;
+        console.log(this.campainB)
+        this.setLocks()
+      }).catch(error => {
+        console.log(error)
+      })
     },
     getCampainA(campain) {
       this.aIsLocked = !campain.is_copy_free
@@ -360,12 +538,11 @@ export default {
         },
       }).then(response => {
         this.campainB = response.data;
-        this.resetLocks()
+        this.setLocks()
         console.log(this.campainB)
       }).catch(error => {
         console.log(error)
       })
-
     },
   },
 }
