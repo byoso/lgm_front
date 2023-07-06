@@ -20,6 +20,7 @@
           <option selected hidden value="null">Choose a campain</option>
           <option v-for="campain in campains" :value="campain" :key="campain.id">
             <span>
+              [{{charLimit(campain.table)}}]
               [{{charLimit(campain.game)}}]
               <span v-if="!campain.is_copy_free"> [copy restricted] </span>
               {{charLimit(campain.title)}}
@@ -46,17 +47,16 @@
               {{charLimit(favorite.title)}}
             </span>
           </option>
-
         </select>
-
-
       </div>
 
 
       <div v-if="columnASelected !== null">
-        <h2 class="subtitle">{{ charLimit(columnASelected.title) }} ({{typeA}})
+        <h2 class="subtitle">
+          {{ charLimit(columnASelected.title) }}
+          ({{typeA}}<span v-if="typeA==='campain'"> for {{columnASelected.table}}</span>)
           <span class="is-pulled-right">
-            <button class="button is-small is-success mr-2" @click="applyExchanges" v-if="exportsList.length">
+            <button class="button is-small is-success mr-2" @click="applyExchanges" v-if="showApplyExchanges">
               Apply exchanges
             </button>
             <button class="button is-small" @click="cancel">Cancel</button>
@@ -68,41 +68,44 @@
         <span v-else><fa icon="lock" style="color: red;"/> Exports restricted (copy protected)</span>
 
       </div>
+    <div class="scrollable">
+      <table class="table is-fullwidth" v-if="columnASelected !== null">
+        <thead>
+          <th>Name</th>
+          <th>Type</th>
+          <th v-if="!aIsLocked">Copy to <fa icon="arrow-right"/></th>
+        </thead>
+        <tbody>
+          <tr v-for="item in campainA.items" :key="item.id" class="hoverable"
+            @click="addToExchanges('from_a', 'items', item.id)">
+            <td>{{ charLimit(item.name) }}</td>
+            <td :class="item.type">{{ item.type }}</td>
+            <td v-if="!aIsLocked">
+              <fa v-if="checked('from_a', 'items', item.id)" icon="arrow-right" style="color: #8a9df3;" class="is-pulled-right" />
+            </td>
+          </tr>
+        </tbody>
 
-    <table class="table is-fullwidth" v-if="columnASelected !== null">
-      <thead>
-        <th>Name</th>
-        <th>Type</th>
-        <th v-if="!aIsLocked">Copy to <fa icon="arrow-right"/></th>
-      </thead>
-      <tbody>
-        <tr v-for="item in campainA.items" :key="item.id" class="hoverable"
-          @click="toExportsList(columnASelected, 'item', item.id, typeB, columnBSelected)">
-          <td>{{ charLimit(item.name) }}</td>
-          <td :class="item.type">{{ item.type }}</td>
-          <td v-if="!aIsLocked">
-            <fa v-if="checked(item.id)" icon="arrow-right" style="color: #8a9df3;" class="is-pulled-right" />
-          </td>
-        </tr>
-      </tbody>
+      </table>
 
-    </table>
+      <table class="table is-fullwidth" v-if="columnASelected !== null">
+        <thead>
+          <th>Name</th>
+          <th v-if="!aIsLocked">Copy to <fa icon="arrow-right"/></th>
+        </thead>
+        <tbody>
+          <tr v-for="pc in campainA.pcs" :key="pc.id" class="hoverable"
+          @click="addToExchanges('from_a', 'pcs', pc.id)">
+            <td>{{ charLimit(pc.name) }}</td>
+            <td v-if="!aIsLocked">
+              <fa v-if="checked('from_a', 'pcs', pc.id)" icon="arrow-right" style="color: #8a9df3;" class="is-pulled-right" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <table class="table is-fullwidth" v-if="columnASelected !== null">
-      <thead>
-        <th>Name</th>
-        <th v-if="!aIsLocked">Copy to <fa icon="arrow-right"/></th>
-      </thead>
-      <tbody>
-        <tr v-for="pc in campainA.pcs" :key="pc.id" class="hoverable"
-        @click="toExportsList(columnASelected, 'pc', pc.id, typeB, columnBSelected)">
-          <td>{{ charLimit(pc.name) }}</td>
-          <td v-if="!aIsLocked">
-            <fa v-if="checked(pc.id)" icon="arrow-right" style="color: #8a9df3;" class="is-pulled-right" />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    </div>
+
 
     </div>
 
@@ -124,6 +127,7 @@
             <option selected hidden value="null">Choose a campain</option>
             <option v-for="campain in campainsAvailableInB" :value="campain" :key="campain.id">
               <span>
+                [{{charLimit(campain.table)}}]
                 [{{charLimit(campain.game)}}]
                 <span v-if="!campain.is_copy_free"> [copy restricted] </span>
                 {{charLimit(campain.title)}}
@@ -136,7 +140,7 @@
             v-model="columnBSelected" @change="getCollectionB(columnBSelected)">
             <option selected hidden value="null">Choose a collection</option>
             <option value="" disabled>--- My collections ---</option>
-            <option v-for="collection in collections" :value="collection" :key="collection.id">
+            <option v-for="collection in collectionsAvailableInB" :value="collection" :key="collection.id">
               <span>
                 [{{charLimit(collection.game)}}]
                 <span v-if="!collection.is_copy_free"> [copy restricted] </span>
@@ -158,14 +162,16 @@
         </div>
       </label>
       <div v-if="columnBSelected !== null">
-        <h2 class="subtitle">{{ charLimit(columnBSelected.title) }} ({{ typeB }})
+        <h2 class="subtitle">
+          {{ charLimit(columnBSelected.title) }}
+          ({{ typeB }}<span v-if="typeB==='campain'"> for {{columnBSelected.table}}</span>)
         </h2>
         <span v-if="!bIsLocked"><fa icon="unlock" style="color: green;"/> Free exports</span>
         <span v-else><fa icon="lock" style="color: red;"/> Exports restricted (copy protected)</span>
 
       </div>
 
-      <div>
+      <div class="scrollable">
 
         <table class="table is-fullwidth" v-if="columnBSelected !== null">
           <thead>
@@ -175,8 +181,8 @@
           </thead>
           <tbody>
             <tr v-for="item in campainB.items" :key="item.id" class="hoverable"
-              @click="toExportsList(columnBSelected, 'item', item.id, typeA, columnASelected)">
-              <td v-if="!bIsLocked"><fa v-if="checked(item.id)" icon="arrow-left" style="color: #8a9df3;"/></td>
+              @click="addToExchanges('from_b', 'items', item.id)">
+              <td v-if="!bIsLocked"><fa v-if="checked('from_b', 'items', item.id)" icon="arrow-left" style="color: #8a9df3;"/></td>
               <td :class="item.type">{{ item.type }}</td>
               <td>{{ charLimit(item.name) }}</td>
 
@@ -193,8 +199,8 @@
           </thead>
           <tbody>
             <tr v-for="pc in campainB.pcs" :key="pc.id" class="hoverable"
-            @click="toExportsList(columnBSelected, 'pc', pc.id, typeA, columnASelected)">
-              <td v-if="!bIsLocked"><fa v-if="checked(pc.id)" icon="arrow-left" style="color: #8a9df3;"/></td>
+            @click="addToExchanges('from_b', 'pcs', pc.id)">
+              <td v-if="!bIsLocked"><fa v-if="checked('from_b', 'pcs', pc.id)" icon="arrow-left" style="color: #8a9df3;"/></td>
               <td>{{ charLimit(pc.name) }}</td>
             </tr>
           </tbody>
@@ -223,11 +229,24 @@ export default {
       campainB: [],
       collections: [],
       favorites: [],
-      exportsList: [],
-      sourceA: {},
+      exchanges: {
+        a_type: null,
+        a_id: null,
+        b_type: null,
+        b_id: null,
+        from_a: {
+          items: [],
+          pcs: [],
+        },
+        from_b: {
+          items: [],
+          pcs: [],
+        }
+      },
+      // sourceA: {},
+      // sourceB: {},
       typeA: 'campain',
       typeB: 'campain',
-      sourceB: {},
     }
   },
   beforeMount() {
@@ -249,19 +268,32 @@ export default {
     })
   },
   computed: {
+    showApplyExchanges() {
+      return this.exchanges.from_a.items.length > 0 ||
+      this.exchanges.from_a.pcs.length > 0 ||
+      this.exchanges.from_b.items.length > 0 ||
+      this.exchanges.from_b.pcs.length > 0
+    },
+    collectionsAvailableInB(){
+      if (this.columnASelected === null) {
+        return []
+      }
+      return this.collections.filter(collection => collection.id !== this.columnASelected.id)
+    },
     campainsAvailableInB(){
       if (this.columnASelected === null) {
         return []
       }
       return this.campains.filter(campain => campain.id !== this.columnASelected.id)
     },
-    unlockA(){
-
-    },
   },
   methods: {
     applyExchanges(){
-      console.log("apply exchanges... (TODO)")
+      this.exchanges.a_type = this.typeA
+      this.exchanges.b_type = this.typeB
+      this.exchanges.a_id = this.columnASelected.id
+      this.exchanges.b_id = this.columnBSelected.id
+      console.log('exchanges: ', this.exchanges)
       axios({
         method: 'post',
         url: '/campains/apply_exchanges/',
@@ -269,10 +301,13 @@ export default {
           'Authorization': `Token ${this.$store.state.token}`
         },
         data: {
-          exports: this.exportsList,
+          exchanges: this.exchanges,
         }
       }).then(response => {
         console.log(response.data)
+        this.campainA = response.data.source_a
+        this.campainB = response.data.source_b
+
         toast({
           message: 'Exchanges applied',
           type: 'is-success',
@@ -281,7 +316,10 @@ export default {
           pauseOnHover: true,
           duration: 3000,
         });
-        this.exportsList = []
+        this.exchanges.from_a.items = []
+        this.exchanges.from_a.pcs = []
+        this.exchanges.from_b.items = []
+        this.exchanges.from_b.pcs = []
       }).catch(error => {
         console.log(error)
       })
@@ -406,7 +444,13 @@ export default {
       }
       return text.slice(0, 22) + '...';
     },
-    toExportsList(export_from, type, id, export_to_type, export_to){
+    addToExchanges(from, type, id) {
+      if ((from === 'from_a') & (this.aIsLocked)){
+        return
+      }
+      if ((from === 'from_b') & (this.bIsLocked)){
+        return
+      }
       if (this.columnBSelected === null){
         console.log("campainSelectedB: ", this.columnBSelected)
         toast({
@@ -419,41 +463,34 @@ export default {
         });
         return
       }
-      if (this.exportsList.filter(obj => obj.id === id).length) {
-        let index = this.exportsList.findIndex(obj => obj.id === id)
-        this.exportsList.splice(index, 1)
-        console.log("exportsList", this.exportsList)
+      if (this.exchanges[from][type].filter(obj => obj === id).length) {
+        let index = this.exchanges[from][type].findIndex(obj => obj === id)
+        this.exchanges[from][type].splice(index, 1)
+        console.log("exchanges", this.exchanges)
         return
       }
-      this.exportsList.push({
-        type: type,
-        id: id,
-        to_type: export_to_type,
-        to: export_to.id,
-      })
-      console.log("exportsList", this.exportsList)
+      this.exchanges[from][type].push(id)
     },
-    checked(id){
-      if (this.exportsList.filter(obj => obj.id === id).length) {
+    checked(from, type, id){
+      if (this.exchanges[from][type].filter(elem => elem === id).length) {
         return true
       }
       return false
     },
-    checkA(type, id) {
-      console.log("columnASelected: ,", this.columnASelected)
-      if (!this.sourceB.length < 1){
-        // TODO: toast
-        return
-      } else if (this.aIsLocked){
-        return
-      } else {
-        this.exportsList.push({
-          type: type,
-          id: id,
-          to: sourceB.id
-        })
-      }
-    },
+    // checkA(type, id) {
+    //   console.log("columnASelected: ,", this.columnASelected)
+    //   if (!this.sourceB.length < 1){
+    //     return
+    //   } else if (this.aIsLocked){
+    //     return
+    //   } else {
+    //     this.exportsList.push({
+    //       type: type,
+    //       id: id,
+    //       to: sourceB.id
+    //     })
+    //   }
+    // },
     getCollectionA(collection) {
       this.aIsLocked = !collection.is_copy_free
       if (this.columnASelected === null) {
@@ -549,7 +586,13 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
+
+.scrollable {
+  height: 70vh;
+  overflow-y: auto;
+  position: relative;
+}
 
 .hoverable:hover {
   background-color: rgb(176, 255, 210);
