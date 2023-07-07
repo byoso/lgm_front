@@ -26,6 +26,7 @@
               <th></th>
               <th>last updated</th>
               <th>is shared</th>
+              <th>protection</th>
             </tr>
           </thead>
           <tbody>
@@ -43,6 +44,14 @@
               </td>
               <td>{{ formatDate(collection.date_updated) }}</td>
               <td ><fa v-if="collection.is_shared" icon="check" style="color: green;" /></td>
+
+              <td v-if="!collection.is_copy_free">
+                <fa icon="lock" style="color: red;"/>
+              </td>
+              <td v-else>
+                <fa icon="unlock" style="color: green;"/>
+
+              </td>
             </tr>
           </tbody>
 
