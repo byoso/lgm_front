@@ -23,6 +23,7 @@
             <tr>
               <th>Title</th>
               <th>game</th>
+              <th>rating</th>
               <th></th>
               <th>last updated</th>
               <th>is shared</th>
@@ -34,6 +35,7 @@
             @click="viewCollectionDetail(collection.id)">
               <td class="table-name">{{ charLimit(collection.title) }}</td>
               <td>{{ charLimit(collection.game) }}</td>
+              <td>{{ collection.rating}}({{collection.votes_count}})</td>
               <td>
                 <button class="button is-small is-secondary"
                   @mouseover="allowViewCollectionDetail=false"
@@ -93,7 +95,7 @@
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
                 {{ charLimit(collection.game) }}
               </td>
-              <td>{{ collection.rating }}</td>
+              <td>{{ collection.rating }}({{collection.votes_count}})</td>
               <td>
                   <ActionsButton
                   :collection="collection"
@@ -223,7 +225,7 @@
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
                 {{ charLimit(collection.game) }}
               </td>
-              <td>{{ collection.rating }}</td>
+              <td>{{ collection.rating }}({{collection.votes_count}})</td>
               <td>
                   <ActionsButton
                   :collection="collection"
@@ -320,13 +322,14 @@ export default {
     getFavoritesList() {
       axios({
         method: 'get',
-        url: "campains/favorite_collection/",
+        url: "campains/collection/favorite_collection/",
         headers: {
           'Authorization': `Token ${this.$store.state.token}`
         },
       }).then(response => {
         console.log("Response: ", response.data)
         this.favorites = response.data
+        console.log("favorites: ", this.favorites)
       }).catch(error => {
         console.log(error);
       })
