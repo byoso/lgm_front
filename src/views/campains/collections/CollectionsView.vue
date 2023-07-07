@@ -25,6 +25,7 @@
               <th>game</th>
               <th></th>
               <th>last updated</th>
+              <th>is shared</th>
             </tr>
           </thead>
           <tbody>
@@ -41,6 +42,7 @@
                 </button>
               </td>
               <td>{{ formatDate(collection.date_updated) }}</td>
+              <td ><fa v-if="collection.is_shared" icon="check" style="color: green;" /></td>
             </tr>
           </tbody>
 
@@ -70,6 +72,7 @@
               <th>author</th>
               <th>language</th>
               <th>last updated</th>
+              <th>protection</th>
             </tr>
           </thead>
           <tbody>
@@ -92,6 +95,13 @@
               <td>{{ charLimit(collection.author) }}</td>
               <td>{{ collection.language }}</td>
               <td>{{ formatDate(collection.date_updated) }}</td>
+              <td v-if="!collection.is_copy_free">
+                <fa icon="lock" style="color: red;"/>
+              </td>
+              <td v-else>
+                <fa icon="unlock" style="color: green;"/>
+
+              </td>
             </tr>
           </tbody>
         </table>
@@ -192,6 +202,7 @@
               <th>author</th>
               <th>language</th>
               <th>last updated</th>
+              <th>protection</th>
             </tr>
           </thead>
           <tbody>
@@ -214,6 +225,13 @@
               <td>{{ charLimit(collection.author) }}</td>
               <td>{{ collection.language }}</td>
               <td>{{ formatDate(collection.date_updated) }}</td>
+              <td v-if="!collection.is_copy_free">
+                <fa icon="lock" style="color: red;"/>
+              </td>
+              <td v-else>
+                <fa icon="unlock" style="color: green;"/>
+
+              </td>
             </tr>
           </tbody>
 
