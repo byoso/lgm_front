@@ -477,20 +477,6 @@ export default {
       }
       return false
     },
-    // checkA(type, id) {
-    //   console.log("columnASelected: ,", this.columnASelected)
-    //   if (!this.sourceB.length < 1){
-    //     return
-    //   } else if (this.aIsLocked){
-    //     return
-    //   } else {
-    //     this.exportsList.push({
-    //       type: type,
-    //       id: id,
-    //       to: sourceB.id
-    //     })
-    //   }
-    // },
     getCollectionA(collection) {
       this.aIsLocked = !collection.is_copy_free
       if (this.columnASelected === null) {
@@ -549,7 +535,7 @@ export default {
           'Authorization': `Token ${this.$store.state.token}`
         },
       }).then(response => {
-        this.campainA = response.data;
+        this.campainA = response.data.campain;
         console.log(this.campainA)
       }).catch(error => {
         console.log(error)
@@ -574,7 +560,7 @@ export default {
           'Authorization': `Token ${this.$store.state.token}`
         },
       }).then(response => {
-        this.campainB = response.data;
+        this.campainB = response.data.campain;
         this.setLocks()
         console.log(this.campainB)
       }).catch(error => {

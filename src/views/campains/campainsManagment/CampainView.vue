@@ -21,6 +21,7 @@
         :refreshSpin="refreshSpin"
         :maxItemsDisplay="maxItemsDisplay"
         :itemsDisplayMode="itemsDisplayMode"
+        :collection="collection"
         @refreshCampain="refresh_campain()"
         @changeMaxItemsDisplay="changeMaxItemsDisplay($event)"
         @changeDisplayMode="changeDisplayMode($event)"
@@ -80,7 +81,7 @@ export default {
     return {
       user: {},
       campain: {title: "no title"},
-      // campain: this.$store.state.current_campain,
+      collection: null,
       table: {},
       refreshSpin: false,
       itemsDisplayMode: 'mini',
@@ -212,18 +213,20 @@ export default {
         }
       })
       .then(response => {
-        this.campain = response.data;
+        this.collection = response.data.collection;
+        this.campain = response.data.campain;
         if (!this.isGameMaster) {
           this.campain.items = this.campain.items.filter(item => !item.locked);
         }
         this.shownItems = this.campain.items;
-        this.table = response.data.table;
-        this.$store.state.current_campain = response.data;
-        this.$store.state.current_table = response.data.table;
+        this.table = response.data.campain.table;
+        this.$store.state.current_campain = response.data.campain;
+        this.$store.state.current_table = response.data.campain.table;
         console.log(this.campain.title)
         this.refreshSpin = false;
         this.filterItems(this.filterBy);
         console.log("refreshed campain: \n", this.campain)
+        console.log("refreshed collection: \n", this.collection)
       })
       .catch(error => {
         console.log(error)

@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <div class="top-line">
-      <span class="campain-title">{{ charLimit(campain.title) }} </span>
+      <span class="campain-title">{{ charLimit(campain.title) }}</span>
       <button class="button is-success is-small mb-2" :disabled="refreshSpin" @click="refreshCampain">
         <fa icon="arrows-rotate" class="mr-2" :class="{'spinner': refreshSpin}"/>
       refresh
@@ -18,10 +18,13 @@
     <div v-if="showInfo">
       <figure v-if="campain.image_url">
         <img :src="campain.image_url" />
-      </figure>
-      <div v-if="campain.is_official">
-        <OfficialMark :collection="campain"/><br>
-      </div>
+      </figure><br>
+      <RatingWidget v-if="collection" :collection="collection" />
+
+      <span v-if="campain.is_official">
+        <OfficialMark :collection="campain"/>
+      </span>
+      <br>
       <router-link :to="{name: 'table', params: {id: table.id} }" class="button is-small is-secondary m-2">
       {{ charLimit(table.name) }}
       </router-link>
@@ -178,6 +181,7 @@ import PCModalCreate from './PCModalCreate.vue';
 import PCModalDisplay from './PCModalDisplay.vue';
 import PCModalEdit from './PCModalEdit.vue';
 import OfficialMark from '../collections/components/OfficialMark.vue';
+import RatingWidget from './RatingWidget.vue'
 
 export default {
   name: "CampainTools",
@@ -187,6 +191,7 @@ export default {
     PCModalDisplay,
     PCModalEdit,
     OfficialMark,
+    RatingWidget,
   },
   props: [
     'user',
@@ -194,6 +199,7 @@ export default {
     'refreshSpin',
     'maxItemsDisplay',
     'itemsDisplayMode',
+    'collection',
   ],
   computed: {
     isGameMaster() {
@@ -234,7 +240,6 @@ export default {
     }
   },
   beforeMount() {
-
     this.displayMode = this.$store.state.prefs.itemsDisplayMode,
     this.table = this.$store.state.current_table;
     this.maxItems = this.maxItemsDisplay;

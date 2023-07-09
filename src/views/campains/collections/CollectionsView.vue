@@ -35,7 +35,10 @@
             @click="viewCollectionDetail(collection.id)">
               <td class="table-name">{{ charLimit(collection.title) }}</td>
               <td>{{ charLimit(collection.game) }}</td>
-              <td>{{ collection.rating}}({{collection.votes_count}})</td>
+              <td>
+                <fa v-if="collection.votes_count > 1" icon="star" class="star" />
+                {{ collection.rating}}({{collection.votes_count}})
+              </td>
               <td>
                 <button class="button is-small is-secondary"
                   @mouseover="allowViewCollectionDetail=false"
@@ -95,7 +98,10 @@
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
                 {{ charLimit(collection.game) }}
               </td>
-              <td>{{ collection.rating }}({{collection.votes_count}})</td>
+              <td>
+                <fa v-if="collection.votes_count > 1" icon="star" class="star" />
+                {{ collection.rating}}({{collection.votes_count}})
+              </td>
               <td>
                   <ActionsButton
                   :collection="collection"
@@ -225,7 +231,10 @@
                 <OfficialMark v-if="collection.is_official" :collection="collection"/>
                 {{ charLimit(collection.game) }}
               </td>
-              <td>{{ collection.rating }}({{collection.votes_count}})</td>
+              <td>
+                <fa v-if="collection.votes_count > 1" icon="star" class="star" />
+                {{ collection.rating}}({{collection.votes_count}})
+              </td>
               <td>
                   <ActionsButton
                   :collection="collection"
@@ -344,7 +353,7 @@ export default {
     removeFromFavorites(collection) {
       axios({
         method: 'delete',
-        url: "campains/favorite_collection/",
+        url: "campains/collection/favorite_collection/",
         headers: {
           'Authorization': `Token ${this.$store.state.token}`
         },
@@ -361,7 +370,7 @@ export default {
     addToFavorites(collection) {
       axios({
         method: 'post',
-        url: "campains/favorite_collection/",
+        url: "campains/collection/favorite_collection/",
         headers: {
           'Authorization': `Token ${this.$store.state.token}`
         },
@@ -514,5 +523,9 @@ export default {
   align-items: center;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.star {
+  color: rgb(255, 179, 0);
 }
 </style>
