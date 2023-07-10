@@ -19,7 +19,7 @@
       <figure v-if="campain.image_url">
         <img :src="campain.image_url" />
       </figure><br>
-      <RatingWidget v-if="collection" :collection="collection" />
+      <RatingWidget v-if="collection" :collection="collection" @newCollection="$emit('newCollection', $event)"/>
 
       <span v-if="campain.is_official">
         <OfficialMark :collection="campain"/>
@@ -243,10 +243,10 @@ export default {
     this.displayMode = this.$store.state.prefs.itemsDisplayMode,
     this.table = this.$store.state.current_table;
     this.maxItems = this.maxItemsDisplay;
-    // console.log("user is ", this.user)
-    // console.log('campain pcs: ', this.campain.pcs)
+    console.log('CapainTools: ')
     console.log('campain: ', this.campain.title)
     console.log("is_official: ", this.campain.is_official)
+    console.log('collection: ', this.collection)
   },
   methods: {
     charLimit(text) {

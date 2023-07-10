@@ -31,6 +31,7 @@
         @resetSearch="resetSearch()"
         @updatePC="updatePC($event)"
         @deletePC="deletePC($event)"
+        @newCollection="newCollection($event)"
 
         />
 
@@ -81,7 +82,7 @@ export default {
     return {
       user: {},
       campain: {title: "no title"},
-      collection: null,
+      collection: {},
       table: {},
       refreshSpin: false,
       itemsDisplayMode: 'mini',
@@ -104,9 +105,14 @@ export default {
     this.itemsDisplayMode = this.$store.state.prefs.itemsDisplayMode;
     this.user = this.$store.state.user;
     this.campain = this.$store.state.current_campain;
-    this.refresh_campain();
+    this.collection = this.campain.parent_collection
+    console.log('campainView mounted, collection: ', this.collection)
+    this.refresh_campain()
   },
   methods: {
+    newCollection(collection){
+      this.refresh_campain()
+    },
     itemDeleted(id) {
       console.log("item deleted: ", id)
       this.showItemModalDisplaySwitch = false;
@@ -214,6 +220,7 @@ export default {
       })
       .then(response => {
         this.collection = response.data.collection;
+        console.log('collection (axios response): ', this.collection)
         this.campain = response.data.campain;
         if (!this.isGameMaster) {
           this.campain.items = this.campain.items.filter(item => !item.locked);
