@@ -27,6 +27,9 @@ import CollectionDetailView from '../views/campains/collections/CollectionDetail
 // exchanges
 import ExchangesView from '../views/campains/exchanges/ExchangesView.vue'
 
+// subscriptions
+import SubscriptionsView from '../views/subscriptions/SubscriptionsView.vue'
+
 // store
 import store from '../store'
 
@@ -151,6 +154,12 @@ const routes = [
     path: '/exchanges/',
     name: 'exchangesView',
     component: ExchangesView,
+    meta: { requireLogin: true }
+  },
+  {
+    path: '/subscriptions/',
+    name: 'subscriptionsView',
+    component: SubscriptionsView,
     meta: { requireLogin: true }
   }
 ]

@@ -26,6 +26,10 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
+        <router-link v-if="$store.state.isAuthenticated"
+          class="button is-primary is-small mr-5" :to="{name: 'subscriptionsView'}">
+          <strong>Subscribe</strong>
+        </router-link>
 
         <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
 
