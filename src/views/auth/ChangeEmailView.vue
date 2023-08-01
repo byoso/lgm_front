@@ -1,5 +1,5 @@
 <template>
-<form>
+<form class="form">
   <h1 class="title">Change email</h1>
 
 

@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form class="form">
   <h1 class="title">Change Username</h1>
   <label class="label">Enter your new username</label>
   <input type="text" class="input" v-model="username" placeholder="Username" required>

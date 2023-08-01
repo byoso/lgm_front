@@ -72,7 +72,8 @@ export default {
         this.$router.push({ name: 'dashboard' })
       })
       .catch(error => {
-      this.errors.push(error.response.data);
+        console.log(error)
+      // this.errors.push(error.response.data);
       });
     },
   },
