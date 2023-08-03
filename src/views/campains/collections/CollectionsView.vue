@@ -5,8 +5,14 @@
     <h1 class="title">Collections</h1>
 
 
-    <button class="button is-primary is-small m-2" @click="collectionCreate">+ New Collection</button>
-    <router-link class="button is-secondary is-small m-2" :to="{ name: 'exchangesView' }">Open exchanges interface</router-link>
+    <button class="button is-primary is-small m-2" @click="collectionCreate"
+    v-if="$store.state.user.is_subscriber">
+      + New Collection
+    </button>
+    <router-link class="button is-secondary is-small m-2" :to="{ name: 'exchangesView' }"
+    v-if="$store.state.user.is_subscriber">
+      Open exchanges interface
+    </router-link>
 
 
     <div @click="showMyCollections = !showMyCollections" class="topic">My Collections

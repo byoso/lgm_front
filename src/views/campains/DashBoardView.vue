@@ -4,7 +4,11 @@
 
 
 <br>
-  <router-link to="/create_table" class="button is-success is-small m-2">+ new table</router-link>
+  <router-link
+  v-if="$store.state.user.is_subscriber"
+  to="/create_table" class="button is-success is-small m-2">
+    + new table
+  </router-link>
   <br>
   <div v-if="tables_as_owner.length">
     <h2 class="subtitle">My tables as owner:</h2>

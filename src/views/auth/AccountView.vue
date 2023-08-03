@@ -17,13 +17,13 @@
     </p>
 
     <p class="is-flex is-justify-content-space-around">
-      <router-link to="/change_username">change my username</router-link>
-      <router-link to="/change_email">change my email</router-link>
-      <router-link to="/change_password">change my password</router-link>
+      <router-link class="button is-secondary m-2" to="/change_username">change my username</router-link>
+      <router-link class="button is-secondary m-2" to="/change_email">change my email</router-link>
+      <router-link class="button is-secondary m-2" to="/change_password">change my password</router-link>
     </p>
   </div>
-  <div class="box">
-    <button @click="stripePortal">Portal</button>
+  <div class="box button" @click="stripePortal">
+    <h2 class="subtitle"> Subscriptions and Invoices Portal</h2>
   </div>
 
 </div>

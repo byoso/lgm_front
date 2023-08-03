@@ -6,7 +6,12 @@
       <h1 class="subtitle">{{ charLimit(collection.title) }}</h1>
       <div class="center-elems unscrollable">
         <button class="button is_secondary is-small" v-if="anyModif" @click="cancel">Cancel</button>
-        <button class="button is-success is-small ml-2" @click="saveCollection" id="save-button">Save Collection</button>
+        <div v-if="$store.state.user">
+          <button class="button is-success is-small ml-2" @click="saveCollection" id="save-button"
+          v-if="$store.state.user.is_subscriber">
+            Save Collection
+          </button>
+        </div>
         <button class="button is-warning is-small ml-2" @click="allowDeletion=!allowDeletion">
           <span v-if="!allowDeletion">
             Delete Collection

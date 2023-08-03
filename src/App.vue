@@ -11,25 +11,30 @@
   </div>
 
   <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start">
+    <div class="navbar-start" v-if="$store.state.user">
       <router-link v-if="$store.state.isAuthenticated" to="/dashboard" class="navbar-item">
         Tables
       </router-link>
       <router-link v-if="$store.state.isAuthenticated" to="/collections" class="navbar-item">
         Collections
       </router-link>
-      <router-link v-if="$store.state.isAuthenticated"
-      class="navbar-item" :to="{ name: 'exchangesView' }">
-        Exchanges
-      </router-link>
+        <router-link v-if="$store.state.isAuthenticated & $store.state.user.is_subscriber"
+        class="navbar-item"
+        :to="{ name: 'exchangesView' }"
+        >
+          Exchanges
+        </router-link>
     </div>
 
     <div class="navbar-end">
       <div class="navbar-item">
-        <router-link v-if="$store.state.isAuthenticated"
-          class="button is-primary is-small mr-5" :to="{name: 'subscriptionsView'}">
-          <strong>Subscribe</strong>
-        </router-link>
+        <div v-if="$store.state.user">
+          <router-link v-if="$store.state.isAuthenticated & !$store.state.user.is_subscriber"
+            class="button is-primary is-small mr-5" :to="{name: 'subscriptionsView'}">
+            <strong>Subscribe</strong>
+          </router-link>
+
+        </div>
 
         <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
 
@@ -141,6 +146,21 @@ html {
   padding: 5px;
   margin-top: 40px;
 }
+
+router-link {
+  text-decoration: none;
+  color: white;
+}
+
+router-link:visited {
+  text-decoration: none;
+  color: white;
+}
+router-link:hover {
+  text-decoration: none;
+  color: white;
+}
+
 
 
 </style>
