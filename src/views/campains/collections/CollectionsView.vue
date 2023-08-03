@@ -47,6 +47,7 @@
               </td>
               <td>
                 <button class="button is-small is-secondary"
+                  v-if="is_subscriber"
                   @mouseover="allowViewCollectionDetail=false"
                   @mouseout="allowViewCollectionDetail=true"
                   @click="newCampainFromMyCollection(collection)">
@@ -319,6 +320,11 @@ export default {
   beforeMount(){
     this.getMyCollectionList()
     this.getFavoritesList()
+  },
+  computed: {
+    is_subscriber(){
+      return this.$store.state.user.is_subscriber
+    },
   },
   methods: {
     charLimit(text) {

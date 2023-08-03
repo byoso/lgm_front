@@ -164,7 +164,7 @@
           </div>
         </div>
         <div v-if="showItems">
-          <p class="hoverable" @click="createItem">+ New Item</p>
+          <p class="hoverable" @click="createItem" v-if="is_subscriber">+ New Item</p>
           <table v-if="itemList.length" class="table is-fullwidth is-narrow">
             <thead>
               <tr>
@@ -194,7 +194,7 @@
           </div>
         </div>
         <div v-if="showPCs">
-          <p class="hoverable" @click="createPc">+ New PC</p>
+          <p class="hoverable" @click="createPc" v-if="is_subscriber">+ New PC</p>
           <table v-if="pcList.length" class="table is-fullwidth is-narrow">
             <thead>
               <tr>
@@ -293,6 +293,9 @@ export default {
     this.getCollectionDetail()
   },
   computed: {
+    is_subscriber() {
+      return this.$store.state.user.is_subscriber
+    },
     copyFreeCheckbox(){
       if (this.IUnderstand) {
         return false

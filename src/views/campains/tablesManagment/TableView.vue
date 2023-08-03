@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title">Table {{ table.name }}
     </h1>
-    <div v-if="is_owner">
+    <div v-if="is_owner & is_subscriber">
       <a class="button is-small is-warning m-2" @click="editTable(table.id)">Edit {{ table.name }}</a>
       <a class="button is-small is-success m-2" @click="newCampain">+ new campain</a>
     </div>
@@ -65,7 +65,10 @@ export default {
   },
   computed: {
     is_owner() {
-      return (this.table.owners.some(owner => owner.id === this.$store.state.user.id) & this.$store.state.user.is_subscriber)
+      return (this.table.owners.some(owner => owner.id === this.$store.state.user.id))
+    },
+    is_subscriber() {
+      return this.$store.state.user.is_subscriber
     },
   },
   beforeMount() {

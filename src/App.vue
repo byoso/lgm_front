@@ -88,6 +88,10 @@
   <router-view/>
 </div>
 
+<div class="bottom">
+
+</div>
+
 </template>
 
 <script>
@@ -161,6 +165,8 @@ router-link:hover {
   color: white;
 }
 
-
+.bottom {
+  margin-top: 100px;
+}
 
 </style>
