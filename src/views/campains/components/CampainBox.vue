@@ -1,20 +1,15 @@
 <template>
-<div class="box m-2 is-3 campain" @click="gotoCampain(campain.id)">
-  <h1 class="campainTitle">{{ charLimit(campain.title) }}</h1>
+<div class="box m-2 campain" @click="gotoCampain(campain.id)">
+  <h2 class="campainTitle">{{ charLimit(campain.title) }}</h2>
   <h2 >{{ charLimit(campain.game) }}</h2>
-
-
-  <figure v-if="campain.image_url" class="image is-128x128 is-pulled-right">
-    <img :src="campain.image_url">
-  </figure>
-  <ul>
-    <li>game master: {{ charLimit(campain.game_master.username) }}</li>
-    <li>description: {{ campain.description }}</li>
-    <li>is ended ? : {{ campain.is_ended }}</li>
-    <li>is copy free ? : {{ campain.is_copy_free }}</li>
-
-  </ul>
-
+  <div>
+    <figure v-if="campain.image_url" class="image is-128x128">
+      <img :src="campain.image_url">
+    </figure>
+  </div>
+  <div class="m-2">
+    mastered by {{ charLimit(campain.game_master.username) }}
+  </div>
 </div>
 </template>
 
@@ -47,8 +42,8 @@ export default {
   padding: 10px;
   border: 1px solid #DDD;
   border-radius: 10px;
-  text-align:left;
-  width:40%;
+  text-align:center;
+  /* width:40%; */
   max-height: 400px;
 }
 .campain:hover {
@@ -61,6 +56,8 @@ export default {
 .image {
   height: 128px;
   width: 96px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .campainTitle {

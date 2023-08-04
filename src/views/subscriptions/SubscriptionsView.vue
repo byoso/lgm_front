@@ -8,6 +8,14 @@
         <p>{{ plan.unit_amount/100 }} {{ plan.currency }} / {{ plan.recurring_interval_count }} {{ plan.recurring_interval }}</p>
         <hr>
         <p class="">{{ plan.product.description }}</p>
+        <hr>
+        Get acces to all features suitable for Game Masters.
+        <br>
+        <ul>
+          <li>- Create new campains</li>
+          <li>- Create new items collections</li>
+          <li>- Use the shared collections for your own campains</li>
+        </ul>
     </div>
 
 
@@ -82,6 +90,7 @@ export default {
   font-weight: bold;
   cursor: pointer;
   scale: 1.1;
+  transition: all 0.1s ease-in-out;
 }
 
 </style>

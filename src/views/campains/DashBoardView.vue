@@ -24,7 +24,8 @@
       <tbody>
         <tr v-for="table in tables_as_owner" :key="table.id">
           <td>
-            <router-link @click="storeTable(table)" :to="{name: 'table', params: {id: table.id} }">
+            <router-link @click="storeTable(table)" :to="{name: 'table', params: {id: table.id} }"
+            class="button">
               {{ charLimit(table.name) }}
             </router-link>
           </td>
@@ -63,7 +64,8 @@
       <tbody>
         <tr v-for="table in tables_as_guest" :key="table.id">
           <td>
-            <router-link :to="{name: 'table', params: {id: table.id} }" @click="storeTable(table)">
+            <router-link :to="{name: 'table', params: {id: table.id} }" @click="storeTable(table)"
+            class="button">
               {{ charLimit(table.name) }}
             </router-link>
           </td>

@@ -51,6 +51,10 @@
       <label class="label">Description</label>
       <textarea class="textarea" placeholder="Campain description" v-model="camapainDescription"></textarea>
 
+      <div class="m-2">
+        <strong>Is this campain is ended ?  </strong><input type="checkbox" v-model="is_ended">
+      </div>
+
       <div v-if="campain.is_copy_free">
         <label class="label m-2">is copy locked ?
           <p>
@@ -127,6 +131,7 @@ export default {
     this.camapainDescription = this.campain.description
     this.gameMasterId = this.campain.game_master.id
     this.is_copy_locked = !this.campain.is_copy_free
+    this.is_ended = this.campain.is_ended
     console.log("campain: \n",this.campain)
 
   },
@@ -167,6 +172,7 @@ export default {
         image_url: this.image_url,
         language: this.language,
         is_copy_free: !this.is_copy_locked,
+        is_ended: this.is_ended,
       }
       console.log("send to update: \n", data)
       axios({
