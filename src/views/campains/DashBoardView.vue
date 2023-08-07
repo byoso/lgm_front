@@ -39,7 +39,7 @@
           </td>
           <td>
             <ul>
-              <li v-for="guest in table.guests" :key="guest.id">
+              <li v-for="guest in table.guests.concat(table.game_masters)" :key="guest.id">
                 {{ charLimit(guest.email) }} - {{ charLimit(guest.username) }}
               </li>
             </ul>
@@ -76,7 +76,7 @@
           </td>
           <td>
             <ul>
-              <li v-for="guest in table.guests" :key="guest.id">
+              <li v-for="guest in table.guests.concat(table.game_masters)" :key="guest.id">
                 {{ charLimit(guest.email) }} - {{ charLimit(guest.username) }}
               </li>
             </ul>
@@ -120,6 +120,8 @@ export default {
     ).then(response => {
       this.tables_as_owner = response.data['tables_as_owner'];
       this.tables_as_guest = response.data['tables_as_guest'];
+      this.tables_as_gm = response.data['tables_as_gm'];
+      this.tables_as_guest = this.tables_as_guest.concat(this.tables_as_gm);
     }).catch(error => {
       console.log(error);
     });

@@ -134,7 +134,7 @@ export default {
   },
   beforeMount() {
     console.log("campain in PCModal: ", this.campain)
-    this.players = this.campain.table.owners.concat(this.campain.table.guests)
+    this.players = this.campain.table.owners.concat(this.campain.table.guests).concat(this.campain.table.game_masters)
     console.log("players: ", this.players)
     this.name = this.pc.name
     this.image_url = this.pc.image_url

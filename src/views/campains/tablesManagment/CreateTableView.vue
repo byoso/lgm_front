@@ -15,7 +15,7 @@
 <hr>
 
 
-  <h2 class="subtitle">The Guests</h2>
+  <h2 class="subtitle">The Guests emails</h2>
   <p class="mb-2">You can add guests later if you prefer.</p>
 
 
@@ -25,7 +25,7 @@
 
 
   <div v-for="(guest, index) in guests" :key="index" :id="index" class="field">
-      <label class="label">Guest {{ index+1 }}</label>
+      <label class="label">Guest email{{ index+1 }}</label>
       <div class="control field is-grouped">
 
           <input type="email" class="input guest_email" v-model="guests[index].email" placeholder="Enter the guest's email">

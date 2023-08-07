@@ -1,6 +1,8 @@
 <template>
-<div class="box m-2 campain" @click="gotoCampain(campain.id)">
-  <h2 class="campainTitle">{{ charLimit(campain.title) }}</h2>
+<div class="box m-2 campain" @click="gotoCampain(campain.id)" :class="{'mastering': user.id==campain.game_master.id}">
+  <h2 class="campainTitle">
+    {{ charLimit(campain.title) }}
+  </h2>
   <h2 >{{ charLimit(campain.game) }}</h2>
   <div>
     <figure v-if="campain.image_url" class="image is-128x128">
@@ -18,7 +20,8 @@
 export default {
   name: "CampainBox",
   props: [
-    'campain'
+    'campain',
+    'user',
   ],
   methods: {
     charLimit(text) {
@@ -65,6 +68,12 @@ export default {
   font-weight: bold;
   text-align: center;
   margin-bottom: 10px;
+}
+
+.mastering {
+  /* border-bottom: 1px solid lightseagreen; */
+  border: 2px solid rgb(240, 194, 77);
+  /* background-color: rgb(198, 255, 252); */
 }
 
 </style>
