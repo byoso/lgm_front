@@ -30,6 +30,9 @@ import ExchangesView from '../views/campains/exchanges/ExchangesView.vue'
 // subscriptions
 import SubscriptionsView from '../views/subscriptions/SubscriptionsView.vue'
 
+// MDGuide
+import MDGuide from '../views/legalMentions/MDGuide.vue'
+
 // store
 import store from '../store'
 
@@ -161,7 +164,12 @@ const routes = [
     name: 'subscriptionsView',
     component: SubscriptionsView,
     meta: { requireLogin: true }
-  }
+  },
+  {
+    path: '/MDGuide',
+    name: 'MDGuide',
+    component: MDGuide,
+  },
 ]
 
 const router = createRouter({

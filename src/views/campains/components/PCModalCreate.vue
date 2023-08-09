@@ -69,10 +69,10 @@
       <footer class="modal-card-foot">
         <button class="button is-success is-small" @click.prevent="onSubmit()">Save</button>
         <button class="button is-small" @click="$emit('closeCreatePCModal')">Cancel</button>
-        <a class="info-icon tooltip" href="https://www.markdownguide.org/cheat-sheet/" target="_blank">
-          <fa icon="circle-info" />
-          <span class="tooltiptext">Edition tips</span>
-        </a>
+          <a href="MDGuide.html" class="info-icon tooltip" target="_blank">
+            <fa icon="circle-info" />
+            <span class="tooltiptext">Edition tips</span>
+          </a>
         <div>
           <p v-for="error in errors" :key="error" style="color: red;">{{ error }}</p>
         </div>

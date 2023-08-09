@@ -171,7 +171,7 @@ export default {
       axios(
         {
           method: 'POST',
-          url: 'campains/swith_guest_GM/',
+          url: 'campains/switch_guest_GM/',
           data: {
             table_id: this.table.id,
             user_id: id,

@@ -7,6 +7,7 @@
 
   <label class="label">Name</label>
   <input type="text" class="input" placeholder="Name the table" v-model="name" required>
+  <p v-for="error in errors.name" style="color:red;" :key="error">{{ error }}</p>
 
   <label class="label">Description</label>
   <textarea type="textarea" class="textarea" rows=6 v-model="description">
@@ -34,14 +35,6 @@
     </div>
   </div>
 
-  <div v-if="errors.length">
-    <ul>
-      <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
-        {{ error[0] }}
-      </li>
-    </ul>
-  </div>
-
   <br>
   <button class="button is-success mt-2" @click="onSubmit">Confirm</button>
 
@@ -63,7 +56,7 @@ export default {
       description: "",
       guests: [],
       base_key: 0,
-      errors: [],
+      errors: {},
 
     }
   },
@@ -118,7 +111,8 @@ export default {
         })
         .catch(error => {
           if (error.response) {
-            this.errors.push(error.response.data);
+            console.log(error.response.data);
+            this.errors = error.response.data;
           }
         })
 

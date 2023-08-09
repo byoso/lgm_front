@@ -7,6 +7,7 @@
 
   <label class="label">Name</label>
   <input type="text" class="input" placeholder="Name the table" v-model="name" required>
+  <p v-for="error in errors.name" style="color:red;" :key="error">{{ error }}</p>
 
   <label class="label">Description</label>
   <textarea type="textarea" class="textarea" rows=6 v-model="description">
@@ -32,13 +33,6 @@
     </div>
   </div>
 
-  <div v-if="errors.length">
-    <ul>
-      <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
-        {{ error[0] }}
-      </li>
-    </ul>
-  </div>
 
   <br>
   <button class="button is-success m-2" @click="onSubmit">Confirm</button>
@@ -67,8 +61,7 @@ export default {
       description: "",
       guests: [],
       base_key: 0,
-      errors: [],
-      // table_password: "",
+      errors: {},
       allowDelete: true,
     }
   },
@@ -89,7 +82,6 @@ export default {
       console.log(response)
       this.name = response.data['name'];
       this.description = response.data['description'];
-      // this.table_password = response.data['table_password'];
       for (var i=0; i<response.data['guests'].length; i++) {
         this.guests.push({
           email: response.data['guests'][i].email,
@@ -116,7 +108,7 @@ export default {
       ).then(response => {
         toast({
           message: "Table deleted",
-          type: "is-danger",
+          type: "is-success",
           position: 'bottom-right',
           dismissible: true,
           pauseOnHover: true,
@@ -178,9 +170,7 @@ export default {
           this.$router.push({ name: 'table', params: { id: this.table_id } });
         })
         .catch(error => {
-          if (error.response) {
-            this.errors.push(error.response.data);
-          }
+            this.errors = error.response.data;
         })
 
       }

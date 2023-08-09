@@ -31,17 +31,22 @@
       <h3 class="subtitle">by {{ charLimit(campain.game_master.username) }}</h3>
     </div>
 
-    <div v-if="isGameMaster">
+    <div v-if="isGameMaster | isOwner">
       <div @click="showSettings = !showSettings" class="topic">Settings
         <div class="is-pulled-right mr-2">
           <fa v-if="showSettings" icon="angle-down"/>
           <fa v-if="!showSettings" icon="angle-right"/>
         </div>
       </div>
-      <div v-if="showSettings" >
-        <div class="m-2">
-          <router-link :to="{name: 'CampainEditView', params: {id: campain.id}}" class="m-2 button is-small is-warning">Edit campain...</router-link>
-        </div>
+      <div v-if="showSettings" class="m-2">
+          <router-link v-if="isGameMaster"
+          :to="{name: 'CampainEditView', params: {id: campain.id}}"
+          class="m-2 button is-small is-warning">
+            Edit campain...
+          </router-link>
+          <div>
+            Campain is ended : <input type="checkbox" v-model="is_ended" @change="endCampain">
+          </div>
       </div>
 
     </div>
@@ -176,6 +181,7 @@
 
 <script>
 import axios from 'axios';
+import { toast } from 'bulma-toast';
 import CreateItemModal from './CreateItemModal.vue';
 import PCModalCreate from './PCModalCreate.vue';
 import PCModalDisplay from './PCModalDisplay.vue';
@@ -204,6 +210,14 @@ export default {
   computed: {
     isGameMaster() {
       return this.user.id === this.campain.game_master.id;
+    },
+    isOwner() {
+      let table = this.$store.state.current_table
+      if (table.owners.filter(owner => owner.id === this.user.id).length > 0){
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   data() {
@@ -237,6 +251,7 @@ export default {
       filterBy: '--All--',
       sortBy: 'date+',
       searchBy: '',
+      is_ended: this.campain.is_ended,
     }
   },
   beforeMount() {
@@ -313,6 +328,40 @@ export default {
     },
     deletePC(pc_id) {
       this.$emit('deletePC', pc_id);
+    },
+    endCampain(){
+      console.log("End campain: ", this.is_ended)
+      axios({
+        method: 'put',
+        url: `/campains/switch_end_campain/`,
+        headers: {
+          'Authorization': `Token ${this.$store.state.token}`
+        },
+        data: {
+          campain_id: this.campain.id,
+          table_id: this.table.id,
+        }
+      }).then(response => {
+        console.log(response)
+        toast({
+          message: 'Campain end status changed',
+          type: 'is-success',
+          position: 'bottom-right',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 2000,
+        });
+      }).catch(error => {
+        console.log(error)
+        toast({
+          message: 'Something went wrong, please try again',
+          type: 'is-danger',
+          position: 'bottom-right',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 2000,
+        });
+      })
     },
 
   }

@@ -1,5 +1,7 @@
 <template>
-<div class="box m-2 campain" @click="gotoCampain(campain.id)" :class="{'mastering': user.id==campain.game_master.id}">
+<div class="box m-2 campain" @click="gotoCampain(campain.id)"
+:class="{'mastering': user.id===campain.game_master.id, 'not-mastering': user.id!==campain.game_master.id}"
+>
   <h2 class="campainTitle">
     {{ charLimit(campain.title) }}
   </h2>
@@ -70,10 +72,12 @@ export default {
   margin-bottom: 10px;
 }
 
-.mastering {
-  /* border-bottom: 1px solid lightseagreen; */
+.not-mastering {
   border: 2px solid rgb(240, 194, 77);
-  /* background-color: rgb(198, 255, 252); */
+}
+
+.mastering {
+  border: 2px solid rgb(90, 193, 116);
 }
 
 </style>

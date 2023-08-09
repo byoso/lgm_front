@@ -13,12 +13,10 @@
         <button class="delete" aria-label="close" @click="$emit('showModalDisplay', item)"></button>
       </header>
       <section class="modal-card-body">
-        <div class="content" id="data_pc">
-          {{ dataPC }}
+        <div class="content" id="data_pc" v-html=dataPC>
         </div>
         <hr v-if="isGameMaster">
-        <div v-if="isGameMaster" class="content" id="data_gm">
-          {{ dataGM }}
+        <div v-if="isGameMaster" class="content" id="data_gm" v-html=dataGM>
         </div>
         <div v-if="item.image_url" >
           <hr>
@@ -43,20 +41,6 @@ export default {
     'campain',
     'showIt',
   ],
-  data() {
-    return {
-      dataPC: '',
-      dataGM: '',
-    }
-  },
-  mounted() {
-    let elem_pc = document.getElementById('data_pc')
-    elem_pc.innerHTML = this.dataPC
-    if (this.isGameMaster) {
-      let elem_gm = document.getElementById('data_gm')
-      elem_gm.innerHTML = this.dataGM
-    }
-  },
   computed:{
     isGameMaster() {
       return this.user.id === this.campain.game_master.id
@@ -71,10 +55,6 @@ export default {
         return ''
       }
     },
-  },
-  data() {
-    return {
-    }
   },
   methods: {
     charLimit(text) {

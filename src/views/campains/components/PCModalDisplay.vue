@@ -13,18 +13,15 @@
       </header>
       <section class="modal-card-body">
 
-        <div class="content" id="data_pc">
-          {{ dataPC }}
+        <div class="content" id="data_pc" v-html=dataPC>
         </div>
 
         <hr v-if="isGameMaster | isPlayer">
-        <div v-if="isGameMaster | isPlayer" class="content" id="data_player">
-          {{ dataPlayer }}
+        <div v-if="isGameMaster | isPlayer" class="content" id="data_player" v-html=dataPlayer>
         </div>
 
         <hr v-if="isGameMaster">
-        <div v-if="isGameMaster" class="content" id="data_gm">
-          {{ dataGM }}
+        <div v-if="isGameMaster" class="content" id="data_gm" v-html=dataGM>
         </div>
 
         <div v-if="pc.image_url" >
@@ -61,25 +58,6 @@ export default {
         return false
       }
     },
-  },
-  data() {
-    return {
-      // dataPC: '',
-      // dataPlayer: '',
-      // dataGM: '',
-    }
-  },
-  mounted() {
-    let elem_pc = document.getElementById('data_pc')
-    elem_pc.innerHTML = this.dataPC
-    if (this.isGameMaster | this.isPlayer) {
-      let elem_player = document.getElementById('data_player')
-      elem_player.innerHTML = this.dataPlayer
-    }
-    if (this.isGameMaster) {
-      let elem_gm = document.getElementById('data_gm')
-      elem_gm.innerHTML = this.dataGM
-    }
   },
   computed:{
     isGameMaster() {
