@@ -68,6 +68,12 @@ export default {
       this.$emit('editionMode', item)
     },
   },
+  mounted(){
+    let p_elems = document.getElementsByTagName('p')
+    for (let i = 0; i < p_elems.length; i++) {
+      p_elems[i].style.wordBreak = 'keep-all'
+    }
+  },
 
 }
 </script>

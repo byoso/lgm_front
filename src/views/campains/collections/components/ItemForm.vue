@@ -22,7 +22,6 @@
                 </select>
               </div>
 
-
             <div class="is-flex is-justify-content-space-between m-2">
               <label class="label">PC's infos</label>
               <button class="is-small" @click="showpcsPreview=!showpcsPreview">preview</button>
@@ -153,6 +152,5 @@ img {
 .hoverable {
   cursor: pointer;
 }
-
 
 </style>

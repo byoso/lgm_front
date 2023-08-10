@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 // main app
 import HomeView from '../views/HomeView.vue'
+import GuideView from '../views/GuideView.vue'
 import DashBoardView from '../views/campains/DashBoardView.vue'
 import CreateTableView from '../views/campains/tablesManagment/CreateTableView.vue'
 import EditTableView from '../views/campains/tablesManagment/EditTableView.vue'
@@ -29,9 +30,6 @@ import ExchangesView from '../views/campains/exchanges/ExchangesView.vue'
 
 // subscriptions
 import SubscriptionsView from '../views/subscriptions/SubscriptionsView.vue'
-
-// MDGuide
-import MDGuide from '../views/legalMentions/MDGuide.vue'
 
 // store
 import store from '../store'
@@ -166,10 +164,11 @@ const routes = [
     meta: { requireLogin: true }
   },
   {
-    path: '/MDGuide',
-    name: 'MDGuide',
-    component: MDGuide,
+    path: '/guide/',
+    name: 'guide',
+    component: GuideView,
   },
+
 ]
 
 const router = createRouter({

@@ -11,7 +11,7 @@
       <img :src="campain.image_url">
     </figure>
   </div>
-  <div class="m-2">
+  <div class="m-3">
     mastered by {{ charLimit(campain.game_master.username) }}
   </div>
 </div>

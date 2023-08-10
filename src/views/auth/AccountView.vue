@@ -22,6 +22,11 @@
       <router-link class="button is-secondary m-2" to="/change_password">change my password</router-link>
     </p>
   </div>
+  <div class="is-flex is-justify-content-space-around m-4">
+    <a href="privacyPolicy.html" target="_blank">Privacy Policy</a>
+    <a href="TandC.html" target="_blank">Terms and Conditions</a>
+  </div>
+
   <div class="box button" @click="stripePortal">
     <h2 class="subtitle"> Subscriptions and Invoices Portal</h2>
   </div>

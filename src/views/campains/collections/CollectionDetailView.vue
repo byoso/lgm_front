@@ -26,8 +26,13 @@
             YES ! Confirm deletion
           </button>
         </div>
+        <a href="MDGuide.html" class="info-icon tooltip ml-4" target="_blank">
+          <fa icon="circle-info" />
+          <span class="tooltiptext">Edition tips</span>
+        </a>
       </div>
-
+      <div>
+      </div>
 
       <div class="scrollable">
         <!-- details section -->
@@ -618,5 +623,39 @@ img {
 .MEMO {
   background-color: #f5e570;
 }
+
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip:hover {
+  cursor: pointer;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: rgb(65, 65, 65);
+  color: #e1e1e1;
+  text-align: center;
+  padding: 2px;
+  margin-top: 25px;
+  margin-left: 25px;
+  border-radius: 6px;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+
 
 </style>

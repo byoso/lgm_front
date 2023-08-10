@@ -1,17 +1,24 @@
 <template>
 <nav class="navbar is-fixed-top pl-2 pr-2 is-dark" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <router-link to="/" class="navbar-item" style="font-weight: bold;">RPGAdventure.eu</router-link>
+    <router-link to="/" class="navbar-item" style="font-weight: bold;" @click="burgerIsActive=false">
+      <img src="favicon.ico" alt="short-logo" class="mr-2">
+      RPGAdventure.eu
+    </router-link>
 
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+    <a role="button" class="navbar-burger"
+    :class="{'is-active': burgerIsActive}"
+    @click="toggleBurger()"
+    aria-label="menu" :aria-expanded="false" data-target="navbarBasicExample">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
     </a>
   </div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start" v-if="$store.state.user">
+  <div id="navbarBasicExample" class="navbar-menu"
+  :class="{'is-active': burgerIsActive}" @click="burgerIsActive=false">
+    <div class="navbar-start" v-if="$store.state.user" >
       <router-link v-if="$store.state.isAuthenticated" to="/dashboard" class="navbar-item">
         Tables
       </router-link>
@@ -100,9 +107,17 @@ import axios from 'axios';
 
 export default {
   name: 'App',
+  data(){
+    return {
+      burgerIsActive: false,
+    }
+  },
   methods: {
     logout() {
       this.$store.commit('removeToken');
+    },
+    toggleBurger(){
+      this.burgerIsActive = !this.burgerIsActive;
     },
   },
   computed: {
@@ -122,19 +137,6 @@ export default {
       axios.defaults.headers.common['Authorization'] = '';
     }
     this.user = this.$store.state.user;
-
-    // Bulma - navbar burger
-    document.addEventListener('DOMContentLoaded', () => {
-      const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-      $navbarBurgers.forEach( el => {
-        el.addEventListener('click', () => {
-          const target = el.dataset.target;
-          const $target = document.getElementById(target);
-          el.classList.toggle('is-active');
-          $target.classList.toggle('is-active');
-        });
-      });
-    });
 
   },
   mounted() {
@@ -168,5 +170,6 @@ router-link:hover {
 .bottom {
   margin-top: 100px;
 }
+
 
 </style>

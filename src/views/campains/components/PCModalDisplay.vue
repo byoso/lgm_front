@@ -47,17 +47,11 @@ export default {
     'campain',
     'showIt',
   ],
-  computed: {
-    isGameMaster() {
-      return this.user.id === this.campain.game_master.id
-    },
-    isPlayer() {
-      if (this.player_id !== null) {
-        return this.user.id === this.player_id
-      } else {
-        return false
-      }
-    },
+  mounted(){
+    let p_elems = document.getElementsByTagName('p')
+    for (let i = 0; i < p_elems.length; i++) {
+      p_elems[i].style.wordBreak = 'keep-all'
+    }
   },
   computed:{
     isGameMaster() {
@@ -101,7 +95,6 @@ export default {
       this.$emit('editionModePC', this.pc)
     },
   },
-
 }
 </script>
 
