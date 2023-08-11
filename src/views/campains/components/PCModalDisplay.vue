@@ -65,9 +65,15 @@ export default {
       }
     },
     dataPC() {
+      if (this.pc.data_pc === null | this.pc.data_pc === 'undefined') {
+        return ''
+      }
       return marked.parse(this.pc.data_pc)
     },
     dataPlayer() {
+      if (this.pc.data_player === null | this.pc.data_player === 'undefined') {
+        return ''
+      }
       if (this.isPlayer | this.isGameMaster) {
         return marked.parse(this.pc.data_player)
       }else {

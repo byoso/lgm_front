@@ -56,23 +56,27 @@
       </div>
 
       <div v-if="campain.is_copy_free">
-        <label class="label m-2">is copy locked ?
-          <p>
+        <label class="label m-2">
+          is copy locked ?
+        </label>
+          <p class="text">
             Once it is checked, it can not be unchecked.
           </p>
-          <p>
-            A locked camapain will not be albe to export any items at all,
+          <p class="text">
+            A locked campain will not be albe to export any items at all,
             but will be able to import items from any other campains and collections.
           </p>
-          <p>
+          <p class="text">
             This feature prevents copyright issues.
+          </p>
+          <p class="text">
+            DO NOT CHECK if you want to create a collection from this campain.
           </p>
           <div class="m-2">
           <button class="button is-small is-warning mr-2" @click="allowCopyLock=true">I Understand</button>
           <input type="checkbox"  v-model="is_copy_locked" :disabled="!allowCopyLock">
 
           </div>
-        </label>
       </div>
       <div v-else>
         <p>This campain is copy locked <fa icon="lock" style="color: red;"/> </p>
@@ -218,6 +222,9 @@ export default {
 </script>
 
 <style scoped>
+.text {
+  word-break: keep-all;
+}
 
 .form {
   width: 50%;

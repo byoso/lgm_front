@@ -3,7 +3,7 @@
   <div class="logo">
     <img src="img/logo.png" alt="logo">
   </div>
-  <h1 class="title is-2">First steps</h1>
+  <h1 class="title is-2">First steps guide</h1>
 
   <div @click="showWhatIs = !showWhatIs" class="topic">
 
@@ -27,9 +27,7 @@
     <p class="text">
       During a RPG campain, the game master will disclose informations to the
       players as they discover new elements (NPCs, LOCATIONs, ORGANIZATIONs...).
-      Each element is displayed under the form of an elegant card.
-      Each card can contain datas for the player, but also datas only readable
-      by the master.
+      Each element is displayed under the form of a card.
     </p>
 
     <div>
@@ -40,6 +38,11 @@
       While a campain is often played on long period of time, the game master and the players
       can dive instantly into the game, consulting the item cards to remind them the discovered elements
       of the scenario, and their details.
+    </p>
+    <br>
+    <p class="text">
+      Each card can contain datas for the player, but also datas only readable
+      by the game master.
     </p>
 
     <div class="columns">
@@ -59,8 +62,8 @@
 
     <h2 class="title is-4">About subscriptions</h2>
     <p class="text">
-      Only the game master have to acquire a subscription to use RPGAdventure.eu, simple players
-      can play as guests for free.
+      Only the game master needs an active subscription to use RPGAdventure.eu, simple players
+      can play as guests.
     </p>
     <button class="m-4 button" @click="showWhatIs=false">close this topic</button>
   </div>
@@ -78,7 +81,7 @@
   <div v-if="showQuickWay">
     <br>
     <p class="text">
-      a few steps example:
+      a few steps:
       <ul>
         <li>
           - Sign up
@@ -112,7 +115,30 @@
   </div>
   <div v-if="showExpertWay">
     <br>
-    <p>...</p>
+      <p>
+      I'd recommend you to have at least tried the quick way before trying this one.
+      </p>
+      <br>
+      <ul>
+        <li>
+          - Sign up
+        </li>
+        <li>
+          - Have an active subscription (30 days free trial)
+        </li>
+        <li>
+          - in the Collection interface, create a new collection
+        </li>
+        <li>
+          - edit the collection to your liking, adding some of the items and PCs you'd like to use in your campain
+        </li>
+        <li>
+          - In the campain interface, click "Use for a new campain", than choose the one table you want this new campain to be available in (you must be a Game Master or Owner of the table).
+        </li>
+        <li>
+          - play the campain, you can add new items to it while playing, and then transfer them back to the collection throught the "Exchanges" interface.
+        </li>
+      </ul>
 
     <button class="m-4 button" @click="showExpertWay=false">close this topic</button>
   </div>
