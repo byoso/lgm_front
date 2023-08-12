@@ -1,18 +1,20 @@
 <template>
 <div class="container">
-  <div class="logo">
-    <img src="img/logo.png" alt="logo">
-  </div>
+    <div class="logo mb-6">
+      <img src="favicon.ico" class="logo-image" alt="logo">
+      <h1 class="logo-title">
+        RPGAdventure.eu
+      </h1>
+    </div>
   <h1 class="title is-2">First steps guide</h1>
 
   <div @click="showWhatIs = !showWhatIs" class="topic">
 
-    <h2 class="title is-3">What is RPGAdventure.eu ?
+      What is RPGAdventure.eu ?
       <div class="is-pulled-right mr-2">
         <fa v-if="showWhatIs" icon="angle-down"/>
         <fa v-if="!showWhatIs" icon="angle-right"/>
       </div>
-    </h2>
   </div>
   <div v-if="showWhatIs">
     <br>
@@ -71,12 +73,11 @@
 
   <div @click="showQuickWay = !showQuickWay" class="topic">
 
-    <h2 class="title is-3">The quick way to beggin
-      <div class="is-pulled-right mr-2">
-        <fa v-if="showQuickWay" icon="angle-down"/>
-        <fa v-if="!showQuickWay" icon="angle-right"/>
-      </div>
-    </h2>
+    The quick way to beggin
+    <div class="is-pulled-right mr-2">
+      <fa v-if="showQuickWay" icon="angle-down"/>
+      <fa v-if="!showQuickWay" icon="angle-right"/>
+    </div>
   </div>
   <div v-if="showQuickWay">
     <br>
@@ -106,12 +107,11 @@
   <br>
   <div @click="showExpertWay = !showExpertWay" class="topic">
 
-    <h2 class="title is-3">The expert way
-      <div class="is-pulled-right mr-2">
-        <fa v-if="showExpertWay" icon="angle-down"/>
-        <fa v-if="!showExpertWay" icon="angle-right"/>
-      </div>
-    </h2>
+    The expert way
+    <div class="is-pulled-right mr-2">
+      <fa v-if="showExpertWay" icon="angle-down"/>
+      <fa v-if="!showExpertWay" icon="angle-right"/>
+    </div>
   </div>
   <div v-if="showExpertWay">
     <br>
@@ -162,26 +162,45 @@ export default {
 </script>
 
 <style scoped>
-.text {
+p {
   word-break: keep-all;
+  font-size: 1.4em;
+  color: rgb(117, 117, 117);
+
 }
+/* .text {
+  word-break: keep-all;
+} */
 
 .topic {
   background-color: lightseagreen;
-  padding-right: 5px;
-  padding-left: 5px;
-  color: white;
+  color: rgb(222, 222, 222);
+  font-size: 1.6em;
   cursor: pointer;
   border: 1px solid rgb(106, 227, 221);
-  border-radius: 20px;
+  border-radius: 5px;
 }
 .topic:hover {
   background-color: rgb(130, 234, 229);
-  color: rgb(92, 92, 92);
+  color: rgb(117, 117, 117);
 }
 
+
 .logo {
-  text-align: center;
+  display: flex;
+  max-width: 30%;
+}
+.logo-title {
+  margin-top: 20px;
+  margin-right:auto;
+  font-size: 4em;
+  color: rgb(60, 99, 255);
+}
+.logo-image {
+  margin-left: auto;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
 }
 
 

@@ -256,5 +256,8 @@ export default {
 textarea {
   height: 160px;
 }
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
 </style>

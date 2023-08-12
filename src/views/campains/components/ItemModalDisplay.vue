@@ -94,6 +94,9 @@ export default {
   font-weight: bold;
   color: #999;
 }
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
 
 </style>

@@ -148,7 +148,10 @@ export default {
 @import '~bulma/css/bulma.css';
 
 html {
-  background-color: #dbe2ea;
+  // background-color: #dbe2ea;
+  // background-color: #76adeb;
+  // background-color: #9cffa9;
+  background-color: #72ff85;
   padding: 5px;
   margin-top: 40px;
 }

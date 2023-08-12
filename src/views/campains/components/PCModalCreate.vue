@@ -227,5 +227,8 @@ textarea {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
 </style>
