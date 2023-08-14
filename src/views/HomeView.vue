@@ -1,31 +1,35 @@
 <template>
   <div class="home container">
+
     <div class="columns">
       <div class="column is-2">
-        <router-link :to="{name: 'about'}">
-          <div class="logo">
-            <img src="favicon.ico" class="logo-image" alt="logo">
-            <h1 class="logo-title">
-              RPGAdventure.eu
-            </h1>
-          </div>
+        <div class="menu is-hidden-mobile">
+          <router-link :to="{name: 'about'}">
+            <div class="logo">
+              <img src="favicon.ico" class="logo-image" alt="logo">
+              <h1 class="logo-title">
+                RPGAdventure.eu
+              </h1>
+            </div>
 
-        </router-link>
-        <div class="left-menu">
-          <router-link :to="{name: 'guide'}" class="m-2">
-            <p>First steps guide</p>
           </router-link>
+            <router-link :to="{name: 'guide'}" class="m-2">
+              <p>First steps guide</p>
+            </router-link>
 
         </div>
       </div>
-      <div class="column is-10">
-        <div v-for="article in articles" class="box">
-          <p class="is-pulled-right">{{ humanDate(article.date_created) }}</p>
-          <h1 class="title">{{ article.title }}</h1>
-          <h2 class="subtitle">{{ article.subtitle }}</h2>
-          <div v-html="md(article.content)" class="content"></div>
-          <br>
-        </div>
+      <div class="column is-10 scrollable">
+          <ArticleBox v-for="article in articles" :key="article.id"
+          :date_created="humanDate(article.date_created)"
+          :title="article.title"
+          :subtitle="article.subtitle"
+          :content="article.content"
+          :image_url="article.image_url"
+          :image_size="article.image_size"
+          />
+
+
       </div>
     </div>
   </div>
@@ -33,19 +37,21 @@
 
 <script>
 import axios from 'axios'
+import ArticleBox from './components/ArticleBox.vue'
 
 
 // @ is an alias to /src
 export default {
   name: 'HomeView',
   components: {
+    ArticleBox,
   },
   data() {
     return {
       articles: [],
     }
   },
-  beforeMount() {
+  beforeCreate() {
     axios({
       method: "GET",
       url: "home/articles/",
@@ -57,7 +63,7 @@ export default {
   },
   methods: {
     md(text) {
-      return marked.parse(text);
+      return marked.parse(text)
     },
     humanDate(value){
       let the_date = new Date(value);
@@ -89,10 +95,9 @@ export default {
   height: 50px;
   margin-right: 10px;
 }
-.left-menu {
-  font-size: 1.3em;
-  font-weight: 700;
-  color: rgb(60, 99, 255);
+
+.menu {
+  position: fixed;
 }
 
 </style>
