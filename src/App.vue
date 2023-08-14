@@ -46,10 +46,9 @@
 
         <div class="navbar-item has-dropdown is-hoverable" v-if="$store.state.isAuthenticated">
 
-          <span style="color: white;">{{ user.username }} </span>
-
           <a class="navbar-link">
-            <fa icon="user"/>
+            {{ user.username }}
+            <fa icon="user" class="ml-2"/>
           </a>
 
           <div class="navbar-dropdown">
@@ -162,7 +161,8 @@ export default {
 @import '~bulma/css/bulma.css';
 
 html {
-  background-color: #6da77a;
+  // background-color: #6da77a;
+  background-color: rgb(186, 224, 120);
   padding: 5px;
   margin-top: 40px;
 }
