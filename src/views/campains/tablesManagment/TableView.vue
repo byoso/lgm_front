@@ -226,11 +226,14 @@ export default {
 <style scoped>
 
 .arrow {
-  color: darkseagreen;
+  /* color: darkseagreen; */
+  color: rgb(0, 102, 255);
+  font-weight: bold;
+  scale: 2;
 }
 
 .arrow:hover {
-  color: lightseagreen;
+  color: rgb(106, 236, 126);
   cursor: pointer;
 }
 

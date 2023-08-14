@@ -1,4 +1,5 @@
 <template>
+<div>
 <nav class="navbar is-fixed-top pl-2 pr-2 is-dark" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <router-link to="/" class="navbar-item" style="font-weight: bold;" @click="burgerIsActive=false">
@@ -36,7 +37,7 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div v-if="$store.state.user">
-          <router-link v-if="$store.state.isAuthenticated & !$store.state.user.is_subscriber"
+          <router-link v-if="$store.state.isAuthenticated & !$store.state.user.is_subscriber & open_subscriptions"
             class="button is-primary is-small mr-5" :to="{name: 'subscriptionsView'}">
             <strong>Subscribe</strong>
           </router-link>
@@ -67,12 +68,10 @@
           </div>
         </div>
 
-
-
-
         <div class="buttons">
           <div v-if="!$store.state.isAuthenticated">
-            <router-link class="button is-primary is-small" to="/signup">
+            <router-link v-if="open_subscriptions"
+            class="button is-primary is-small" to="/signup">
               <strong>Sign up</strong>
             </router-link>
 
@@ -98,7 +97,7 @@
 <div class="bottom">
 
 </div>
-
+</div>
 </template>
 
 <script>
@@ -110,6 +109,7 @@ export default {
   data(){
     return {
       burgerIsActive: false,
+      open_subscriptions: false,
     }
   },
   methods: {
@@ -126,7 +126,7 @@ export default {
     }
   },
 
-// Add and adapt this in the lifecycle
+// Default axios headers
   beforeCreate() {
 
     // Vuex store init
@@ -138,6 +138,20 @@ export default {
     }
     this.user = this.$store.state.user;
 
+    // check if subscriptions are open
+    axios({
+      method: 'get',
+      url: '/dsap/configuration/',
+    }).then((response) => {
+      this.$store.state.configuration = response.data;
+      this.open_subscriptions = this.$store.state.configuration.open_subscriptions;
+      console.log("open_subscriptions: ", this.open_subscriptions)
+    }).catch((error) => {
+      console.log(error);
+    })
+
+  },
+  beforeMount(){
   },
   mounted() {
     document.title = 'RPGAdventure.eu'
@@ -148,10 +162,7 @@ export default {
 @import '~bulma/css/bulma.css';
 
 html {
-  // background-color: #dbe2ea;
-  // background-color: #76adeb;
-  // background-color: #9cffa9;
-  background-color: #72ff85;
+  background-color: #6da77a;
   padding: 5px;
   margin-top: 40px;
 }

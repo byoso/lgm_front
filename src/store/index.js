@@ -12,6 +12,7 @@ export default createStore({
     prefs: {
       itemsDisplayMode: 'mini', // mini, image
     },
+    configuration: {},
   },
   getters: {
   },

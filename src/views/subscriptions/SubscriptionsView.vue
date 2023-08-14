@@ -74,7 +74,7 @@ export default {
       }
       axios({
         method: 'post',
-        url: 'dss/checkout/',
+        url: 'campains/subscriptions/checkout/',
         data: {
             'priceId': priceId,
         },

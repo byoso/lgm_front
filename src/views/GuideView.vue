@@ -119,26 +119,29 @@
       I'd recommend you to have at least tried the quick way before trying this one.
       </p>
       <br>
-      <ul>
-        <li>
-          - Sign up
-        </li>
-        <li>
-          - Have an active subscription (30 days free trial)
-        </li>
-        <li>
-          - in the Collection interface, create a new collection
-        </li>
-        <li>
-          - edit the collection to your liking, adding some of the items and PCs you'd like to use in your campain
-        </li>
-        <li>
-          - In the campain interface, click "Use for a new campain", than choose the one table you want this new campain to be available in (you must be a Game Master or Owner of the table).
-        </li>
-        <li>
-          - play the campain, you can add new items to it while playing, and then transfer them back to the collection throught the "Exchanges" interface.
-        </li>
-      </ul>
+      <p>
+        <ul>
+          <li>
+            - Sign up
+          </li>
+          <li>
+            - Have an active subscription (30 days free trial)
+          </li>
+          <li>
+            - in the Collection interface, create a new collection
+          </li>
+          <li>
+            - edit the collection to your liking, adding some of the items and PCs you'd like to use in your campain
+          </li>
+          <li>
+            - In the campain interface, click "Use for a new campain", than choose the one table you want this new campain to be available in (you must be a Game Master or Owner of the table).
+          </li>
+          <li>
+            - play the campain, you can add new items to it while playing, and then transfer them back to the collection throught the "Exchanges" interface.
+          </li>
+        </ul>
+
+      </p>
 
     <button class="m-4 button" @click="showExpertWay=false">close this topic</button>
   </div>
@@ -165,12 +168,9 @@ export default {
 p {
   word-break: keep-all;
   font-size: 1.4em;
-  color: rgb(117, 117, 117);
+  color: rgb(67, 67, 67);
 
 }
-/* .text {
-  word-break: keep-all;
-} */
 
 .topic {
   background-color: lightseagreen;

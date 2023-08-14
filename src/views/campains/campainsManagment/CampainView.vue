@@ -85,7 +85,7 @@ export default {
       collection: {},
       table: {},
       refreshSpin: false,
-      itemsDisplayMode: 'mini',
+      itemsDisplayMode: 'images', // mini or images
       shownItems: [],
       maxItemsDisplay: 50,
       showItemModalDisplaySwitch: false,
