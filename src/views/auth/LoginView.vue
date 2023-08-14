@@ -72,8 +72,23 @@ export default {
         this.$router.push({ name: 'dashboard' })
       })
       .catch(error => {
-        console.log(error)
-      // this.errors.push(error.response.data);
+        console.log(error.response.data)
+        let message = ""
+        let errors = []
+        for (var key in error.response.data) {
+          for (var i = 0; i < error.response.data[key].length; i++) {
+            message += error.response.data[key][i] + "\n"
+          }
+        }
+
+        toast({
+          message: `${message}`,
+          type: 'is-danger',
+          position: 'center',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 3000,
+        });
       });
     },
   },

@@ -19,8 +19,19 @@
 
 
     <div class="m-5">
-      <p><input type="checkbox" v-model="termsOfService" @change="checkCreateButton"> I accept the <a href="">terms of service</a></p>
-      <p><input type="checkbox" v-model="privacyPolicy" @change="checkCreateButton"> I accept the <a href="">privacy policy</a></p>
+      <p>
+        <input type="checkbox" v-model="termsOfService" @change="checkCreateButton">
+         I accept the
+       <a href="TandC.html" target="_blank">
+          terms and conditions</a>
+      </p>
+      <p>
+        <input type="checkbox" v-model="privacyPolicy" @change="checkCreateButton">
+         I accept the
+         <a href="privacyPolicy.html" target="_blank">
+          privacy policy
+          </a>
+      </p>
     </div>
 
 
