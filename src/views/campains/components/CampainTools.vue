@@ -24,11 +24,12 @@
       <span v-if="campain.is_official">
         <OfficialMark :collection="campain"/>
       </span>
-      <br>
-      <router-link :to="{name: 'table', params: {id: table.id} }" class="button is-small is-secondary m-2">
-      {{ charLimit(table.name) }}
-      </router-link>
-      <h3 class="subtitle">by {{ charLimit(campain.game_master.username) }}</h3>
+      <div class="m-2">
+        <router-link :to="{name: 'table', params: {id: table.id} }" class="button is-small is-secondary mr-2">
+        {{ charLimit(table.name) }}
+        </router-link>
+        <span class="subtitle">Mastered by {{ charLimit(campain.game_master.username) }}</span>
+      </div>
     </div>
 
     <div v-if="isGameMaster | isOwner">
@@ -258,10 +259,11 @@ export default {
     this.displayMode = this.$store.state.prefs.itemsDisplayMode,
     this.table = this.$store.state.current_table;
     this.maxItems = this.maxItemsDisplay;
-    console.log('CapainTools: ')
-    console.log('campain: ', this.campain.title)
-    console.log("is_official: ", this.campain.is_official)
-    console.log('collection: ', this.collection)
+    // console.log('CapainTools: ')
+    // console.log('display mode: ', this.displayMode)
+    // console.log('campain: ', this.campain.title)
+    // console.log("is_official: ", this.campain.is_official)
+    // console.log('collection: ', this.collection)
   },
   methods: {
     charLimit(text) {

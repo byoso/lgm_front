@@ -17,7 +17,12 @@
 
   <div class="container" id="app">
 
-    <img alt="logo RPGAdventure.eu" src="img/logo.png" class="logo">
+    <div class="logo mb-6">
+      <img src="favicon.ico" class="logo-image" alt="logo">
+      <h1 class="logo-title">
+        RPGAdventure.eu
+      </h1>
+    </div>
     <h1 class="title">Quick Markdown Guide</h1>
     <p>RPGAdventure.eu allows to use simple text as well as the markdown language in its items and PCs descriptions.
       Markdown is a powerfull tool that requires only a little knowledge to do very cool stuffs, here are some examples
@@ -125,6 +130,23 @@
 
 textarea {
   min-height: 500px !important;
+}
+
+.logo {
+  display: flex;
+  max-width: 30%;
+}
+.logo-title {
+  margin-top: 20px;
+  margin-right:auto;
+  font-size: 4em;
+  color: rgb(60, 99, 255);
+}
+.logo-image {
+  margin-left: auto;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
 }
 
 

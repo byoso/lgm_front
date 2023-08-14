@@ -85,7 +85,7 @@ export default {
       collection: {},
       table: {},
       refreshSpin: false,
-      itemsDisplayMode: 'images', // mini or images
+      itemsDisplayMode: 'image', // mini or image
       shownItems: [],
       maxItemsDisplay: 50,
       showItemModalDisplaySwitch: false,
@@ -191,8 +191,8 @@ export default {
 
     },
     changeDisplayMode(value){
-      console.log("this.$store.state.prefs.itemsDisplayMode: ", this.$store.state.prefs.itemsDisplayMode)
       this.$store.state.prefs.itemsDisplayMode = value;
+      console.log("this.$store.state.prefs.itemsDisplayMode: ", this.$store.state.prefs.itemsDisplayMode)
       this.itemsDisplayMode = value;
     },
     changeMaxItemsDisplay(value){
