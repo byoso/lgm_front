@@ -1,5 +1,6 @@
 <template>
-  <form class="form">
+<div class="container is-max-desktop">
+  <form>
     <h1 class="title">Send me the confirmation email again</h1>
 
 
@@ -18,6 +19,8 @@
     <button class="button is-success mt-2" @click="onSubmit">Send the email</button>
 
   </form>
+
+</div>
 </template>
 
 <script>

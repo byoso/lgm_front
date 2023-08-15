@@ -1,6 +1,50 @@
 <template>
 <div>
-  <div class="columns">
+  <!-- mobile interface -->
+  <div class="is-hidden-tablet">
+    <div class="tabs is-centered">
+        <a class="button is-small button-mobile is-active" @click="displayMobile('items')" id="tab-items">Items</a>
+        <a class="button is-small button-mobile" @click="displayMobile('pcs')" id="tab-pcs">PCs</a>
+        <a class="button is-small button-mobile" @click="displayMobile('infos')" id="tab-infos">Infos</a>
+        <a class="button is-small button-mobile" @click="displayMobile('settings')" id="tab-settings">Settings</a>
+        <button class="button is-small is-success" :disabled="refreshSpin" @click="refresh_campain">
+          <fa icon="arrows-rotate" :class="{'spinner': refreshSpin}"/>
+        </button>
+    </div>
+    <div v-if="displayMobileItems">
+      <div>
+        <select class="select is-fullwidth" v-model="filterBy" @change="filterItems(filterBy)">
+          <option selected>--All--</option>
+          <option v-for="type in itemTypes" :key="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <ItemBoxMobile v-for="item in shownItems" :key="item.id"
+      :item="item" :user="user" :campain="campain"
+      @itemUpdated="getUpdatedItem($event)"
+      @showModalDisplay="showItemModalDisplay($event)"
+      />
+    </div>
+    <div v-if="displayMobilePcs">
+      <table>
+        <tbody>
+          <tr v-for="pc in campain.pcs" :key="pc.id">
+            <td>{{ pc.name }}</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-if="displayMobileInfos">
+      Infos
+    </div>
+    <div v-if="displayMobileSettings">
+      Settings
+    </div>
+  </div>
+
+  <!-- desktop interface -->
+  <div class="columns is-hidden-mobile">
     <div class="main-window">
     </div>
       <div class="column is-9 items-window">
@@ -36,7 +80,6 @@
         />
 
       </div>
-
   </div>
 
   <ItemModalDisplay
@@ -66,6 +109,7 @@
 import axios from 'axios';
 import CampainTools from '../components/CampainTools.vue';
 import ItemBox from '../components/ItemBox.vue';
+import ItemBoxMobile from '../components/ItemBoxMobile.vue';
 import ItemModalDisplay from '../components/ItemModalDisplay.vue';
 import ItemModalEdit from '../components/ItemModalEdit.vue';
 
@@ -76,6 +120,7 @@ export default {
     ItemBox,
     ItemModalDisplay,
     ItemModalEdit,
+    ItemBoxMobile,
 
   },
   data() {
@@ -94,6 +139,22 @@ export default {
       filterBy: '--All--',
       sortBy: 'date+', // date- date+ name type
       searchBy: '',
+
+      // mobile interface only
+      displayMobileItems: true,
+      displayMobilePcs: false,
+      displayMobileInfos: false,
+      displayMobileSettings: false,
+      itemTypes: [
+        'NPC',
+        'LOCATION',
+        'ORGANIZATION',
+        'EVENT',
+        'NOTE',
+        'RECAP',
+        'MISC',
+        'MEMO',
+      ],
       }
   },
   computed: {
@@ -110,6 +171,52 @@ export default {
     this.refresh_campain()
   },
   methods: {
+    displayMobile(value){
+      let elemItems = document.getElementById("tab-items")
+      let elemPcs = document.getElementById("tab-pcs")
+      let elemInfos = document.getElementById("tab-infos")
+      let elemSettings = document.getElementById("tab-settings")
+
+      if (value == 'items') {
+        this.displayMobileItems = true;
+        this.displayMobilePcs = false;
+        this.displayMobileInfos = false;
+        this.displayMobileSettings = false;
+        elemItems.classList.add("is-active");
+        elemPcs.classList.remove("is-active");
+        elemInfos.classList.remove("is-active");
+        elemSettings.classList.remove("is-active");
+      } else if (value == 'pcs') {
+        this.displayMobileItems = false;
+        this.displayMobilePcs = true;
+        this.displayMobileInfos = false;
+        this.displayMobileSettings = false;
+        elemItems.classList.remove("is-active");
+        elemPcs.classList.add("is-active");
+        elemInfos.classList.remove("is-active");
+        elemSettings.classList.remove("is-active");
+      } else if (value == 'infos') {
+        this.displayMobileItems = false;
+        this.displayMobilePcs = false;
+        this.displayMobileInfos = true;
+        this.displayMobileSettings = false;
+        elemItems.classList.remove("is-active");
+        elemPcs.classList.remove("is-active");
+        elemInfos.classList.add("is-active");
+        elemSettings.classList.remove("is-active");
+      } else if (value == 'settings') {
+        this.displayMobileItems = false;
+        this.displayMobilePcs = false;
+        this.displayMobileInfos = false;
+        this.displayMobileSettings = true;
+        elemItems.classList.remove("is-active");
+        elemPcs.classList.remove("is-active");
+        elemInfos.classList.remove("is-active");
+        elemSettings.classList.add("is-active");
+      }
+
+      console.log("displayMobile: ", value)
+    },
     newCollection(collection){
       this.refresh_campain()
     },
@@ -274,4 +381,12 @@ export default {
   margin-top: -70px;
 }
 
+.tabs {
+  margin-top: -40px;
+  position: sticky;
+}
+
+.button-mobile.is-active {
+  background-color: rgb(90, 220, 214);
+}
 </style>

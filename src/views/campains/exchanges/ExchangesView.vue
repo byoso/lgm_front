@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container is-hidden-mobile">
   <h1 class="title">Exchanges</h1>
   <!-- column A -->
   <div class="columns">

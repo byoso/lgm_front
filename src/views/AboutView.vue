@@ -1,7 +1,8 @@
 <template>
+<div class="container is-max-desktop">
   <div class="about">
 
-    <div class="logo">
+    <div class="logo is-hidden-mobile">
       <img src="favicon.ico" class="logo-image" alt="logo">
       <h1 class="logo-title">
         RPGAdventure.eu
@@ -10,6 +11,8 @@
 
     <h1 class="title ">About RPGAdventure.eu</h1>
    </div>
+
+</div>
 </template>
 
 <script>

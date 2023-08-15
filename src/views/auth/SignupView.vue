@@ -1,52 +1,54 @@
 <template>
+  <div class="container is-max-desktop">
+    <form>
+      <h1 class="title">Signup</h1>
+
+      <p class="label">Enter your username</p>
+      <input type="text" placeholder="username" required v-model="username" class="input">
+
+      <p class="label">Enter your email</p>
+      <input type="text" placeholder="email" required v-model="email" class="input">
+
+      <p class="label">Enter your password</p>
+      <input type="password" required placeholder="password" v-model="password" class="input">
+
+      <p class="label">Confirm your password</p>
+      <input type="password" required placeholder="password" v-model="password2" class="input">
+      <br>
 
 
-  <form class="form">
-    <h1 class="title">Signup</h1>
-
-    <p class="label">Enter your username</p>
-    <input type="text" placeholder="username" required v-model="username" class="input">
-
-    <p class="label">Enter your email</p>
-    <input type="text" placeholder="email" required v-model="email" class="input">
-
-    <p class="label">Enter your password</p>
-    <input type="password" required placeholder="password" v-model="password" class="input">
-
-    <p class="label">Confirm your password</p>
-    <input type="password" required placeholder="password" v-model="password2" class="input">
-    <br>
-
-
-    <div class="m-5">
-      <p>
-        <input type="checkbox" v-model="termsOfService" @change="checkCreateButton">
-         I accept the
-       <a href="TandC.html" target="_blank">
-          terms and conditions</a>
-      </p>
-      <p>
-        <input type="checkbox" v-model="privacyPolicy" @change="checkCreateButton">
-         I accept the
-         <a href="privacyPolicy.html" target="_blank">
-          privacy policy
-          </a>
-      </p>
-    </div>
+      <div class="m-5">
+        <p>
+          <input type="checkbox" v-model="termsOfService" @change="checkCreateButton">
+          I accept the
+        <a href="TandC.html" target="_blank">
+            terms and conditions</a>
+        </p>
+        <p>
+          <input type="checkbox" v-model="privacyPolicy" @change="checkCreateButton">
+          I accept the
+          <a href="privacyPolicy.html" target="_blank">
+            privacy policy
+            </a>
+        </p>
+      </div>
 
 
 
-    <div v-if="errors.length">
-      <ul>
-        <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
-          {{ error[0] }}
-        </li>
-      </ul>
-    </div>
+      <div v-if="errors.length">
+        <ul>
+          <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
+            {{ error[0] }}
+          </li>
+        </ul>
+      </div>
 
-    <button class="button is-success mt-2" id="createAccountButton" disabled @click="createAccount">Create my account</button>
+      <button class="button is-success mt-2" id="createAccountButton" disabled @click="createAccount">Create my account</button>
 
-  </form>
+    </form>
+
+  </div>
+
 
 
 </template>
@@ -126,9 +128,5 @@ export default {
 </script>
 
 <style>
-.form {
-  width: 50%;
-  margin: auto;
-}
 
 </style>

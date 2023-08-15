@@ -1,6 +1,6 @@
 <template>
-
-<form>
+<div class="container is-max-desktop">
+  <form>
   <h1 class="title">Please confirm your identity</h1>
   <h2 class="subtitle">Confirm your account, then change your password if needed</h2>
 
@@ -21,7 +21,9 @@
 
   <button class="button is-success mt-2" @click="onSubmit">login</button>
 
-</form>
+  </form>
+</div>
+
 
 </template>
 

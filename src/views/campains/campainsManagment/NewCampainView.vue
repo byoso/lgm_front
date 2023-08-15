@@ -1,6 +1,6 @@
 <template>
-<div>
-  <form class="form">
+<div class="container is-max-desktop">
+  <form>
     <h1 class="title">Start a New Campain</h1>
     <h2 class="subtitle"> {{ charLimit(table.name) }} </h2>
 

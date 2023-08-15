@@ -4,13 +4,21 @@
     <div class="modal-background" @click="$emit('showModalDisplay', item)"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <span class="modal-card-title">{{ charLimit(item.name) }}</span>
-        <span class="item-type">{{ item.type }}</span>
-        <span v-if="isGameMaster | item.type === 'MEMO'" class="button is-small is-success mr-2"
-        @click="editionMode(item)">
-          Edit
-        </span>
-        <button class="delete" aria-label="close" @click="$emit('showModalDisplay', item)"></button>
+        <div class="columns">
+          <div class="column is-8">
+            <span class="modal-card-title">{{ charLimit(item.name) }}</span>
+          </div>
+          <div class="column is-4 mb-4">
+            <div class="items-right">
+              <span class="item-type">{{ item.type }}</span>
+              <span v-if="isGameMaster | item.type === 'MEMO'" class="button is-small is-success mr-2"
+              @click="editionMode(item)">
+                Edit
+              </span>
+              <button class="delete" aria-label="close" @click="$emit('showModalDisplay', item)"></button>
+            </div>
+          </div>
+        </div>
       </header>
       <section class="modal-card-body">
         <div class="content" id="data_pc" v-html=dataPC>
@@ -98,5 +106,14 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.items-right{
+  position: absolute;
+  right: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
+.modal-card-head {
+}
 </style>

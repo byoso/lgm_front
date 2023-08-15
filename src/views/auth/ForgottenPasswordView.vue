@@ -1,22 +1,25 @@
 <template>
 
-  <form class="form">
-    <h1 class="title">Forgotten password</h1>
+<div class="container is-max-desktop">
+  <form>
+  <h1 class="title">Forgotten password</h1>
 
-    <p class="label">Enter your email or your username</p>
-    <input type="text" placeholder="Email or username" v-model="credential" required class="input">
+  <p class="label">Enter your email or your username</p>
+  <input type="text" placeholder="Email or username" v-model="credential" required class="input">
 
-    <div v-if="errors.length">
-      <ul>
-        <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
-          {{ error[0] }}
-        </li>
-      </ul>
-    </div>
+  <div v-if="errors.length">
+    <ul>
+      <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
+        {{ error[0] }}
+      </li>
+    </ul>
+  </div>
 
-    <button class="button is-success mt-2" @click="onSubmit">Send me an email to reset my password</button>
+  <button class="button is-success mt-2" @click="onSubmit">Send me an email to reset my password</button>
 
   </form>
+</div>
+
 
 
 </template>

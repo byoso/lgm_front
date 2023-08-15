@@ -16,8 +16,8 @@
       <thead>
         <tr>
           <th>name</th>
-          <th>owners</th>
-          <th>guests</th>
+          <th class="is-hidden-mobile">owners</th>
+          <th class="is-hidden-mobile">guests</th>
           <th>Edit</th>
         </tr>
       </thead>
@@ -30,14 +30,14 @@
             </router-link>
           </td>
 
-          <td>
+          <td class="is-hidden-mobile">
             <ul>
               <li v-for="owner in table.owners" :key="owner.id">
                 {{ charLimit(owner.email) }} - {{ charLimit(owner.username) }}
               </li>
             </ul>
           </td>
-          <td>
+          <td class="is-hidden-mobile">
             <ul>
               <li v-for="guest in table.guests.concat(table.game_masters)" :key="guest.id">
                 {{ charLimit(guest.email) }} - {{ charLimit(guest.username) }}
@@ -57,8 +57,8 @@
       <thead>
         <tr>
           <th>name</th>
-          <th>owners</th>
-          <th>guests</th>
+          <th class="is-hidden-mobile">owners</th>
+          <th class="is-hidden-mobile">guests</th>
         </tr>
       </thead>
       <tbody>
@@ -69,12 +69,12 @@
               {{ charLimit(table.name) }}
             </router-link>
           </td>
-          <td>
+          <td class="is-hidden-mobile">
             <ul>
               <li v-for="owner in table.owners" :key="owner.id">{{ charLimit(owner.username) }}</li>
             </ul>
           </td>
-          <td>
+          <td class="is-hidden-mobile">
             <ul>
               <li v-for="guest in table.guests.concat(table.game_masters)" :key="guest.id">
                 {{ charLimit(guest.email) }} - {{ charLimit(guest.username) }}

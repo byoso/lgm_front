@@ -15,13 +15,13 @@
       </a>
     </div>
 
-    <div @click="showMembers = !showMembers" class="topic">Members & roles
+    <div @click="showMembers = !showMembers" class="topic is-hidden-mobile">Members & roles
       <div class="is-pulled-right mr-2">
         <fa v-if="showMembers" icon="angle-down"/>
         <fa v-if="!showMembers" icon="angle-right"/>
       </div>
     </div>
-    <div v-if="showMembers" >
+    <div v-if="showMembers" class="is-hidden-mobile">
       <div class="columns m-2 is-flex">
         <div class="column is-4">
           <h2 class="subtitle">Table Owners</h2>

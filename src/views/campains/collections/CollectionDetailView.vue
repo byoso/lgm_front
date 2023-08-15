@@ -1,5 +1,5 @@
 <template>
-<div class="" @keydown.ctrl.s.prevent.stop="saveCollection">
+<div class="is-hidden-mobile" @keydown.ctrl.s.prevent.stop="saveCollection">
   <div class="columns">
     <!-- left column -->
     <div class="column left-column">

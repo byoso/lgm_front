@@ -1,6 +1,6 @@
 <template>
-<div>
-  <form class="form">
+<div class="container is-max-desktop">
+  <form>
     <h1 class="title">Edit Campain</h1>
     <h2 class="subtitle"> {{ charLimit(campainTitle) }} </h2>
 
@@ -73,8 +73,8 @@
             DO NOT CHECK if you want to create a collection from this campain.
           </p>
           <div class="m-2">
-          <button class="button is-small is-warning mr-2" @click="allowCopyLock=true">I Understand</button>
-          <input type="checkbox"  v-model="is_copy_locked" :disabled="!allowCopyLock">
+          <button class="button is-small is-warning mr-4" @click="allowCopyLock=true">I Understand</button>
+          <input type="checkbox" class="ml-4"  v-model="is_copy_locked" :disabled="!allowCopyLock">
 
           </div>
       </div>

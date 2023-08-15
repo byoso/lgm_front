@@ -1,30 +1,33 @@
 <template>
 
-<form class="form">
-<h1 class="title">Login</h1>
+<div class="container is-max-desktop">
+  <form>
+  <h1 class="title">Login</h1>
 
 
-<p class="label">Enter a credential</p>
-<input type="text" placeholder="Email or username" v-model="credential" required class="input">
+  <p class="label">Enter a credential</p>
+  <input type="text" placeholder="Email or username" v-model="credential" required class="input">
 
-<p class="label">Enter your password</p>
-<input type="password" placeholder="Password" v-model="password" required class="input">
-<br>
+  <p class="label">Enter your password</p>
+  <input type="password" placeholder="Password" v-model="password" required class="input">
+  <br>
 
 
-<div v-if="errors.length">
-  <ul>
-    <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
-      {{ error[0] }}
-    </li>
-  </ul>
+  <div v-if="errors.length">
+    <ul>
+      <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
+        {{ error[0] }}
+      </li>
+    </ul>
+  </div>
+
+  <button class="button is-success mt-2" @click="onSubmit">Login</button>
+  <p class="m-2"><router-link to="/forgotten_password" >I forgot my password</router-link></p>
+  <p class="m-2"><router-link to="/send_confirmation_email_again">I already have an account, but please send me the confirmation email again</router-link></p>
+
+  </form>
+
 </div>
-
-<button class="button is-success mt-2" @click="onSubmit">Login</button>
-<p class="m-2"><router-link to="/forgotten_password" >I forgot my password</router-link></p>
-<p class="m-2"><router-link to="/send_confirmation_email_again">I already have an account, but please send me the confirmation email again</router-link></p>
-
-</form>
 
 
 </template>
@@ -96,9 +99,5 @@ export default {
 </script>
 
 <style>
-.form {
-  width: 50%;
-  margin: auto;
-}
 
 </style>

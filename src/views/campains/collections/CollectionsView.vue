@@ -1,10 +1,7 @@
 <template>
-  <div class="container">
-
+  <div class="container is-hidden-mobile">
 
     <h1 class="title">Collections</h1>
-
-
     <button class="button is-primary is-small m-2" @click="collectionCreate"
     v-if="$store.state.user.is_subscriber">
       + New Collection

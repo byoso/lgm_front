@@ -1,47 +1,45 @@
 <template>
 
-<form class="form">
-  <h1 class="title">Edit table '{{ name }}'</h1>
+<div class="container is-max-desktop">
+  <form>
+    <h1 class="title">Edit table '{{ name }}'</h1>
 
-  <h2 class="subtitle">The table</h2>
+    <h2 class="subtitle">The table</h2>
 
-  <label class="label">Name</label>
-  <input type="text" class="input" placeholder="Name the table" v-model="name" required>
-  <p v-for="error in errors.name" style="color:red;" :key="error">{{ error }}</p>
+    <label class="label">Name</label>
+    <input type="text" class="input" placeholder="Name the table" v-model="name" required>
+    <p v-for="error in errors.name" style="color:red;" :key="error">{{ error }}</p>
 
-  <label class="label">Description</label>
-  <textarea type="textarea" class="textarea" rows=6 v-model="description">
-  </textarea>
+    <label class="label">Description</label>
+    <textarea type="textarea" class="textarea" rows=6 v-model="description">
+    </textarea>
 
-<hr>
+  <hr>
 
-  <h2 class="subtitle">The Guests emails</h2>
+    <h2 class="subtitle">The Guests emails</h2>
 
+    <span class="button is-success is-small m-2" @click="addOneGuest">Add more guests</span>
 
-  <span class="button is-success is-small m-2" @click="addOneGuest">Add more guests</span>
+    <span v-if="guests.length" class="button is-danger is-small m-2" @click="removeOneGuest">Remove the last guest</span>
 
-  <span v-if="guests.length" class="button is-danger is-small m-2" @click="removeOneGuest">Remove the last guest</span>
+    <div v-for="(guest, index) in guests" :key="index" :id="index" class="field">
+        <label class="label">Guest email{{ index+1 }}</label>
+        <div class="control field is-grouped">
 
+            <input type="email" class="input guest_email" v-model="guests[index].email" placeholder="Enter the guest's email">
+            <span class="button is-danger is-right ml-2" @click="removeGuest(index)">X</span>
 
-  <div v-for="(guest, index) in guests" :key="index" :id="index" class="field">
-      <label class="label">Guest email{{ index+1 }}</label>
-      <div class="control field is-grouped">
-
-          <input type="email" class="input guest_email" v-model="guests[index].email" placeholder="Enter the guest's email">
-          <span class="button is-danger is-right ml-2" @click="removeGuest(index)">X</span>
-
+      </div>
     </div>
-  </div>
 
+    <br>
+    <button class="button is-success m-2" @click="onSubmit">Confirm</button>
+    <span class="button is-warning m-2" @click="unSafeDelete">Delete '{{ name }}'</span>
+    <button class="button is-danger m-2" :disabled="allowDelete" id="deleteButtonId" @click.prevent="deleteTable">Confirm delete</button>
 
-  <br>
-  <button class="button is-success m-2" @click="onSubmit">Confirm</button>
-  <span class="button is-warning m-2" @click="unSafeDelete">Delete '{{ name }}'</span>
-  <button class="button is-danger m-2" :disabled="allowDelete" id="deleteButtonId" @click.prevent="deleteTable">Confirm delete</button>
+  </form>
 
-</form>
-
-
+</div>
 
 </template>
 

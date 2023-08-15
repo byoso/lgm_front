@@ -16,11 +16,21 @@
 
     </p>
 
-    <p class="is-flex is-justify-content-space-around">
+    <div class="columns">
+      <div class="column">
       <router-link class="button is-secondary m-2" to="/change_username">change my username</router-link>
+
+      </div>
+      <div class="column">
       <router-link class="button is-secondary m-2" to="/change_email">change my email</router-link>
+
+      </div>
+      <div class="column">
       <router-link class="button is-secondary m-2" to="/change_password">change my password</router-link>
-    </p>
+
+      </div>
+    </div>
+
   </div>
   <div class="is-flex is-justify-content-space-around m-4">
     <a href="privacyPolicy.html" target="_blank">Privacy Policy</a>

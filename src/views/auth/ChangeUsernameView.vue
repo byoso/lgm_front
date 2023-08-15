@@ -1,21 +1,24 @@
 <template>
-  <form class="form">
-  <h1 class="title">Change Username</h1>
-  <label class="label">Enter your new username</label>
-  <input type="text" class="input" v-model="username" placeholder="Username" required>
+<div class="container is-max-desktop">
+  <form>
+    <h1 class="title">Change Username</h1>
+    <label class="label">Enter your new username</label>
+    <input type="text" class="input" v-model="username" placeholder="Username" required>
 
-  <div v-if="errors.length">
-    <ul>
-      <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
-        {{ error[0] }}
-      </li>
-    </ul>
-  </div>
+    <div v-if="errors.length">
+      <ul>
+        <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
+          {{ error[0] }}
+        </li>
+      </ul>
+    </div>
 
-  <button class="button is-success mt-2" @click="onSubmit">Confirm</button>
+    <button class="button is-success mt-2" @click="onSubmit">Confirm</button>
 
 
   </form>
+
+</div>
 
 </template>
 

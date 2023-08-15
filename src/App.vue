@@ -23,11 +23,12 @@
       <router-link v-if="$store.state.isAuthenticated" to="/dashboard" class="navbar-item">
         Tables
       </router-link>
-      <router-link v-if="$store.state.isAuthenticated" to="/collections" class="navbar-item">
+      <router-link v-if="$store.state.isAuthenticated" to="/collections"
+      class="navbar-item is-hidden-mobile">
         Collections
       </router-link>
         <router-link v-if="$store.state.isAuthenticated & $store.state.user.is_subscriber"
-        class="navbar-item"
+        class="navbar-item is-hidden-mobile"
         :to="{ name: 'exchangesView' }"
         >
           Exchanges
@@ -61,7 +62,7 @@
               About
             </router-link>
 
-            <a class="navbar-item" href="https://github.com/byoso/lgm_front/issues" target="_blank">
+            <a class="navbar-item is-hidden-mobile" href="https://github.com/byoso/lgm_front/issues" target="_blank">
               Report an issue
             </a>
           </div>

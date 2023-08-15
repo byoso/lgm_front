@@ -1,30 +1,28 @@
 <template>
 
-<form class="form">
-  <h1 class="title">Change Password</h1>
+<div class="container is-max-desktop">
+  <form>
+    <h1 class="title">Change Password</h1>
 
-  <label class="label">Enter your new password</label>
-  <input type="password" class="input" v-model="password" required placeholder="Password">
+    <label class="label">Enter your new password</label>
+    <input type="password" class="input" v-model="password" required placeholder="Password">
 
+    <label class="label">Confirm your new password</label>
+    <input type="password" class="input" v-model="password2" required placeholder="Password">
 
-  <label class="label">Confirm your new password</label>
-  <input type="password" class="input" v-model="password2" required placeholder="Password">
+    <div v-if="errors.length">
+      <ul>
+        <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
+          {{ error[0] }}
+        </li>
+      </ul>
+    </div>
 
+    <button class="button is-success mt-2" @click="onSubmit">Change password</button>
 
+  </form>
 
-  <div v-if="errors.length">
-    <ul>
-      <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
-        {{ error[0] }}
-      </li>
-    </ul>
-  </div>
-
-  <button class="button is-success mt-2" @click="onSubmit">Change password</button>
-
-
-</form>
-
+</div>
 
 </template>
 
