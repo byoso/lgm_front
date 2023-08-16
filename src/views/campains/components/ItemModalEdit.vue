@@ -14,7 +14,7 @@
           <div class="control">
             <label class="label">Name</label>
             <input class="input" type="text" placeholder="Name" v-model="itemName">
-            <label class="label">Image url (optionnal)</label>
+            <label class="label">Image url</label>
             <input class="input" type="text" placeholder="image url" v-model="itemImageUrl">
             <div v-if="isGameMaster">
               <label class="label">Type</label>
@@ -53,9 +53,10 @@
         </form>
       </section>
       <footer class="modal-card-foot">
-        <div class="footer-buttons">
-          <div class="buttons">
-            <button class="button is-small is-success mr-2"
+        <div class="columns">
+
+          <div class="column">
+            <button class="button is-small is-success mb-2"
             @click="confirmUpdate(updated_item)">
               Confirm
             </button>
@@ -66,14 +67,18 @@
             </a>
 
           </div>
-          <div>
-            <button class="button is-warning is-small ml-2" @click="deleteActive=!deleteActive">delete</button>
-            <button class="button is-danger is-small" :disabled="deleteActive" @click="deleteItem">
+
+          <div class="column">
+            <button class="button is-warning is-small mb-2" @click="deleteActive=!deleteActive">delete</button>
+            <button class="button is-danger is-small mb-2" :disabled="deleteActive" @click="deleteItem">
               confirm delete
             </button>
+
           </div>
-          <div class="m-2">
+
+          <div class="column">
             <p v-for="error in errors" :key="error" style="color: red;">{{ error }}</p>
+
           </div>
         </div>
       </footer>

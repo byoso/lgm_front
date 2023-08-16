@@ -11,7 +11,7 @@
           <div class="control">
             <label class="label">Name</label>
             <input class="input" type="text" placeholder="Name" v-model="itemName">
-            <label class="label">Image url (optionnal)</label>
+            <label class="label">Image url</label>
             <input class="input" type="text" placeholder="image url" v-model="itemImageUrl">
             <div v-if="isGameMaster">
               <label class="label">Type</label>
@@ -97,7 +97,7 @@ export default {
       showgmPreview: false,
       errors: [],
       itemName: '',
-      itemType: null,
+      itemType: 'MEMO',
       itemImageUrl: '',
       itemPCsInfos: '',
       itemGmInfos: '',

@@ -114,6 +114,4 @@ export default {
   justify-content: space-between;
 }
 
-.modal-card-head {
-}
 </style>

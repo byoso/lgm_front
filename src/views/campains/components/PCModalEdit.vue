@@ -24,7 +24,7 @@
             </div>
             <label class="label">Name</label>
             <input class="input" type="text" placeholder="Name" v-model="name">
-            <label class="label">Image url (optionnal)</label>
+            <label class="label">Image url</label>
             <input class="input" type="text" placeholder="image url" v-model="image_url">
 
             <div class="is-flex is-justify-content-space-between m-2">
@@ -69,20 +69,26 @@
         </form>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success is-small" @click.prevent="onSubmit()">Save</button>
-        <button class="button is-small" @click="$emit('closeEditPCModal')">Cancel</button>
-        <a href="MDGuide.html" class="info-icon tooltip" target="_blank">
-          <fa icon="circle-info" />
-          <span class="tooltiptext">Edition tips</span>
-        </a>
-        <div v-if="isGameMaster">
-          <button class="button is-warning is-small ml-2" @click="deleteActive=!deleteActive">delete</button>
-          <button class="button is-danger is-small" :disabled="deleteActive" @click="deletePC">
-            confirm delete
-          </button>
-        </div>
-        <div>
-          <p v-for="error in errors" :key="error" style="color: red;">{{ error }}</p>
+        <div class="columns">
+          <div class="column">
+            <button class="button is-success is-small mb-2" @click.prevent="onSubmit()">Save</button>
+            <button class="button is-small" @click="$emit('closeEditPCModal')">Cancel</button>
+            <a href="MDGuide.html" class="info-icon tooltip" target="_blank">
+              <fa icon="circle-info" />
+              <span class="tooltiptext">Edition tips</span>
+            </a>
+          </div>
+          <div class="column">
+            <div v-if="isGameMaster">
+              <button class="button is-warning is-small mb-2" @click="deleteActive=!deleteActive">delete</button>
+              <button class="button is-danger is-small mb-2" :disabled="deleteActive" @click="deletePC">
+                confirm delete
+              </button>
+            </div>
+          </div>
+          <div class="column">
+            <p v-for="error in errors" :key="error" style="color: red;">{{ error }}</p>
+          </div>
         </div>
       </footer>
     </div>

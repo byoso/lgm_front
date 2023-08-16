@@ -4,12 +4,22 @@
     <div class="modal-background" @click="$emit('closePCModalDisplay', pc)"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <span class="modal-card-title">{{ charLimit(pc.name) }}</span>
-        <span v-if="isGameMaster | isPlayer" class="button is-small is-success mr-2"
-        @click="editionMode">
-          Edit
-        </span>
-        <button class="delete" aria-label="close" @click="$emit('closePCModalDisplay', pc)"></button>
+        <div class="columns">
+          <div class="column is-8">
+            <span class="modal-card-title">{{ charLimit(pc.name) }}</span>
+          </div>
+          <div class="column is-4 mb-4">
+            <div class="items-right">
+              <span v-if="isGameMaster | isPlayer" class="button is-small is-success mr-2"
+              @click="editionMode">
+                Edit
+              </span>
+              <button class="delete" aria-label="close" @click="$emit('closePCModalDisplay', pc)"></button>
+
+            </div>
+
+          </div>
+        </div>
       </header>
       <section class="modal-card-body">
 
@@ -125,4 +135,11 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.items-right{
+  position: absolute;
+  right: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 </style>

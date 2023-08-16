@@ -1,16 +1,25 @@
 <template>
-<div class="p-4 mobile-item-row" :class="item.type">
-  <span>
-    <span class="p-4 item-name" @click="openDetailsModal(item)">
-      {{ charLimit(item.name) }}
-    </span>
+<div class="m-1 "  >
+  <div class="columns is-mobile ">
+    <div class="colunm is-mobile mobile-item-row"  @click="openDetailsModal(item)"
+    :class="[item.type, {'is-9': isGameMaster, 'is-12': !isGameMaster}]"
+    >
+      <span class="item-name">
+        {{ charLimit(item.name) }}
+      </span>
 
-    <span class="is-pulled-right mr-5"
-    v-if="isGameMaster"
-    @click="toggleItemLock">
-      <fa v-if="locked" icon="eye-slash" style="color: red;" />
-      <fa v-else icon="eye" style="color: green;" />
-    </span>
+    </div>
+    <div class="column is-3" v-if="isGameMaster">
+      <span class="is-pulled-right mr-5"
+      v-if="isGameMaster"
+      @click="toggleItemLock">
+        <fa v-if="locked" icon="eye-slash" style="color: red;" />
+        <fa v-else icon="eye" style="color: green;" />
+      </span>
+    </div>
+  </div>
+  <span>
+
 
   </span>
 
@@ -107,10 +116,14 @@ export default {
 .mobile-item-row{
   border: 1px solid black;
   border-radius: 5px;
-  width: 340px;
   min-height: 48px;
+  width: 100%;
   margin: 5px;
   padding: 5px;
+}
+.mobile-colmun {
+  width: 100%;
+
 }
 
 .item-name {

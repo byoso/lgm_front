@@ -22,7 +22,7 @@
             </div>
             <label class="label">Name</label>
             <input class="input" type="text" placeholder="Name" v-model="name">
-            <label class="label">Image url (optionnal)</label>
+            <label class="label">Image url</label>
             <input class="input" type="text" placeholder="image url" v-model="image_url">
 
             <div class="is-flex is-justify-content-space-between m-2">
