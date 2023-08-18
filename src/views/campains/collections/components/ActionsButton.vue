@@ -12,7 +12,7 @@
     </div>
     <div class="dropdown-menu" id="dropdown-menu3" role="menu">
       <div class="dropdown-content">
-        <a class="dropdown-item" @click="showTablesModal=!showTablesModal">
+        <a class="dropdown-item" @click="$emit('newCampainFromMyCollection', collection)">
           Use for a new campain
         </a>
         <a class="dropdown-item" @click="$emit('favoritesAction', collection)">
@@ -25,26 +25,14 @@
       </div>
     </div>
 
-    <TablesModal
-      :show="showTablesModal"
-      :tables="tables"
-      :collection="collection"
-      @closeTablesModal="showTablesModal=false"
-     />
-
-
-
-
   </div>
 </template>
 
 <script>
-import TablesModal from './TablesModal.vue'
 
 export default {
   name: 'ActionsButton',
   components: {
-    TablesModal,
   },
   props: [
     'collection',

@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div v-if="isGameMaster | isOwner">
+    <div>
       <div @click="showSettings = !showSettings" class="topic">Settings
         <div class="is-pulled-right mr-2">
           <fa v-if="showSettings" icon="angle-down"/>
@@ -45,9 +45,35 @@
           class="m-2 button is-small is-warning">
             Edit campain...
           </router-link>
-          <div>
+          <div v-if="isGameMaster | isOwner">
             Campain is ended : <input type="checkbox" v-model="is_ended" @change="endCampain">
+            <hr>
           </div>
+
+          <label class="label">Items display</label>
+          <div class="field">
+            <div class="control">
+              <label class="radio">
+                <input type="radio" name="Settings" value="mini" v-model="displayMode" @change="changeDisplayMode">
+                Minimal
+              </label>
+              <label class="radio">
+                <input type="radio" name="Settings" value="image" v-model="displayMode" @change="changeDisplayMode">
+                With Images
+              </label>
+            </div>
+          </div>
+          <label class="label">Max items</label>
+          <div class="select">
+            <select class="is-small" v-model="maxItems" @change="changeMaxItemsDisplay">
+              <option value="all">--All--</option>
+              <option value=10>10</option>
+              <option value=30>30</option>
+              <option value=50>50</option>
+              <option value=100>100</option>
+            </select>
+          </div>
+
       </div>
 
     </div>
@@ -116,29 +142,6 @@
           <option value="date+">date +</option>
           <option value="date-">date -</option>
           <option value="type">type</option>
-        </select>
-      </div>
-      <label class="label">Items display</label>
-      <div class="field">
-        <div class="control">
-          <label class="radio">
-            <input type="radio" name="Settings" value="mini" v-model="displayMode" @change="changeDisplayMode">
-            Minimal
-          </label>
-          <label class="radio">
-            <input type="radio" name="Settings" value="image" v-model="displayMode" @change="changeDisplayMode">
-            With Images
-          </label>
-        </div>
-      </div>
-      <label class="label">Max items</label>
-      <div class="select">
-        <select class="is-small" v-model="maxItems" @change="changeMaxItemsDisplay">
-          <option value="all">--All--</option>
-          <option value=10>10</option>
-          <option value=30>30</option>
-          <option value=50>50</option>
-          <option value=100>100</option>
         </select>
       </div>
     </div>
@@ -259,11 +262,6 @@ export default {
     this.displayMode = this.$store.state.prefs.itemsDisplayMode,
     this.table = this.$store.state.current_table;
     this.maxItems = this.maxItemsDisplay;
-    // console.log('CapainTools: ')
-    // console.log('display mode: ', this.displayMode)
-    // console.log('campain: ', this.campain.title)
-    // console.log("is_official: ", this.campain.is_official)
-    // console.log('collection: ', this.collection)
   },
   methods: {
     charLimit(text) {
@@ -273,7 +271,6 @@ export default {
       return text.slice(0, 22) + '...';
     },
     editionModePC(pc) {
-      // console.log("PC to edit: ", pc)
       this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
       this.pcToDisplay = pc;
       this.showPCModalEditSwitch = !this.showPCModalEditSwitch;
@@ -282,7 +279,6 @@ export default {
       this.$emit('changeDisplayMode', this.displayMode);
     },
     changeMaxItemsDisplay() {
-      // console.log("Max items: ", this.maxItems)
       this.$emit('changeMaxItemsDisplay', this.maxItems);
     },
     addItem() {
@@ -313,7 +309,6 @@ export default {
           locked: pc.locked,
         }
       }).then(response => {
-        console.log(response)
         this.$emit('updatePC', pc);
       }).catch(error => {
         console.log(error)
@@ -332,7 +327,6 @@ export default {
       this.$emit('deletePC', pc_id);
     },
     endCampain(){
-      console.log("End campain: ", this.is_ended)
       axios({
         method: 'put',
         url: `/campains/switch_end_campain/`,
@@ -344,7 +338,6 @@ export default {
           table_id: this.table.id,
         }
       }).then(response => {
-        console.log(response)
         toast({
           message: 'Campain end status changed',
           type: 'is-success',

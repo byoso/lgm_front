@@ -260,9 +260,6 @@ export default {
       this.campains = response.data.campains;
       this.collections = response.data.collections;
       this.favorites = response.data.favorites;
-      console.log(this.campains)
-      console.log(this.collections)
-      console.log(this.favorites)
     }).catch(error => {
       console.log(error)
     })
@@ -293,7 +290,6 @@ export default {
       this.exchanges.b_type = this.typeB
       this.exchanges.a_id = this.columnASelected.id
       this.exchanges.b_id = this.columnBSelected.id
-      console.log('exchanges: ', this.exchanges)
       axios({
         method: 'post',
         url: '/campains/apply_exchanges/',
@@ -304,7 +300,6 @@ export default {
           exchanges: this.exchanges,
         }
       }).then(response => {
-        console.log(response.data)
         this.campainA = response.data.source_a
         this.campainB = response.data.source_b
 

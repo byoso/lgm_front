@@ -114,7 +114,6 @@ export default {
         this.errors.push('Type required.')
         return
       }
-      console.log("submit...")
       axios({
         method: 'post',
         url: '/campains/items/create/',
@@ -149,7 +148,6 @@ export default {
       this.MDPreviewContent = marked.parse(text)
       let previewElem = document.getElementById(textId + 'Preview')
       previewElem.innerHTML = this.MDPreviewContent
-      console.log('preview...')
 
     },
 

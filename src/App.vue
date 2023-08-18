@@ -95,8 +95,8 @@
 </div>
 
 <div class="bottom">
-
 </div>
+
 </div>
 </template>
 
@@ -145,7 +145,6 @@ export default {
     }).then((response) => {
       this.$store.state.configuration = response.data;
       this.open_subscriptions = this.$store.state.configuration.open_subscriptions;
-      console.log("open_subscriptions: ", this.open_subscriptions)
     }).catch((error) => {
       console.log(error);
     })

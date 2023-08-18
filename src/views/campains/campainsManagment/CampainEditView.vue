@@ -136,7 +136,6 @@ export default {
     this.gameMasterId = this.campain.game_master.id
     this.is_copy_locked = !this.campain.is_copy_free
     this.is_ended = this.campain.is_ended
-    console.log("campain: \n",this.campain)
 
   },
   computed: {
@@ -178,7 +177,6 @@ export default {
         is_copy_free: !this.is_copy_locked,
         is_ended: this.is_ended,
       }
-      console.log("send to update: \n", data)
       axios({
         method: 'put',
         url: '/campains/update_campain/',
@@ -188,7 +186,6 @@ export default {
         data: data
       })
       .then(response => {
-        console.log(response)
         this.$router.push({name: "CampainView", params: {id: this.$store.state.current_campain.id}})
       })
       .catch(error => {
@@ -209,7 +206,6 @@ export default {
         }
       })
       .then(response => {
-        console.log(response)
         this.$router.push({name: 'table', params: {id: this.table.id}});
       })
       .catch(error => {

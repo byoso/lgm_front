@@ -92,12 +92,10 @@ export default {
       return text.slice(0, 22) + '...';
     },
     showPC(pc) {
-      console.log("show pc modal")
       this.pcToDisplay = pc;
       this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
     },
     editionModePC(pc) {
-      // console.log("PC to edit: ", pc)
       this.showPCModalDisplaySwitch = !this.showPCModalDisplaySwitch;
       this.pcToDisplay = pc;
       this.showPCModalEditSwitch = !this.showPCModalEditSwitch;
@@ -121,7 +119,6 @@ export default {
           locked: pc.locked,
         }
       }).then(response => {
-        console.log(response)
         this.$emit('updatePC', pc);
       }).catch(error => {
         console.log(error)

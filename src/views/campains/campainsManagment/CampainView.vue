@@ -19,11 +19,23 @@
 
     <div v-if="displayMobileItems">
       <div class="columns  is-mobile">
-        <div class="column is-9">
-          <select class="select is-fullwidth" v-model="filterBy" @change="filterItems(filterBy)">
-            <option selected>--All--</option>
-            <option v-for="type in itemTypes" :key="type">{{ type }}</option>
-          </select>
+        <div class="column is-5">
+          <div class="select is-small">
+            <select v-model="filterBy" @change="filterItems(filterBy)">
+              <option selected>--All--</option>
+              <option v-for="type in itemTypes" :key="type">{{ type }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="select is-small">
+            <select v-model="sortBy" @click="sortItems(sortBy)">
+              <option value="name">name</option>
+              <option value="date+">date +</option>
+              <option value="date-">date -</option>
+              <option value="type">type</option>
+            </select>
+          </div>
         </div>
         <div class="column is-3">
           <button class="button is-small is-success" @click="showCreateItemModal=true">
@@ -278,7 +290,6 @@ export default {
     this.user = this.$store.state.user;
     this.campain = this.$store.state.current_campain;
     this.collection = this.campain.parent_collection
-    console.log('campainView mounted, collection: ', this.collection)
     this.refresh_campain()
   },
   methods: {
@@ -332,18 +343,14 @@ export default {
         elemSettings.classList.add("is-active");
       }
 
-      console.log("displayMobile: ", value)
     },
     newCollection(collection){
       this.refresh_campain()
     },
     itemDeleted(id) {
-      console.log("item deleted: ", id)
       this.showItemModalDisplaySwitch = false;
       this.showItemModalEditSwitch = false;
       let item = this.campain.items.find(item => item.id == id);
-      console.log("item to delete: ", item)
-      console.log('index in campain: ', this.campain.items.indexOf(item))
       let index = this.campain.items.indexOf(item)
       if (index !== -1) {
         this.campain.items.splice(index, 1);
@@ -369,7 +376,6 @@ export default {
       this.sortItems(this.sortBy);
     },
     sortItems(value){
-      console.log("sort by: ", value)
       this.shownItems = this.shownItems.sort((a, b) => {
         if (value == 'date-') {
           return new Date(a.date_unlocked) - new Date(b.date_unlocked);
@@ -383,19 +389,16 @@ export default {
       });
     },
     showItemModalEditOn(item) {
-      console.log("show item edit: \n", item)
       this.showItemModalDisplaySwitch = false;
       this.showItemModalEditSwitch = true;
       this.itemToDisplay = item;
     },
     showItemModalEditOff(item) {
-      console.log("hide item edit: \n", item)
       this.showItemModalDisplaySwitch = true;
       this.showItemModalEditSwitch = false;
       this.itemToDisplay = item;
     },
     showItemModalDisplay(item) {
-      console.log("show item details: \n", item)
       this.showItemModalDisplaySwitch = !this.showItemModalDisplaySwitch;
       this.itemToDisplay = item;
     },
@@ -416,11 +419,9 @@ export default {
     },
     changeDisplayMode(value){
       this.$store.state.prefs.itemsDisplayMode = value;
-      console.log("this.$store.state.prefs.itemsDisplayMode: ", this.$store.state.prefs.itemsDisplayMode)
       this.itemsDisplayMode = value;
     },
     changeMaxItemsDisplay(value){
-      console.log("changeMaxItemsDisplay in vue: ", value)
       this.maxItemsDisplay = value;
       if (this.maxItemsDisplay === "all") {
         this.shownItems = this.campain.items;
@@ -432,7 +433,6 @@ export default {
     refresh_campain() {
       this.user = this.$store.state.user;
       this.campain = this.$store.state.current_campain;
-      console.log("shownItems: ", this.shownItems)
       this.table = this.$store.state.current_table;
       this.refreshSpin = true;
       axios({
@@ -444,7 +444,6 @@ export default {
       })
       .then(response => {
         this.collection = response.data.collection;
-        console.log('collection (axios response): ', this.collection)
         this.campain = response.data.campain;
         if (!this.isGameMaster) {
           this.campain.items = this.campain.items.filter(item => !item.locked);
@@ -453,11 +452,8 @@ export default {
         this.table = response.data.campain.table;
         this.$store.state.current_campain = response.data.campain;
         this.$store.state.current_table = response.data.campain.table;
-        console.log(this.campain.title)
         this.refreshSpin = false;
         this.filterItems(this.filterBy);
-        console.log("refreshed campain: \n", this.campain)
-        console.log("refreshed collection: \n", this.collection)
       })
       .catch(error => {
         console.log(error)
@@ -472,7 +468,6 @@ export default {
       }
     },
     deletePC(pc_id){
-      console.log("delete pc: ", pc_id)
       let old_pc = this.campain.pcs.find(item => item.id == pc_id);
       let index = this.campain.pcs.indexOf(old_pc)
       if (index !== -1) {
@@ -480,7 +475,6 @@ export default {
       }
     },
     endCampain(){
-      console.log("End campain: ", this.is_ended)
       axios({
         method: 'put',
         url: `/campains/switch_end_campain/`,
@@ -492,7 +486,6 @@ export default {
           table_id: this.table.id,
         }
       }).then(response => {
-        console.log(response)
         toast({
           message: 'Campain end status changed',
           type: 'is-success',

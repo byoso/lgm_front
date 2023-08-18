@@ -93,8 +93,6 @@ export default {
     onSubmit() {
       if (this.name != "") {
         let guestsList = this.getGuestsList();
-        console.log("guests in list: ", guestsList)
-        console.log("guests :", this.guests[0])
         this.errors = [];
         axios({
           method: "POST",
@@ -109,7 +107,6 @@ export default {
           }
         })
         .then(response => {
-          console.log(response.data);
           this.$router.push({ name: "dashboard" });
         })
         .catch(error => {

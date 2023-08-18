@@ -139,9 +139,7 @@ export default {
     }
   },
   beforeMount() {
-    console.log("campain in PCModal: ", this.campain)
     this.players = this.campain.table.owners.concat(this.campain.table.guests).concat(this.campain.table.game_masters)
-    console.log("players: ", this.players)
     this.name = this.pc.name
     this.image_url = this.pc.image_url
     if (this.pc.user !== null) {
@@ -186,7 +184,6 @@ export default {
       if (this.player_id === '') {
         this.player_id = null
       }
-      console.log("submit...")
       let data = {
         id: this.id,
         campain_id: this.campain.id,
@@ -197,7 +194,6 @@ export default {
         data_player: this.player_infos,
         data_gm: this.gm_infos,
       }
-      console.log(data)
       axios({
         method: 'put',
         url: '/campains/pc/update/',
@@ -229,7 +225,6 @@ export default {
       this.MDPreviewContent = marked.parse(text)
       let previewElem = document.getElementById(textId + 'Preview')
       previewElem.innerHTML = this.MDPreviewContent
-      console.log('preview...')
 
     },
   },

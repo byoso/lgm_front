@@ -77,7 +77,6 @@ export default {
         }
       }
     ).then(response => {
-      console.log(response)
       this.name = response.data['name'];
       this.description = response.data['description'];
       for (var i=0; i<response.data['guests'].length; i++) {
@@ -147,8 +146,6 @@ export default {
     onSubmit() {
       if (this.name != "") {
         let guestsList = this.getGuestsList();
-        console.log("guests in list: ", guestsList)
-        console.log("guests :", this.guests[0])
         this.errors = [];
         axios({
           method: "PUT",

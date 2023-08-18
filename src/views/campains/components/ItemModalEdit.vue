@@ -173,7 +173,6 @@ export default {
         data_pc: this.itemPCsInfos,
         data_gm: this.itemGmInfos,
       }
-      console.log('new_item: ', new_item)
       axios({
         method: 'put',
         url: '/campains/items/update/',
@@ -182,7 +181,6 @@ export default {
         },
         data: new_item
       }).then(response => {
-        console.log(response)
         this.$emit('itemUpdated', response.data)
         this.$emit('showModalEdit', new_item)
 
@@ -201,7 +199,6 @@ export default {
       this.MDPreviewContent = marked.parse(text)
       let previewElem = document.getElementById(textId + 'Preview')
       previewElem.innerHTML = this.MDPreviewContent
-      console.log('preview...')
 
     },
   }

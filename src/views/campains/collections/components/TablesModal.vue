@@ -52,7 +52,6 @@ export default {
           table_id: table.id,
         },
       }).then((response) => {
-        console.log(response)
         toast({
           message: `Campain created successfully for table ${table.name}`,
           position: 'bottom-right',

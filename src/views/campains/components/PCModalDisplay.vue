@@ -106,7 +106,6 @@ export default {
       return text.slice(0, 22) + '...';
     },
     editionMode(item) {
-      console.log('editionMode ON')
       this.$emit('showPCModalDisplay', this.pc)
       this.$emit('editionModePC', this.pc)
     },

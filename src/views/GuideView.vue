@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    <div class="logo mb-6">
+    <div class="logo mb-6 is-hidden-mobile">
       <img src="favicon.ico" class="logo-image" alt="logo">
       <h1 class="logo-title">
         RPGAdventure.eu
@@ -18,9 +18,10 @@
   </div>
   <div v-if="showWhatIs">
     <br>
+    <h2 class="title is-4">Quick introduction</h2>
     <p>
       It is a tool for RPG masters and players to help them to handle the
-      mass of information displayed when playing a RPG in an elegant way.
+      mass of information displayed when playing a RPG, in an elegant way.
     </p>
     <div>
       <img src="img/guide/cards-campains.png" alt="campain items">
@@ -58,8 +59,23 @@
       </div>
     </div>
 
-    <div>
+    <h2 class="title is-4">Play on mobile</h2>
+    <p>
+      Carrying a laptop is not the most convenient for playing, that's why the interface of RPGAdventure
+      is adapted for smartphones too.
+    </p>
+    <br>
+    <div class="columns">
+      <div class="column">
+        <h3 class="title is-5">Game master's mobile interface</h3>
+        <img src="img/guide/mobile_items_gm.png" alt="gm mobile interface" class="image-bordered">
+      </div>
+      <div class="column">
+        <h3 class="title is-5">Player's mobile interface</h3>
+        <img src="img/guide/mobile_items_player.png" alt="player mobile interface" class="image-bordered">
+      </div>
     </div>
+
     <br>
 
     <h2 class="title is-4">About subscriptions</h2>
@@ -134,7 +150,7 @@
             - edit the collection to your liking, adding some of the items and PCs you'd like to use in your campain
           </li>
           <li>
-            - In the campain interface, click "Use for a new campain", than choose the one table you want this new campain to be available in (you must be a Game Master or Owner of the table).
+            - In the Collection interface, click "Use for a new campain", than choose the one table you want this new campain to be available in (you must be a Game Master or Owner of the table).
           </li>
           <li>
             - play the campain, you can add new items to it while playing, and then transfer them back to the collection throught the "Exchanges" interface.
@@ -203,5 +219,8 @@ p {
   margin-right: 10px;
 }
 
+.image-bordered {
+  border: 2px solid black;
+}
 
 </style>

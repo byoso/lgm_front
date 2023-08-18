@@ -86,7 +86,7 @@
               <th>Title</th>
               <th>game</th>
               <th>rating</th>
-              <th>actions</th>
+              <th v-if="is_subscriber">actions</th>
               <th>author</th>
               <th>language</th>
               <th>last updated</th>
@@ -106,11 +106,12 @@
                 <fa v-if="collection.votes_count > 1" icon="star" class="star" />
                 {{ collection.rating}}({{collection.votes_count}})
               </td>
-              <td>
+              <td v-if="is_subscriber">
                   <ActionsButton
                   :collection="collection"
                   :tables="tables"
                   @favoritesAction="favoritesAction($event)"
+                  @newCampainFromMyCollection="newCampainFromMyCollection($event)"
                   />
               </td>
               <td>{{ charLimit(collection.author) }}</td>
@@ -278,6 +279,7 @@
 
 <script>
 import axios from 'axios'
+import { toast } from 'bulma-toast'
 import OfficialMark from './components/OfficialMark.vue'
 import ActionsButton from './components/ActionsButton.vue'
 
@@ -334,6 +336,17 @@ export default {
       return text.slice(0, 22) + '...';
     },
     newCampainFromMyCollection(collection){
+      if (this.tables.length < 1){
+        toast({
+          message: 'You must have the role Owner or Game Master in at least 1 table',
+          type: 'is-warning',
+          position: 'center',
+          dismissible: true,
+          pauseOnHover: true,
+          duration: 5000,
+        });
+        return
+      }
       this.collectionForModal = collection
       this.showTablesModal = true
     },

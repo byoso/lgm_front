@@ -82,7 +82,6 @@ export default {
             'Authorization': "Token " + this.$store.state.token,
         }
       }).then(response => {
-        console.log(response.data);
         window.location.href = response.data.url;
       }).catch(error => {
         console.log(error);
@@ -98,7 +97,6 @@ export default {
       },
     }).then(response => {
       this.plans = response.data;
-      console.log(this.plans);
     }).catch(error => {
       console.log(error);
     })

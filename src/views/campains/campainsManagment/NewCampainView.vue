@@ -118,7 +118,6 @@ export default {
         }
       })
       .then(response => {
-        console.log(response.data)
         this.$router.push({name: "table", params: {id: this.$store.state.current_table.id}})
       })
       .catch(error => {

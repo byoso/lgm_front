@@ -42,10 +42,7 @@ export default {
     },
   },
   beforeMount(){
-    console.log('collection rating: ', this.collection.rating)
-    console.log(this.collection)
     this.rating = Number(this.collection.rating)
-    console.log(typeof(this.rating))
     this.get_stars()
   },
   methods: {
@@ -62,27 +59,17 @@ export default {
       return text.slice(0, 22) + '...';
     },
     get_stars () {
-      console.log('rating: ', this.rating)
       for (var i=1;i<=5; i++){
         if (i <= this.rating) {
-          console.log('i: ', i, 'rating :', this.rating)
           this.starList.push({icon:"star", id: i, on: true})
         } else if (i <= this.rating + 0.25){
-          console.log('i: ', i, 'rating :', this.rating)
           this.starList.push({icon: "star", id: i, on: true})
         } else if (i <= this.rating + 0.75){
-          console.log('i: ', i, 'rating :', this.rating)
           this.starList.push({icon: "star-half-stroke", id: i, on: true})
         } else {
-          console.log('i: ', i, 'rating :', this.rating)
           this.starList.push({icon: "star", id: i, on: false})
         }
       }
-      console.log(
-        'rating: ', this.collection.rating,
-        'starList: ', this.starList,
-
-        )
     },
     vote(rate){
       if (this.collection.voted){
@@ -114,7 +101,6 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-      console.log(this.starList)
 
     }
   }

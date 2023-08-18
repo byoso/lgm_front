@@ -340,47 +340,36 @@ export default {
       this.showItemForm = false
       this.showPcForm = true
       this.pcToEdit = pc
-      console.log('pcToEdit: ', this.pcToEdit.name)
     },
     editItem(item) {
       this.showPcForm = false
       this.showItemForm = true
       this.itemToEdit = item
-      console.log('itemToEdit: ', this.itemToEdit.name)
     },
     updatePc(pc){
-      console.log('modified pc: ', pc)
       if (pc.id.startsWith('temp_id_')) {
         this.pcCreatedList[pc.id] = pc
       }
       else {
         this.pcUpdatedList[pc.id] = pc
       }
-      console.log('itemUpdatedList: ', this.pcUpdatedList)
-      console.log('itemCreatedList: ', this.pcCreatedList)
 
     },
     updateItem(item) {
-      console.log('modified item: ', item)
       if (item.id.startsWith('temp_id_')) {
         this.itemCreatedList[item.id] = item
       }
       else {
         this.itemUpdatedList[item.id] = item
       }
-      console.log('itemUpdatedList: ', this.itemUpdatedList)
-      console.log('itemCreatedList: ', this.itemCreatedList)
     },
     createPc() {
-      console.log('create pc')
       let new_pc = {
         id: this.get_temp_id(),
         name: "New PC",
         }
       this.pcList.unshift(new_pc)
       this.pcCreatedList[new_pc.id] = new_pc
-      console.log('pcCreatedList: ', this.pcCreatedList)
-      console.log('pcUpdatedList: ', this.pcUpdatedList)
     },
     createItem() {
       let new_item = {
@@ -390,8 +379,6 @@ export default {
         }
       this.itemList.unshift(new_item)
       this.itemCreatedList[new_item.id] = new_item
-      console.log('itemCreatedList: ', this.itemCreatedList)
-      console.log('itemUpdatedList: ', this.itemUpdatedList)
     },
     deletePc(id){
       this.pcList = this.pcList.filter(pc => pc.id !== id)
@@ -407,11 +394,6 @@ export default {
       delete this.pcUpdatedList[id]
       this.showPcForm = false
       this.pcToEdit = {}
-
-      console.log('delete pc: ', id)
-      console.log('pcUpdatedList', this.pcUpdatedList)
-      console.log('pcCreatedList: ', this.pcCreatedList)
-      console.log('pcDeletedList: ', this.pcDeletedList)
 
     },
     deleteItem(id){
@@ -429,10 +411,6 @@ export default {
       this.showItemForm = false
       this.itemToEdit = {}
 
-      console.log('delete item: ', id)
-      console.log('itemUpdatedList', this.itemUpdatedList)
-      console.log('itemCreatedList: ', this.itemCreatedList)
-      console.log('itemDeletedList: ', this.itemDeletedList)
     },
     getCollectionDetail(){
       axios({
@@ -449,7 +427,6 @@ export default {
         this.collection = response.data.collection_details
         this.itemList = response.data.items
         this.pcList = response.data.pcs
-        // console.log(this.collection)
         this.itemCreatedList = {}
         this.itemUpdatedList = {}
         this.itemDeletedList = []
@@ -527,7 +504,6 @@ export default {
           pauseOnHover: true,
           duration: 2000,
         });
-        console.log(response.data)
         this.getCollectionDetail()
       })
       .catch(error => {

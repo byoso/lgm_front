@@ -121,9 +121,7 @@ export default {
     }
   },
   beforeMount() {
-    console.log("campain in PCModal: ", this.campain)
     this.players = this.campain.table.owners.concat(this.campain.table.guests)
-    console.log("players: ", this.players)
   },
   methods: {
     charLimit(text) {
@@ -136,7 +134,6 @@ export default {
       if (this.player_id === '') {
         this.player_id = null
       }
-      console.log("submit...")
       let data = {
         campain_id: this.campain.id,
         name: this.name,
@@ -146,7 +143,6 @@ export default {
         data_player: this.player_infos,
         data_gm: this.gm_infos,
       }
-      console.log(data)
       axios({
         method: 'post',
         url: '/campains/pc/create/',
@@ -156,7 +152,6 @@ export default {
         }
       })
       .then(response => {
-        console.log(response.data)
         this.$emit('closeCreatePCModal')
         this.$emit('addPC')
       })
@@ -179,7 +174,6 @@ export default {
       this.MDPreviewContent = marked.parse(text)
       let previewElem = document.getElementById(textId + 'Preview')
       previewElem.innerHTML = this.MDPreviewContent
-      console.log('preview...')
 
     },
   },
