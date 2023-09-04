@@ -63,14 +63,14 @@
             Once it is checked, it can not be unchecked.
           </p>
           <p class="text">
-            A locked campain will not be albe to export any items at all,
-            but will be able to import items from any other campains and collections.
+            A locked campaign will not be albe to export any items at all,
+            but will be able to import items from any other campaigns and collections.
           </p>
           <p class="text">
             This feature prevents copyright issues.
           </p>
           <p class="text">
-            DO NOT CHECK if you want to create a collection from this campain.
+            DO NOT CHECK if you want to create a collection from this campaign.
           </p>
           <div class="m-2">
           <button class="button is-small is-warning mr-4" @click="allowCopyLock=true">I Understand</button>
@@ -79,7 +79,7 @@
           </div>
       </div>
       <div v-else>
-        <p>This campain is copy locked <fa icon="lock" style="color: red;"/> </p>
+        <p>This campaign is copy locked <fa icon="lock" style="color: red;"/> </p>
       </div>
 
     </div>
@@ -90,7 +90,7 @@
 
     <button class="button is-warning m-2"
     @click="allowDeleteCampain = !allowDeleteCampain">
-    delete campain
+    delete campaign
     </button>
     <button  :disabled="!allowDeleteCampain"
     @click.prevent="deleteCampain(campain.id)"

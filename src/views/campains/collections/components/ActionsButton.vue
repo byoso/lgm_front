@@ -13,7 +13,7 @@
     <div class="dropdown-menu" id="dropdown-menu3" role="menu">
       <div class="dropdown-content">
         <a class="dropdown-item" @click="$emit('newCampainFromMyCollection', collection)">
-          Use for a new campain
+          Use for a new campaign
         </a>
         <a class="dropdown-item" @click="$emit('favoritesAction', collection)">
           <span>

@@ -87,10 +87,10 @@
       <router-link v-if="isGameMaster"
       :to="{name: 'CampainEditView', params: {id: campain.id}}"
       class="m-2 button is-small is-warning">
-        Edit campain...
+        Edit campaign...
       </router-link>
       <div v-if="isGameMaster | isOwner">
-        Campain is ended : <input type="checkbox" v-model="campain.is_ended" @change="endCampain">
+        Campaign is ended : <input type="checkbox" v-model="campain.is_ended" @change="endCampain">
       </div>
       <hr>
       <div>

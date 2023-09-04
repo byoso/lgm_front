@@ -11,7 +11,7 @@
       <a
       v-if="(is_owner | is_game_master) & is_subscriber"
       class="button is-small is-success m-2" @click="newCampain">
-        + new campain
+        + new campaign
       </a>
     </div>
 
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div v-if="showMembers" class="is-hidden-mobile">
-      <div class="columns m-2 is-flex">
+      <div class="columns m-2 is-flex members_n_roles">
         <div class="column is-4">
           <h2 class="subtitle">Table Owners</h2>
             <ul>
@@ -63,7 +63,7 @@
     </div>
 
 
-    <div @click="showEndedCampains = !showEndedCampains" class="topic">Ended Campains
+    <div @click="showEndedCampains = !showEndedCampains" class="topic">Ended Campaigns
       <div class="is-pulled-right mr-2">
         <fa v-if="showEndedCampains" icon="angle-down"/>
         <fa v-if="!showEndedCampains" icon="angle-right"/>
@@ -233,7 +233,7 @@ export default {
 }
 
 .arrow:hover {
-  color: rgb(106, 236, 126);
+  color: rgb(52, 255, 82);
   cursor: pointer;
 }
 
@@ -270,6 +270,12 @@ th
 
 .is-rounded {
   border-radius: 5px;
+}
+
+.members_n_roles {
+  background-color: rgb(255, 254, 241);
+  border: 2px solid rgb(106, 227, 221);
+  border-radius: 15px;
 }
 
 </style>

@@ -4,7 +4,7 @@
       <div class="modal-background" @click="show=!show"></div>
       <div class="modal-content">
         <h1 class="subtitle">
-          Choose a table to create the new campain
+          Choose a table to create the new campaign
         </h1>
         <div class="buttons">
           <button

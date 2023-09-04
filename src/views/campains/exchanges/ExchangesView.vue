@@ -8,7 +8,7 @@
         Please select:
         <label class="radio m-2">
           <input type="radio" name="answer" v-model="typeA" value="campain">
-          a Campain
+          a Campaign
         </label>
         <label class="radio m-2">
           <input type="radio" name="answer" v-model="typeA" value="collection">
@@ -17,7 +17,7 @@
 
         <!-- column A: select a campain -->
         <select class="select is-fullwidth" v-if="typeA === 'campain'" v-model="columnASelected" @change="getCampainA(columnASelected)">
-          <option selected hidden value="null">Choose a campain</option>
+          <option selected hidden value="null">Choose a campaign</option>
           <option v-for="campain in campains" :value="campain" :key="campain.id">
             <span>
               [{{charLimit(campain.table)}}]
@@ -116,7 +116,7 @@
         <div class="control">
           <label class="radio m-2">
             <input type="radio" name="answer" v-model="typeB" value="campain">
-            a Campain
+            a Campaign
           </label>
           <label class="radio m-2">
             <input type="radio" name="answer" v-model="typeB" value="collection">
@@ -124,7 +124,7 @@
           </label>
 
           <select class="select is-fullwidth" v-if="typeB === 'campain'" v-model="columnBSelected" @change="getCampainB(columnBSelected)">
-            <option selected hidden value="null">Choose a campain</option>
+            <option selected hidden value="null">Choose a campaign</option>
             <option v-for="campain in campainsAvailableInB" :value="campain" :key="campain.id">
               <span>
                 [{{charLimit(campain.table)}}]
@@ -447,9 +447,9 @@ export default {
         return
       }
       if (this.columnBSelected === null){
-        console.log("campainSelectedB: ", this.columnBSelected)
+        console.log("campaignSelectedB: ", this.columnBSelected)
         toast({
-          message: 'Please select a campain or a collection to exchange with',
+          message: 'Please select a campaign or a collection to exchange with',
           type: 'is-warning',
           position: 'center',
           dismissible: true,

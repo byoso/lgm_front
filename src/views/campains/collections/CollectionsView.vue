@@ -48,7 +48,7 @@
                   @mouseover="allowViewCollectionDetail=false"
                   @mouseout="allowViewCollectionDetail=true"
                   @click="newCampainFromMyCollection(collection)">
-                    Use for a new campain
+                    Use for a new campaign
                 </button>
               </td>
               <td>{{ formatDate(collection.date_updated) }}</td>

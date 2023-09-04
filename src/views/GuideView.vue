@@ -28,7 +28,7 @@
     </div>
     <br>
     <p class="text">
-      During a RPG campain, the game master will disclose informations to the
+      During a RPG campaign, the game master will disclose informations to the
       players as they discover new elements (NPCs, LOCATIONs, ORGANIZATIONs...).
       Each element is displayed under the form of a card.
     </p>
@@ -38,7 +38,7 @@
     </div>
     <br>
     <p class="text">
-      While a campain is often played on long period of time, the game master and the players
+      While a campaign is often played on long period of time, the game master and the players
       can dive instantly into the game, consulting the item cards to remind them the discovered elements
       of the scenario, and their details.
     </p>
@@ -110,10 +110,10 @@
           - Create a virtual table: add the e-mail addresses of your guests (guests do not need a subscription), they will receive an invitation in their inbox.
         </li>
         <li>
-          - Create a campain from the table view.
+          - Create a campaign from the table view.
         </li>
         <li>
-          - Add items to your campain while playing.
+          - Add items to your campaign while playing.
         </li>
       </ul>
     </p>
@@ -147,13 +147,13 @@
             - in the Collection interface, create a new collection
           </li>
           <li>
-            - edit the collection to your liking, adding some of the items and PCs you'd like to use in your campain
+            - edit the collection to your liking, adding some of the items and PCs you'd like to use in your campaign
           </li>
           <li>
-            - In the Collection interface, click "Use for a new campain", than choose the one table you want this new campain to be available in (you must be a Game Master or Owner of the table).
+            - In the Collection interface, click "Use for a new campaign", than choose the one table you want this new campaign to be available in (you must be a Game Master or Owner of the table).
           </li>
           <li>
-            - play the campain, you can add new items to it while playing, and then transfer them back to the collection throught the "Exchanges" interface.
+            - play the campaign, you can add new items to it while playing, and then transfer them back to the collection throught the "Exchanges" interface.
           </li>
         </ul>
 

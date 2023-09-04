@@ -38,9 +38,9 @@
         Get acces to all features suitable for Game Masters.
         <br>
         <ul>
-          <li>- Create new campains</li>
+          <li>- Create new campaigns</li>
           <li>- Create new items collections</li>
-          <li>- Use the shared collections for your own campains</li>
+          <li>- Use the shared collections for your own campaigns</li>
         </ul>
     </div>
 

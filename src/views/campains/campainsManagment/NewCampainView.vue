@@ -1,7 +1,7 @@
 <template>
 <div class="container is-max-desktop">
   <form>
-    <h1 class="title">Start a New Campain</h1>
+    <h1 class="title">Start a New Campaign</h1>
     <h2 class="subtitle"> {{ charLimit(table.name) }} </h2>
 
     <ul v-if="errors.length">
@@ -44,7 +44,7 @@
       </select>
       <label class="label">Game</label>
       <input type="text" placeholder="Game name" class="input" v-model="game">
-      <label class="label">Campain title</label>
+      <label class="label">Campaign title</label>
       <input type="text" placeholder="Campain title" class="input" v-model="campainTitle">
       <label class="label">Image url</label>
       <input type="text" placeholder="Image url" class="input" v-model="image_url">
