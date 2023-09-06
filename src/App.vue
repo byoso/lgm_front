@@ -58,7 +58,7 @@
             </router-link>
 
             <hr class="navbar-divider">
-            <router-link to="/about" class="navbar-item">
+            <router-link :to="{name: 'about'}" class="navbar-item">
               About
             </router-link>
 

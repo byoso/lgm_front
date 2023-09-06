@@ -79,7 +79,7 @@
       </div>
     </div>
 
-    <div @click="showCampains = !showCampains" class="topic">Campains
+    <div @click="showCampains = !showCampains" class="topic">Campaigns
       <div class="is-pulled-right mr-2">
         <fa v-if="showCampains" icon="angle-down"/>
         <fa v-if="!showCampains" icon="angle-right"/>

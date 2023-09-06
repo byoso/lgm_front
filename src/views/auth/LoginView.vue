@@ -13,14 +13,6 @@
   <br>
 
 
-  <div v-if="errors.length">
-    <ul>
-      <li v-for="error in Object.values(errors[0])" :key="error" style="color: red;">
-        {{ error[0] }}
-      </li>
-    </ul>
-  </div>
-
   <button class="button is-success mt-2" @click="onSubmit">Login</button>
   <p class="m-2"><router-link to="/forgotten_password" >I forgot my password</router-link></p>
   <p class="m-2"><router-link to="/send_confirmation_email_again">I already have an account, but please send me the confirmation email again</router-link></p>
@@ -47,7 +39,6 @@ export default {
     return {
       credential: '',
       password: '',
-      errors: [],
     }
   },
   methods: {
@@ -55,7 +46,6 @@ export default {
       if (this.credential === '' || this.password === '') {
         return;
       }
-      this.errors = [];
       axios.post('auth/token/login/', {
         credential: this.credential,
         password: this.password,
@@ -75,23 +65,25 @@ export default {
         this.$router.push({ name: 'dashboard' })
       })
       .catch(error => {
-        // console.log(error.response.data)
-        let message = ""
-        let errors = []
-        for (var key in error.response.data) {
-          for (var i = 0; i < error.response.data[key].length; i++) {
-            message += error.response.data[key][i] + "\n"
+        console.log("error: ", error)
+        if (error.response != undefined) {
+          let message = ""
+          for (var key in error.response.data) {
+            for (var i = 0; i < error.response.data[key].length; i++) {
+              message += error.response.data[key][i] + "\n"
+            }
           }
-        }
 
-        toast({
-          message: `${message}`,
-          type: 'is-danger',
-          position: 'center',
-          dismissible: true,
-          pauseOnHover: true,
-          duration: 3000,
-        });
+          toast({
+            message: `${message}`,
+            type: 'is-danger',
+            position: 'center',
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 3000,
+          });
+
+        }
       });
     },
   },
