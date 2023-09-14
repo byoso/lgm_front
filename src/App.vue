@@ -37,11 +37,14 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
-        <div v-if="$store.state.user">
-          <router-link v-if="$store.state.isAuthenticated & !$store.state.user.is_subscriber & open_subscriptions"
-            class="button is-primary is-small mr-5" :to="{name: 'subscriptionsView'}">
-            <strong>Subscribe</strong>
-          </router-link>
+        <div v-if="configuration.active_stripe_subscriptions">
+          <div v-if="$store.state.user ">
+            <router-link v-if="$store.state.isAuthenticated & !$store.state.user.is_subscriber & configuration.open_subscriptions"
+              class="button is-primary is-small mr-5" :to="{name: 'subscriptionsView'}">
+              <strong>Subscribe</strong>
+            </router-link>
+
+          </div>
 
         </div>
 
@@ -70,7 +73,7 @@
 
         <div class="buttons">
           <div v-if="!$store.state.isAuthenticated">
-            <router-link v-if="open_subscriptions"
+            <router-link v-if="configuration.open_subscriptions"
             class="button is-primary is-small" to="/signup">
               <strong>Sign up</strong>
             </router-link>
@@ -98,6 +101,7 @@
 </div>
 
 </div>
+
 </template>
 
 <script>
@@ -119,10 +123,16 @@ export default {
     toggleBurger(){
       this.burgerIsActive = !this.burgerIsActive;
     },
+    get_configuration() {
+      return this.$store.state.configuration;
+    }
   },
   computed: {
     user() {
       return this.$store.state.user;
+    },
+    configuration() {
+      return this.$store.state.configuration;
     }
   },
 
@@ -138,6 +148,10 @@ export default {
     }
     this.user = this.$store.state.user;
 
+
+  },
+  beforeMount(){
+
     // check if subscriptions are open
     axios({
       method: 'get',
@@ -145,17 +159,27 @@ export default {
     }).then((response) => {
       this.$store.state.configuration = response.data;
       this.open_subscriptions = this.$store.state.configuration.open_subscriptions;
+      console.log("before create: ", this.configuration)
+      if (this.$store.state.configuration.active_tip_me) {
+        kofiWidgetOverlay.draw('peigne_plume', {
+          'type': 'floating-chat',
+          'floating-chat.donateButton.text': 'Tip Me',
+          'floating-chat.donateButton.background-color': '#00b9fe',
+          'floating-chat.donateButton.text-color': '#fff',
+        });
+      }
     }).catch((error) => {
       console.log(error);
     })
+    console.log("before mount: ", this.configuration)
 
-  },
-  beforeMount(){
   },
   mounted() {
     document.title = 'RPGAdventure.eu'
   },
 }
+
+
 </script>
 <style lang="scss">
 @import '~bulma/css/bulma.css';
