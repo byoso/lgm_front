@@ -37,9 +37,10 @@
     <a href="TandC.html" target="_blank">Terms and Conditions</a>
   </div>
 
-  <div class="box button" @click="stripePortal">
+  <div v-if="configuration.active_stripe_portal" class="box button" @click="stripePortal">
     <h2 class="subtitle"> Subscriptions and Invoices Portal</h2>
   </div>
+
 
 </div>
 </template>
@@ -53,6 +54,7 @@ export default {
   data() {
     return {
       user: {},
+      configuration: this.$store.state.configuration,
     }
   },
   beforeMount() {
