@@ -152,14 +152,12 @@ export default {
   },
   beforeMount(){
 
-    // check if subscriptions are open
     axios({
       method: 'get',
-      url: '/dsap/configuration/',
+      url: '/dsap/dsap/configuration/',
     }).then((response) => {
       this.$store.state.configuration = response.data;
       this.open_subscriptions = this.$store.state.configuration.open_subscriptions;
-      console.log("before create: ", this.configuration)
       if (this.$store.state.configuration.active_tip_me) {
         kofiWidgetOverlay.draw('peigne_plume', {
           'type': 'floating-chat',
@@ -171,7 +169,6 @@ export default {
     }).catch((error) => {
       console.log(error);
     })
-    console.log("before mount: ", this.configuration)
 
   },
   mounted() {

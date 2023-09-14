@@ -1,7 +1,7 @@
 <template>
 
 <div class="container is-max-desktop">
-  <form>
+
   <h1 class="title">Login</h1>
 
 
@@ -17,7 +17,7 @@
   <p class="m-2"><router-link to="/forgotten_password" >I forgot my password</router-link></p>
   <p class="m-2"><router-link to="/send_confirmation_email_again">I already have an account, but please send me the confirmation email again</router-link></p>
 
-  </form>
+
 
 </div>
 
@@ -43,12 +43,22 @@ export default {
   },
   methods: {
     onSubmit() {
+      console.log("===", this.credential, " + ", this.password)
+
       if (this.credential === '' || this.password === '') {
         return;
       }
-      axios.post('auth/token/login/', {
-        credential: this.credential,
-        password: this.password,
+      axios({
+        method: 'post',
+        url: 'auth/token/login/',
+        data: {
+          credential: this.credential,
+          password: this.password,
+        },
+        // headers: {
+        //   'Content-Type': 'multipart/form-data',
+        //   'User-Agent': 'Vue-App',
+        // },
       })
       .then(response => {
         this.$store.commit('setToken', response.data.auth_token);
@@ -65,6 +75,8 @@ export default {
         this.$router.push({ name: 'dashboard' })
       })
       .catch(error => {
+        console.log("error: ", error.message)
+        console.log("error: ", error.config)
         console.log("error: ", error)
         if (error.response != undefined) {
           let message = ""
