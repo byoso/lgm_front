@@ -49,7 +49,7 @@ export default {
       }
       axios({
         method: 'post',
-        url: 'auth/token/login/',
+        url: 'users/token/login/',
         data: {
           credential: this.credential,
           password: this.password,
@@ -58,6 +58,7 @@ export default {
       .then(response => {
         this.$store.commit('setToken', response.data.auth_token);
         this.$store.state.user = response.data.user;
+        console.log(this.$store.state.user)
 
         toast({
           message: `Logged in`,
@@ -70,9 +71,6 @@ export default {
         this.$router.push({ name: 'dashboard' })
       })
       .catch(error => {
-        console.log("error: ", error.message)
-        console.log("error: ", error.config)
-        console.log("error: ", error)
         if (error.response != undefined) {
           let message = ""
           for (var key in error.response.data) {
