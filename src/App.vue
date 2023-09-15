@@ -1,5 +1,7 @@
 <template>
 <div>
+
+
 <nav class="navbar is-fixed-top pl-2 pr-2 is-dark" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <router-link to="/" class="navbar-item" style="font-weight: bold;" @click="burgerIsActive=false">

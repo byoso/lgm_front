@@ -58,7 +58,6 @@ export default {
       .then(response => {
         this.$store.commit('setToken', response.data.auth_token);
         this.$store.state.user = response.data.user;
-        console.log(this.$store.state.user)
 
         toast({
           message: `Logged in`,
