@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("===", this.credential, " + ", this.password)
 
       if (this.credential === '' || this.password === '') {
         return;
@@ -55,10 +54,6 @@ export default {
           credential: this.credential,
           password: this.password,
         },
-        // headers: {
-        //   'Content-Type': 'multipart/form-data',
-        //   'User-Agent': 'Vue-App',
-        // },
       })
       .then(response => {
         this.$store.commit('setToken', response.data.auth_token);
