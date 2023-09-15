@@ -158,6 +158,7 @@ export default {
       method: 'get',
       url: '/dsap/dsap/configuration/',
     }).then((response) => {
+      console.log("configuration: ", response.data)
       this.$store.state.configuration = response.data;
       this.open_subscriptions = this.$store.state.configuration.open_subscriptions;
       if (this.$store.state.configuration.active_tip_me) {
