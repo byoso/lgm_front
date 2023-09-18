@@ -74,6 +74,9 @@
         </div>
 
         <div class="buttons">
+          <a v-if="$store.state.configuration.active_tip_me" href='https://ko-fi.com/Z8Z4P7JTQ' target='_blank' class="mr-2">
+              <img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+          </a>
           <div v-if="!$store.state.isAuthenticated">
             <router-link v-if="configuration.open_subscriptions"
             class="button is-primary is-small" to="/signup">
@@ -125,9 +128,6 @@ export default {
     toggleBurger(){
       this.burgerIsActive = !this.burgerIsActive;
     },
-    get_configuration() {
-      return this.$store.state.configuration;
-    }
   },
   computed: {
     user() {
@@ -161,14 +161,6 @@ export default {
       console.log("configuration: ", response.data)
       this.$store.state.configuration = response.data;
       this.open_subscriptions = this.$store.state.configuration.open_subscriptions;
-      if (this.$store.state.configuration.active_tip_me) {
-        kofiWidgetOverlay.draw('peigne_plume', {
-          'type': 'floating-chat',
-          'floating-chat.donateButton.text': 'Tip Me',
-          'floating-chat.donateButton.background-color': '#00b9fe',
-          'floating-chat.donateButton.text-color': '#fff',
-        });
-      }
     }).catch((error) => {
       console.log(error);
     })

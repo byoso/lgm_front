@@ -41,7 +41,6 @@
     <h2 class="subtitle"> Subscriptions and Invoices Portal</h2>
   </div>
 
-
 </div>
 </template>
 

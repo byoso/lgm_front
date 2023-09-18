@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-  <h1 class="title">Dashboard - {{ charLimit(user.username) }}</h1>
+  <h1 class="title">Tables - {{ charLimit(user.username) }}</h1>
 
 
 <br>

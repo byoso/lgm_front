@@ -11,9 +11,9 @@ import axios from 'axios'
 
 // this url is for a django backend
 // dev
-axios.defaults.baseURL = 'http://127.0.0.1:8000'
+// axios.defaults.baseURL = 'http://127.0.0.1:8000'
 // prod
-// axios.defaults.baseURL = 'https://rpgadventure.eu'
+axios.defaults.baseURL = 'https://rpgadventure.eu'
 
 // add icons to the library
 library.add(fas)
