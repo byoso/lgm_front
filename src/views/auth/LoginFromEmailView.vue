@@ -48,12 +48,12 @@ export default {
       })
       .then(response => {
         toast({
-          message: 'You are now logged in and confirmed!',
-          type: 'is-success',
-          position: 'bottom-right',
+          message: 'Account confirmed! Please log out and back in to apply the changes.',
+          type: 'is-info',
+          position: 'center',
           dismissible: true,
           pauseOnHover: true,
-          duration: 5000,
+          duration: 10000,
         })
         this.$store.commit('setToken', response.data.auth_token);
         this.$store.state.user = response.data.user;

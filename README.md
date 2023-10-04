@@ -1,4 +1,8 @@
-# LGM front (WIP 50%)
+# LGM front
+
+## Project verison
+node : 18.10.0
+npm : 9.6.0
 
 ## Project setup
 ```
