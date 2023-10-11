@@ -125,6 +125,8 @@ export default {
     logout() {
       this.$store.commit('removeToken');
       this.$store.commit('removeUser');
+      this.$store.commit('removeCurrentTable');
+      this.$store.commit('removeCurrentCampain');
     },
     toggleBurger(){
       this.burgerIsActive = !this.burgerIsActive;
@@ -150,7 +152,6 @@ export default {
       axios.defaults.headers.common['Authorization'] = '';
     }
     this.user = this.$store.state.user;
-
 
   },
   beforeMount(){

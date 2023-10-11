@@ -120,6 +120,7 @@ export default {
       campainTitle: "",
       camapainDescription: "",
       is_copy_locked: false,
+      is_ended: false,
       errors: [],
       allowDeleteCampain: false,
       allowCopyLock: false,
@@ -128,14 +129,14 @@ export default {
   beforeMount() {
     this.table = this.$store.state.current_table
     this.campain = this.$store.state.current_campain
-    this.game = this.campain.game
-    this.image_url = this.campain.image_url
-    this.language = this.campain.language
-    this.campainTitle = this.campain.title
-    this.camapainDescription = this.campain.description
-    this.gameMasterId = this.campain.game_master.id
-    this.is_copy_locked = !this.campain.is_copy_free
-    this.is_ended = this.campain.is_ended
+    this.game = this.$store.state.current_campain.game
+    this.image_url = this.$store.state.current_campain.image_url
+    this.language = this.$store.state.current_campain.language
+    this.campainTitle = this.$store.state.current_campain.title
+    this.camapainDescription = this.$store.state.current_campain.description
+    this.gameMasterId = this.$store.state.current_campain.game_master.id
+    this.is_copy_locked = !this.$store.state.current_campain.is_copy_free
+    this.is_ended = this.$store.state.current_campain.is_ended
 
   },
   computed: {
@@ -186,6 +187,14 @@ export default {
         data: data
       })
       .then(response => {
+        this.campain.game = this.game
+        this.campain.title = this.campainTitle
+        this.campain.description = this.camapainDescription
+        this.campain.image_url = this.image_url
+        this.campain.language = this.language
+        this.campain.is_copy_free = !this.is_copy_locked
+        this.campain.is_ended = this.is_ended
+        this.$store.commit('setCurrentCampain', this.campain)
         this.$router.push({name: "CampainView", params: {id: this.$store.state.current_campain.id}})
       })
       .catch(error => {

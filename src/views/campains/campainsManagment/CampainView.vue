@@ -450,8 +450,8 @@ export default {
         }
         this.shownItems = this.campain.items;
         this.table = response.data.campain.table;
-        this.$store.state.current_campain = response.data.campain;
-        this.$store.state.current_table = response.data.campain.table;
+        this.$store.commit('setCurrentCampain', response.data.campain)
+        this.$store.commit('setCurrentTable', response.data.campain.table)
         this.refreshSpin = false;
         this.filterItems(this.filterBy);
       })
@@ -494,6 +494,8 @@ export default {
           pauseOnHover: true,
           duration: 2000,
         });
+        this.campain.is_ended = ! this.campain.is_ended;
+        this.$store.commit('setCurrentCampain', this.campain)
       }).catch(error => {
         console.log(error)
         toast({

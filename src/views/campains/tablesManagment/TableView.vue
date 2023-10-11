@@ -71,7 +71,7 @@
     </div>
     <div v-if="showEndedCampains" >
       <div class="m-2">
-        <div v-if="campains.length" class="container-campain">
+        <div v-if="endedCampains.length" class="container-campain">
             <CampainBox v-for="campain in endedCampains" :key="campain.id" class="is-2"
             :user="user"
             :campain="campain"/>

@@ -60,7 +60,7 @@ export default {
       return text.slice(0, 22) + '...';
     },
     gotoCampain(id) {
-      this.$store.commit('setCampain', this.campain);
+      this.$store.commit('setCurrentCampain', this.campain);
       this.$router.push({name: 'CampainView', params: {id: id}});
     }
   }
