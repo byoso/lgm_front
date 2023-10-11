@@ -36,8 +36,3 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - bulma
 - bulma-toast
 - fontawsome
-
-## Change log
-- Creation of campains
-- Creation of tables
-- Initial settings done

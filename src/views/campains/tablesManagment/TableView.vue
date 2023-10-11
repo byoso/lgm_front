@@ -182,7 +182,7 @@ export default {
         }
       ).then(response => {
         this.table = response.data.table;
-        this.$store.state.current_table = response.data.table;
+        this.$store.commit('setCurrentTable', response.data.table);
         if (this.table.owners.some(e => e.id === this.$store.state.user.id) & this.$store.state.user.is_subscriber) {
           this.is_owner = true;
         } else {
@@ -208,7 +208,7 @@ export default {
         }
       ).then(response => {
         this.table = response.data.table;
-        this.$store.state.current_table = response.data.table;
+        this.$store.commit('setCurrentTable', response.data.table);
         if (this.table.owners.some(e => e.id === this.$store.state.user.id) & this.$store.state.user.is_subscriber) {
           this.is_owner = true;
         } else {

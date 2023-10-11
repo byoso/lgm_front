@@ -17,15 +17,6 @@
       </div>
     </div>
 
-    <!-- <div class="box media m-2 is-hidden-desktop" @click="gotoCampain(campain.id)"
-    :class="{'mastering': user.id===campain.game_master.id, 'not-mastering': user.id!==campain.game_master.id}"
-    >
-      <h2 class="campainTitle-mobile is-4">{{ campain.title }}</h2>
-      <figure v-if="campain.image_url != ''" class="image-mobile">
-        <img :src="campain.image_url" alt="campain image">
-      </figure>
-
-    </div> -->
 
     <div class="m-1 campain-mobile is-hidden-desktop " @click="gotoCampain(campain.id)"
       :class="{
@@ -69,7 +60,7 @@ export default {
       return text.slice(0, 22) + '...';
     },
     gotoCampain(id) {
-      this.$store.state.current_campain = this.campain;
+      this.$store.commit('setCampain', this.campain);
       this.$router.push({name: 'CampainView', params: {id: id}});
     }
   }

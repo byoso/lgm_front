@@ -56,7 +56,8 @@ export default {
           duration: 10000,
         })
         this.$store.commit('setToken', response.data.auth_token);
-        this.$store.state.user = response.data.user;
+        this.$store.commit('setUser', response.data.user);
+        // this.$store.state.user = response.data.user;
         this.$router.push({ name: 'account' })
       })
       .catch(error => {

@@ -135,7 +135,7 @@ export default {
       return text.slice(0, 22) + '...';
     },
     storeTable(table) {
-      this.$store.state.current_table = table;
+      this.$store.commit('setCurrentTable', table);
     },
     editTable(id) {
       this.$router.push({ name: 'edit_table', params: { id: id } });
